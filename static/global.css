@@ -12,6 +12,7 @@ html, body {
 
 html {
   -webkit-text-size-adjust: 100%;
+  color-scheme: light;
 
   --bg: rgb(232, 235, 238);
   --btn-bg: rgb(129, 230, 255);
