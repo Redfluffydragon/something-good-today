@@ -12,6 +12,12 @@
     $projects[selectedProject].color = newColor;
     $projects[selectedProject].title = newTitle;
   }
+
+  function deleteProject(e) {
+    e.preventDefault();
+    // Remove the current project with = so Svelte will update
+    $projects = [...$projects.slice(0, selectedProject), ...$projects.slice(selectedProject + 1)];
+  }
 </script>
 
 <button on:click={() => { open = true; }}>Edit projects</button>
@@ -46,7 +52,7 @@
             <input type="color" name="newColor" id="newColor" bind:value={newColor}>
           </div>
           <button>Mark project as done</button>
-          <button>Delete project</button>
+          <button on:click={deleteProject}>Delete project</button>
         </div>
       </fieldset>
     </form>
