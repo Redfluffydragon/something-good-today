@@ -7,94 +7,81 @@
   import NewProject from "$lib/NewProject.svelte";
   import EditProjects from "$lib/EditProjects.svelte";
   import PieChart from "$lib/PieChart.svelte";
-  import { name, projects } from "$lib/stores";
+  import { firebaseConfig, name, projects } from "$lib/stores";
   import { onMount } from "svelte";
   import { initializeApp } from 'firebase/app';
-  import { getFirestore, getDoc, doc, setDoc } from 'firebase/firestore';
+  import { getFirestore, doc, setDoc } from 'firebase/firestore';
   import { browser } from "$app/env";
   
-  // export let projects;
-  export let history = [];
+  let history = [];
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAHCt552UgH7VJGxjiFJlH1D0iLYxuE8iQ",
-    authDomain: "something-good-70b39.firebaseapp.com",
-    projectId: "something-good-70b39",
-    storageBucket: "something-good-70b39.appspot.com",
-    messagingSenderId: "805543978877",
-    appId: "1:805543978877:web:d425996272cc609a368e14"
-  };
+  export let fetchedProjects;
+  $projects = fetchedProjects;
 
   let firebaseApp;
   let db;
-  let fetched = false;
 
+  export let goal;
+  
   let completedToday;
-  let goal = 1;
   let updateDelay;
 
-  $: browser && waitUpdateUser($name, $projects, goal);
+  $: browser && waitUpdateUser(db, $name, $projects, goal);
 
- // @ts-ignore
+  // @ts-ignore
   $: browser && $projects && (completedToday = [...(new FormData(document.forms.projects)).entries()]
                   .map(selected => $projects[parseInt(selected[1])]))
 
   onMount(() => {
-    firebaseApp = initializeApp(firebaseConfig);
+    // Have to initialize app on client-side it seems
+    // Even though the app is also initialized in the endpoint
+    firebaseApp = initializeApp($firebaseConfig);
     db = getFirestore();
-
-    getUser($name);
   });
 
   /**
-  * @param {string} name
+   * @param {import("@firebase/firestore").Firestore} db
+   * @param {string} name
+   * @param {any} projects
+   * @param {number} goal
   */
-  async function getUser(name) {
-    const user = (await getDoc(doc(db, 'users', name)))?.data();
-
-    if (user) {
-      $projects = JSON.parse(user.projects);
-      goal = JSON.parse(user.goal);
-    }
-
-    fetched = true;
-  }
-
-  /**
-  * @param {string} name
-  * @param {any} projects
-  * @param {number} goal
-  */
-  async function updateUser(name, projects, goal) {
-    if (!fetched) {
+  async function updateUser(db, name, projects, goal) {
+    if (!db) {
       return;
     }
 
-    await setDoc(doc(db, 'users', name), {
-      name: name,
-      projects: JSON.stringify(projects),
-      goal: JSON.stringify(goal),
-    }, { merge: true });
+    try {
+      await setDoc(doc(db, 'users', name), {
+        name: name,
+        projects: JSON.stringify(projects),
+        goal: JSON.stringify(goal),
+      }, { merge: true });
 
-    console.log('Updated', name);
+      console.log('Updated', name);
+    } catch (err) {
+      console.log('Failed to update:', err);
+    }
+
   }
 
   /**
-  * @param {string} name
-  * @param {any[]} projects
-  * @param {number} goal
+   * Every time this is called, it further delays updateUser by 1 second
+   * @param {import("@firebase/firestore").Firestore} db
+   * @param {string} name
+   * @param {any[]} projects
+   * @param {number} goal
   */
-  function waitUpdateUser(name, projects, goal) {
+  function waitUpdateUser(db, name, projects, goal) {
     clearTimeout(updateDelay);
     updateDelay = setTimeout(() => {
-      updateUser(name, projects, goal);
+      updateUser(db, name, projects, goal);
     }, 1000);
   }
 
   /**
-  * @param {string} title
+   * @param {string} title
   */
-  function titleToString(title) {
+  function titleToId(title) {
     return title.toLowerCase().replace(/\s/g, '-');
   }
 </script>
@@ -117,8 +104,8 @@
     <Card>
       <div class="sidebar">
         <div>
-          <h2>Projects:</h2>
-          {#if $projects.length}
+          <h2>Active Projects:</h2>
+          {#if $projects?.length}
             <form name="projects" on:submit={e => { e.preventDefault() }}
               on:input={() => {
                 // @ts-ignore
@@ -129,11 +116,11 @@
                 {#each $projects as project, i}
                   <li>
                     <input type="checkbox" 
-                      name={titleToString(project.title)} 
-                      id={titleToString(project.title)}
+                      name={titleToId(project.title)} 
+                      id={titleToId(project.title)}
                       value={i}
                     >
-                    <label for={titleToString(project.title)}>{project.title}</label>
+                    <label for={titleToId(project.title)}>{project.title}</label>
                     <span class="color" style="background: {project.color};"></span>
                   </li>
                 {/each}
