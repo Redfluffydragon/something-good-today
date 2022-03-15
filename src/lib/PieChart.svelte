@@ -15,6 +15,7 @@
   const HOVER_OFFSET = 15;
 
   let oldLength = projects.length;
+  let oldGoal = goal;
 
   /**
   * @param {number} goal
@@ -37,8 +38,9 @@
 
     // Don't animate unless adding or removing a project
     // Don't animate when changing colors, for example
-    pieChart?.update(oldLength === projects.length ? 'none' : '');
+    pieChart?.update((oldLength !== projects.length || oldGoal !== goal) ? '' : 'none');
 
+    oldGoal = goal;
     oldLength = projects.length;
   }
 
