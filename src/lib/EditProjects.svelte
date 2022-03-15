@@ -19,19 +19,21 @@
 <Modal bind:open maxWidth="80ch">
   <h2>Edit projects</h2>
   <div class="flex">
-    <ul>
-      {#each $projects as project, i}
-        <li>
-          <button on:click={() => {
-            selectedProject = i;
-            newColor = project.color;
-            newTitle = project.title;
-          }}>
-            {project.title}
-          </button>
-        </li>
-      {/each}
-    </ul>
+    {#if $projects?.length}
+      <ul>
+        {#each $projects as project, i}
+          <li>
+            <button on:click={() => {
+              selectedProject = i;
+              newColor = project.color;
+              newTitle = project.title;
+            }}>
+              {project.title}
+            </button>
+          </li>
+        {/each}
+      </ul>
+    {/if}
     <form on:input={updateProject} on:submit={e => {
       e.preventDefault();
       open = false;
