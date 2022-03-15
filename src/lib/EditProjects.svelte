@@ -1,6 +1,6 @@
 <script>
   import Modal from "./Modal.svelte";
-  import { projects } from "./stores";
+  import { user } from "./stores";
 
   let open = false;
 
@@ -9,14 +9,14 @@
   let newTitle = '';
 
   function updateProject() {
-    $projects[selectedProject].color = newColor;
-    $projects[selectedProject].title = newTitle;
+    $user.projects[selectedProject].color = newColor;
+    $user.projects[selectedProject].title = newTitle;
   }
 
   function deleteProject(e) {
     e.preventDefault();
     // Remove the current project with = so Svelte will update
-    $projects = [...$projects.slice(0, selectedProject), ...$projects.slice(selectedProject + 1)];
+    $user.projects = [...$user.projects.slice(0, selectedProject), ...$user.projects.slice(selectedProject + 1)];
   }
 </script>
 
@@ -25,9 +25,9 @@
 <Modal bind:open maxWidth="80ch">
   <h2>Edit projects</h2>
   <div class="flex">
-    {#if $projects?.length}
+    {#if $user.projects?.length}
       <ul>
-        {#each $projects as project, i}
+        {#each $user.projects as project, i}
           <li>
             <button on:click={() => {
               selectedProject = i;

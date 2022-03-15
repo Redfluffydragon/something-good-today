@@ -1,6 +1,6 @@
 <script>
   import Popup from "./Popup.svelte";
-  import { projects } from "./stores";
+  import { user } from "./stores";
   import Tooltip from "./Tooltip.svelte";
 
   let open;
@@ -20,7 +20,7 @@
       return;
     }
     e.preventDefault();
-    if ($projects.find(project => project.title === data.title)) {
+    if ($user.projects.find(project => project.title === data.title)) {
       hasSameName = true;
       return;
     }
@@ -30,7 +30,7 @@
       color: data.color,
     }
 
-    $projects = [...$projects, newProject];
+    $user.projects = [...$user.projects, newProject];
     open = false;
   }
 

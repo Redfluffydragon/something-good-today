@@ -7,30 +7,26 @@
   import NewProject from "$lib/NewProject.svelte";
   import EditProjects from "$lib/EditProjects.svelte";
   import PieChart from "$lib/PieChart.svelte";
-  import { firebaseConfig, name, projects } from "$lib/stores";
+  import { firebaseConfig, name, user } from "$lib/stores";
   import { onMount } from "svelte";
   import { initializeApp } from 'firebase/app';
   import { getFirestore, doc, setDoc } from 'firebase/firestore';
   import { browser } from "$app/env";
   
-  let history = [];
-
-  export let fetchedProjects;
-  $projects = fetchedProjects;
+  export let fetchedUser;
+  $user = fetchedUser;
 
   let firebaseApp;
   let db;
 
-  export let goal;
-  
   let completedToday;
   let updateDelay;
 
-  $: browser && waitUpdateUser(db, $name, $projects, goal);
+  $: browser && waitUpdateUser(db, $user);
 
   // @ts-ignore
-  $: browser && $projects && (completedToday = [...(new FormData(document.forms.projects)).entries()]
-                  .map(selected => $projects[parseInt(selected[1])]))
+  $: browser && $user.projects && (completedToday = [...(new FormData(document.forms.projects)).entries()]
+                  .map(selected => $user.projects[parseInt(selected[1])]))
 
   onMount(() => {
     // Have to initialize app on client-side it seems
@@ -40,24 +36,18 @@
   });
 
   /**
-   * @param {import("@firebase/firestore").Firestore} db
-   * @param {string} name
-   * @param {any} projects
-   * @param {number} goal
+  * @param {import("@firebase/firestore").Firestore} db
+  * @param {Object} user
   */
-  async function updateUser(db, name, projects, goal) {
+  async function updateUser(db, user) {
     if (!db) {
       return;
     }
 
     try {
-      await setDoc(doc(db, 'users', name), {
-        name: name,
-        projects: JSON.stringify(projects),
-        goal: JSON.stringify(goal),
-      }, { merge: true });
+      await setDoc(doc(db, 'users', user.name), user, { merge: true });
 
-      console.log('Updated', name);
+      console.log('Updated', user.name);
     } catch (err) {
       console.log('Failed to update:', err);
     }
@@ -65,16 +55,14 @@
   }
 
   /**
-   * Every time this is called, it further delays updateUser by 1 second
-   * @param {import("@firebase/firestore").Firestore} db
-   * @param {string} name
-   * @param {any[]} projects
-   * @param {number} goal
-  */
-  function waitUpdateUser(db, name, projects, goal) {
+* Every time this is called, it further delays updateUser by 1 second
+* @param {import("@firebase/firestore").Firestore} db
+* @param {Object} user
+*/
+  function waitUpdateUser(db, user) {
     clearTimeout(updateDelay);
     updateDelay = setTimeout(() => {
-      updateUser(db, name, projects, goal);
+      updateUser(db, user);
     }, 1000);
   }
 
@@ -87,8 +75,8 @@
 </script>
 
 <main>
-  {#if $name}
-    <h1>Hi, {$name}!</h1>
+  {#if $user.name}
+    <h1>Hi, {$user.name}!</h1>
   {:else}
     <h1>Hello!</h1>
   {/if}
@@ -97,7 +85,7 @@
     <div class="chart">
       <Card>
         <h1>Today</h1>
-        <PieChart {goal} projects={completedToday} />
+        <PieChart goal={$user.goal} projects={completedToday} />
       </Card>
     </div>
     
@@ -105,15 +93,15 @@
       <div class="sidebar">
         <div>
           <h2>Active Projects:</h2>
-          {#if $projects?.length}
+          {#if $user.projects?.length}
             <form name="projects" on:submit={e => { e.preventDefault() }}
               on:input={() => {
                 // @ts-ignore
                 completedToday = [...(new FormData(document.forms.projects)).entries()]
-                  .map(selected => $projects[parseInt(selected[1])]);
+                  .map(selected => $user.projects[parseInt(selected[1])]);
               }}>
               <ul>
-                {#each $projects as project, i}
+                {#each $user.projects as project, i}
                   <li>
                     <input type="checkbox" 
                       name={titleToId(project.title)} 
@@ -135,7 +123,7 @@
         <EditProjects />
 
         <h2>Goal:</h2>
-        <select name="goal" id="goal" bind:value={goal}>
+        <select name="goal" id="goal" bind:value={$user.goal}>
           <option value="1" selected>One project every day</option>
           <option value="2">Two projects every day</option>
           <option value="3">Three projects every day</option>
@@ -149,8 +137,8 @@
   <div class="history">
     <Card>
       <h2>History</h2>
-      {#if history.length}
-        {history}
+      {#if $user.history?.length}
+        {$user.history}
       {:else}
         <p>No history</p>
       {/if}

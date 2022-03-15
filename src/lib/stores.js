@@ -2,9 +2,7 @@ import { readable, writable } from "svelte/store";
 
 export const reducedMotion = writable(false);
 
-export const projects = writable([]);
-
-export const name = writable('Kai');
+export const user = writable({});
 
 export const firebaseConfig = readable({
   apiKey: "AIzaSyAHCt552UgH7VJGxjiFJlH1D0iLYxuE8iQ",

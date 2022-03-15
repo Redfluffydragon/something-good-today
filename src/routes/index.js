@@ -12,8 +12,7 @@ export async function get() {
   if (user) {
     return {
       body: {
-        fetchedProjects: JSON.parse(user.projects),
-        goal: JSON.parse(user.goal),
+        fetchedUser: user,
       }
     }
   }
