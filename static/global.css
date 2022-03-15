@@ -38,6 +38,20 @@ h1 {
   font-size: 3em;
 }
 
+button {
+  border: 0;
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  padding: 1ch 2ch;
+  border-radius: 1ch;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+  filter: brightness(0.7) grayscale(1);
+}
+
 @font-face {
   font-family: 'Raleway-Light';
   src: url('/fonts/Raleway-Light.ttf');
