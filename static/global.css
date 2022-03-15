@@ -45,6 +45,7 @@ body {
   margin: 0;
   line-height: 1.5;
   font-family: 'Raleway-Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
 }
 
 img, picture, video, canvas, svg {
@@ -54,6 +55,7 @@ img, picture, video, canvas, svg {
 
 input, button, textarea, select {
   font: inherit;
+  accent-color: var(--btn-bg);
 }
 
 p, h1, h2, h3, h4, h5, h6 {
