@@ -86,3 +86,7 @@ button:disabled {
   font-family: 'Raleway-Light';
   src: url('/fonts/Raleway-Light.ttf');
 }
+
+.relative {
+  position: relative;
+}
