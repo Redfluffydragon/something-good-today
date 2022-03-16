@@ -5,18 +5,20 @@
 
   let open = false;
 
-  let selectedProject = -1;
-  let newColor;
+  let selectedProject = null;
+  $: selectedIndex = $user.projects.findIndex(p => p.id === selectedProject);
+
+  let newColor = '#000000';
   let newTitle = '';
 
   function updateProject() {
-    $user.projects[selectedProject].color = newColor;
-    $user.projects[selectedProject].title = newTitle;
+    $user.projects[selectedIndex].color = newColor;
+    $user.projects[selectedIndex].title = newTitle;
   }
 
   function deleteProject() {
     // Remove the current project with = so Svelte will update
-    $user.projects = [...$user.projects.slice(0, selectedProject), ...$user.projects.slice(selectedProject + 1)];
+    $user.projects = [...$user.projects.slice(0, selectedIndex), ...$user.projects.slice(selectedIndex + 1)];
   }
 
   // TODO be able to mark a project as finished and have it marked off today
@@ -24,12 +26,12 @@
     if (!$user.finishedProjects) {
       $user.finishedProjects = [];
     }
-    $user.finishedProjects.push($user.projects[selectedProject]);
+    $user.finishedProjects.push($user.projects[selectedIndex]);
     deleteProject();
   }
 
   function reset() {
-    selectedProject = -1;
+    selectedProject = null;
     newColor = ''
     newTitle = ''
   }
@@ -47,7 +49,7 @@
       e.preventDefault();
       open = false;
     }}>
-      <fieldset disabled={selectedProject === -1}>
+      <fieldset disabled={selectedIndex === -1}>
         <div class="flex">
           <input type="text" name="newTitle" id="newTitle" bind:value={newTitle}>
           <div>

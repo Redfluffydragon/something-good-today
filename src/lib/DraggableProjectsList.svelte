@@ -8,20 +8,16 @@
   export let newTitle;
   export let selectedProject;
 
-  function handleDndConsider(e) {
-    items = e.detail.items;
-  }
-
-  function handleDndFinalize(e) {
+  function handleDnd(e) {
     items = e.detail.items;
   }
 </script>
 
-<ul use:dndzone={{items}} on:consider="{handleDndConsider}" on:finalize="{handleDndFinalize}">
+<ul use:dndzone={{items}} on:consider="{handleDnd}" on:finalize="{handleDnd}">
   {#each items as project(project.id)}
     <li animate:flip={{duration: 300}}>
       <button class:selected={selectedProject === project.id} on:click={() => {
-        selectedProject = items.findIndex(p => p.id === project.id);
+        selectedProject = project.id;
         newColor = project.color;
         newTitle = project.title;
       }}>
