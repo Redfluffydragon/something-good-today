@@ -1,6 +1,7 @@
 <script>
   import Modal from "./Modal.svelte";
   import { user } from "./stores";
+  import DraggableProjectsList from "./DraggableProjectsList.svelte";
 
   let open = false;
 
@@ -34,25 +35,13 @@
   }
 </script>
 
-<div><button on:click={() => { open = true; reset(); }}>Edit projects</button></div>
+<div><button disabled={!$user.projects.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
 
 <Modal bind:open maxWidth="80ch">
   <h2>Edit projects</h2>
   <div class="flex">
     {#if $user.projects?.length}
-      <ul>
-        {#each $user.projects as project, i}
-          <li>
-            <button on:click={() => {
-              selectedProject = i;
-              newColor = project.color;
-              newTitle = project.title;
-            }}>
-              {project.title}
-            </button>
-          </li>
-        {/each}
-      </ul>
+      <DraggableProjectsList bind:items={$user.projects} bind:selectedProject bind:newColor bind:newTitle />
     {/if}
     <form on:input={updateProject} on:submit={e => {
       e.preventDefault();
@@ -81,10 +70,6 @@
     gap: 2ch;
     margin-bottom: 2ch;
     justify-content: center;
-  }
-
-  ul button {
-    background: transparent;
   }
 
   form {
