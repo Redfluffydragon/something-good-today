@@ -1,4 +1,4 @@
-import { firebaseConfig, name } from '$lib/stores';
+import { firebaseConfig } from '$lib/stores';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { get as getStore } from "svelte/store";

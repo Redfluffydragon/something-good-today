@@ -7,7 +7,7 @@
   import NewProject from "$lib/NewProject.svelte";
   import EditProjects from "$lib/EditProjects.svelte";
   import PieChart from "$lib/PieChart.svelte";
-  import { firebaseConfig, name, user } from "$lib/stores";
+  import { firebaseConfig, user } from "$lib/stores";
   import { onMount } from "svelte";
   import { initializeApp } from 'firebase/app';
   import { getFirestore, doc, setDoc } from 'firebase/firestore';
