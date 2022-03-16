@@ -82,6 +82,15 @@ button:disabled {
   filter: brightness(0.7) grayscale(1);
 }
 
+.clearBtn {
+  background: transparent;
+}
+
+.danger-btn {
+  background: #ca3333;
+  color: white;
+}
+
 @font-face {
   font-family: 'Raleway-Light';
   src: url('/fonts/Raleway-Light.ttf');
