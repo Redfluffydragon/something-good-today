@@ -89,6 +89,7 @@
 <style>
   div {
     max-width: 40ch;
+    aspect-ratio: 1;
     margin: 0 auto;
   }
 
