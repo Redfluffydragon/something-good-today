@@ -99,3 +99,8 @@ button:disabled {
 .relative {
   position: relative;
 }
+
+ul {
+  list-style: none;
+  padding-inline-start: 15px;
+}
