@@ -13,14 +13,28 @@
     $user.projects[selectedProject].title = newTitle;
   }
 
-  function deleteProject(e) {
-    e.preventDefault();
+  function deleteProject() {
     // Remove the current project with = so Svelte will update
     $user.projects = [...$user.projects.slice(0, selectedProject), ...$user.projects.slice(selectedProject + 1)];
   }
+
+  // TODO be able to mark a project as finished and have it marked off today
+  function finishProject() {
+    if (!$user.finishedProjects) {
+      $user.finishedProjects = [];
+    }
+    $user.finishedProjects.push($user.projects[selectedProject]);
+    deleteProject();
+  }
+
+  function reset() {
+    selectedProject = -1;
+    newColor = ''
+    newTitle = ''
+  }
 </script>
 
-<button on:click={() => { open = true; }}>Edit projects</button>
+<div><button on:click={() => { open = true; reset(); }}>Edit projects</button></div>
 
 <Modal bind:open maxWidth="80ch">
   <h2>Edit projects</h2>
@@ -51,19 +65,22 @@
             <label for="newColor">Color:</label>
             <input type="color" name="newColor" id="newColor" bind:value={newColor}>
           </div>
-          <button>Mark project as done</button>
-          <button on:click={deleteProject}>Delete project</button>
+          <button on:click={finishProject}>Mark project as finished</button>
+          <button class="danger-btn" on:click={deleteProject}>Delete project</button>
         </div>
       </fieldset>
     </form>
   </div>
-  <button on:click={() => { open = false; }}>Done</button>
+  <div class="flex"><button on:click={() => { open = false; }}>Done</button></div>
 </Modal>
 
 <style>
   .flex {
     display: flex;
+    flex-wrap: wrap;
     gap: 2ch;
+    margin-bottom: 2ch;
+    justify-content: center;
   }
 
   ul button {
@@ -85,6 +102,6 @@
   }
 
   input[type=text] {
-    width: 40ch;
+    width: 100%;
   }
 </style>
