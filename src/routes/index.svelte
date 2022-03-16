@@ -112,7 +112,7 @@
                       name={titleToId(project.title)} 
                       id={titleToId(project.title)}
                       value={i}
-                      checked={$user.today?.find((p) => p.title === project.title)}
+                      checked={$user.today?.find((p) => p.id === project.id)}
                     >
                     <label for={titleToId(project.title)}>
                       <Project color={project.color}>{project.title}</Project>
