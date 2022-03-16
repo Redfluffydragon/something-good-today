@@ -23,6 +23,7 @@
   let db;
 
   let updateDelay;
+  let firstLoad = true;
 
   $: browser && waitUpdateUser($user);
 
@@ -59,6 +60,11 @@
    * @param {Object} user
   */
   function waitUpdateUser(user) {
+    if (firstLoad) {
+      firstLoad = false;
+      return;
+    }
+
     clearTimeout(updateDelay);
     updateDelay = setTimeout(() => {
       updateUser(db, user);
