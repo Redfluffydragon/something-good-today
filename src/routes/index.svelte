@@ -14,6 +14,7 @@
   import { browser } from "$app/env";
   import FinishedProjects from "$lib/FinishedProjects.svelte";
   import Project from "$lib/Project.svelte";
+  import { beforeNavigate } from "$app/navigation";
   
   export let fetchedUser;
   $user = fetchedUser;
@@ -24,11 +25,7 @@
   let completedToday;
   let updateDelay;
 
-  $: browser && waitUpdateUser(db, $user);
-
-  // @ts-ignore
-  $: browser && $user.projects && (completedToday = [...(new FormData(document.forms.projects)).entries()]
-                  .map(selected => $user.projects[parseInt(selected[1])]))
+  $: browser && waitUpdateUser($user);
 
   onMount(() => {
     // Have to initialize app on client-side it seems
@@ -37,11 +34,14 @@
     db = getFirestore();
   });
 
+  beforeNavigate(async () => {
+    await updateUser($user);
+  });
+
   /**
-  * @param {import("@firebase/firestore").Firestore} db
-  * @param {Object} user
+   * @param {Object} user
   */
-  async function updateUser(db, user) {
+  async function updateUser(user) {
     if (!db) {
       return;
     }
@@ -53,15 +53,13 @@
     } catch (err) {
       console.log('Failed to update:', err);
     }
-
   }
 
   /**
-* Every time this is called, it further delays updateUser by 1 second
-* @param {import("@firebase/firestore").Firestore} db
-* @param {Object} user
-*/
-  function waitUpdateUser(db, user) {
+   * Every time this is called, it further delays updateUser by 10 seconds
+   * @param {Object} user
+  */
+  function waitUpdateUser(user) {
     clearTimeout(updateDelay);
     updateDelay = setTimeout(() => {
       updateUser(db, user);
