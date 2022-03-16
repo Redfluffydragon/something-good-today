@@ -12,6 +12,7 @@
   import { initializeApp } from 'firebase/app';
   import { getFirestore, doc, setDoc } from 'firebase/firestore';
   import { browser } from "$app/env";
+  import FinishedProjects from "$lib/FinishedProjects.svelte";
   
   export let fetchedUser;
   $user = fetchedUser;
@@ -144,11 +145,18 @@
       {/if}
     </Card>
   </div>
+
+  <Card>
+    <FinishedProjects />
+  </Card>
 </main>
 
 <style>
   main {
     margin: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2ch;
   }
 
   .main-content {
@@ -157,7 +165,6 @@
     flex-wrap: wrap;
     flex-direction: row-reverse;
     place-content: stretch;
-    margin-bottom: 2ch;
     justify-content: center;
   }
 
