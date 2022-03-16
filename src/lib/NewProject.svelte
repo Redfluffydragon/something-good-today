@@ -28,6 +28,7 @@
     const newProject = {
       title: data.title,
       color: data.color,
+      id: $user.projects[$user.projects.length - 1]?.id + 1 || 0,
     }
 
     $user.projects = [...$user.projects, newProject];
