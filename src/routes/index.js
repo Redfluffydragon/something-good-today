@@ -7,7 +7,7 @@ const firebaseApp = initializeApp(getStore(firebaseConfig));
 const db = getFirestore();
 
 export async function get() {
-  const user = (await getDoc(doc(db, 'users', getStore(name))))?.data();
+  const user = (await getDoc(doc(db, 'users', 'Kai')))?.data();
 
   if (user) {
     return {
