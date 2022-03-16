@@ -28,8 +28,10 @@
     const newProject = {
       title: data.title,
       color: data.color,
-      id: $user.projects[$user.projects.length - 1]?.id + 1 || 0,
+      id: $user.nextId || 0,
     }
+
+    $user.nextId++;
 
     $user.projects = [...$user.projects, newProject];
     open = false;
