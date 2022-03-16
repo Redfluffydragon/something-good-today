@@ -13,6 +13,7 @@
   import { getFirestore, doc, setDoc } from 'firebase/firestore';
   import { browser } from "$app/env";
   import FinishedProjects from "$lib/FinishedProjects.svelte";
+  import Project from "$lib/Project.svelte";
   
   export let fetchedUser;
   $user = fetchedUser;
@@ -109,8 +110,9 @@
                       id={titleToId(project.title)}
                       value={i}
                     >
-                    <label for={titleToId(project.title)}>{project.title}</label>
-                    <span class="color" style="background: {project.color};"></span>
+                    <label for={titleToId(project.title)}>
+                      <Project color={project.color}>{project.title}</Project>
+                    </label>
                   </li>
                 {/each}
               </ul>
@@ -189,9 +191,7 @@
     padding-inline-start: 25px;
   }
 
-  .color {
-    height: 1em;
-    width: 1em;
-    display: inline-block;
+  li label {
+    cursor: pointer;
   }
 </style>
