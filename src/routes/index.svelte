@@ -22,7 +22,6 @@
   let firebaseApp;
   let db;
 
-  let completedToday;
   let updateDelay;
 
   $: browser && waitUpdateUser($user);
@@ -85,7 +84,7 @@
     <div class="chart">
       <Card>
         <h1>Today</h1>
-        <PieChart goal={$user.goal} projects={completedToday} />
+        <PieChart goal={$user.goal} projects={$user.today} />
       </Card>
     </div>
     
@@ -97,7 +96,7 @@
             <form name="projects" on:submit={e => { e.preventDefault() }}
               on:input={() => {
                 // @ts-ignore
-                completedToday = [...(new FormData(document.forms.projects)).entries()]
+                $user.today = [...(new FormData(document.forms.projects)).entries()]
                   .map(selected => $user.projects[parseInt(selected[1])]);
               }}>
               <ul>
@@ -107,6 +106,7 @@
                       name={titleToId(project.title)} 
                       id={titleToId(project.title)}
                       value={i}
+                      checked={$user.today?.find((p) => p.title === project.title)}
                     >
                     <label for={titleToId(project.title)}>
                       <Project color={project.color}>{project.title}</Project>
