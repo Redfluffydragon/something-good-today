@@ -191,7 +191,6 @@
   }
 
   ul {
-    list-style: none;
     padding-inline-start: 25px;
   }
 
