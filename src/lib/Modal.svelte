@@ -24,8 +24,8 @@
 </script>
 
 {#if open}
-  <div class="shadow" transition:fade on:click={e => { if (!e.target.closest('.modal')) open = false; }}>
-    <div class="modal" transition:safeScale style="max-width: {maxWidth};">
+  <div class="shadow" transition:fade={{duration: 300}} on:click={e => { if (!e.target.closest('.modal')) open = false; }}>
+    <div class="modal" transition:safeScale={{duration: 300}} style="max-width: {maxWidth};">
       <Card>
         <div class="wrapper">
           <slot />
