@@ -77,7 +77,7 @@
   form {
     border: 2px solid black;
     padding: 2ch;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
   }
 
   fieldset {

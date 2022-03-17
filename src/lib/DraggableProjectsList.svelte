@@ -28,8 +28,11 @@
 </ul>
 
 <style>
-  button:not(.selected) {
-    background: transparent;
+  ul {
+    max-width: 40ch;
+    padding: 1ch;
+    margin-left: 2px;
+    border-radius: var(--border-radius);
   }
 
   button {

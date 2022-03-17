@@ -20,6 +20,8 @@ html {
   --btn-color: black;
   --overlay-bg: white;
 
+  --border-radius: 16px;
+
   --shadow-color: 0deg 0% 57%;
   --shadow-color: 211deg 6% 52%;
   --shadow-elevation-low:

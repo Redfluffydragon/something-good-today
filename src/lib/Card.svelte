@@ -9,7 +9,7 @@
 <style>
   div {
     background: var(--overlay-bg);
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     box-shadow: var(--shadow-elevation-medium);
     padding: 2ch;
     max-width: 100%;
