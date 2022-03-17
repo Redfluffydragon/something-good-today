@@ -46,6 +46,8 @@
     padding: 2em;
     justify-content: center;
     align-items: start;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 
   .open {
