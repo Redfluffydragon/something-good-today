@@ -1,6 +1,9 @@
+import { browser } from "$app/env";
 import { readable, writable } from "svelte/store";
 
 export const reducedMotion = writable(false);
+
+export const darkMode = writable(browser && localStorage.getItem('darkMode') === 'true');
 
 export const user = writable({});
 
