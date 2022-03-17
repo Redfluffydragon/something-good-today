@@ -14,15 +14,18 @@ html {
   -webkit-text-size-adjust: 100%;
   color-scheme: light;
 
-  --bg: rgb(232, 235, 238);
-  --btn-bg: rgb(129, 230, 255);
+  --bg: #e8ebee;
+  --color: black;
+
+  --overlay-bg: white;
+  --shadow: rgba(255, 255, 255, 0.7);
+  --invert: 0;
+
   --btn-bg: #33CA7F;
   --btn-color: black;
-  --overlay-bg: white;
 
   --border-radius: 16px;
 
-  --shadow-color: 0deg 0% 57%;
   --shadow-color: 211deg 6% 52%;
   --shadow-elevation-low:
     0.5px 0.6px 0.9px hsl(var(--shadow-color) / 0.4),
@@ -42,6 +45,18 @@ html {
     25.5px 29.7px 44px -1.8px hsl(var(--shadow-color) / 0.39),
     38.8px 45.2px 67px -2.1px hsl(var(--shadow-color) / 0.39),
     57.2px 66.7px 98.9px -2.5px hsl(var(--shadow-color) / 0.39);
+}
+
+html[dark] {
+  color-scheme: dark;
+  --bg: hsl(191, 100%, 5%);
+  --color: white;
+
+  --overlay-bg: #003844;
+  --shadow: rgba(0, 0, 0, 0.7);
+  --invert: 1;
+
+  --shadow-color: 191deg 100% 4%;
 }
 
 body {
@@ -86,6 +101,7 @@ button:disabled {
 
 .clearBtn {
   background: transparent;
+  color: var(--color);
 }
 
 .danger-btn {
