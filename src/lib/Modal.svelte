@@ -49,6 +49,7 @@
     align-items: start;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
+    z-index: 1000;
   }
 
   .wrapper {
