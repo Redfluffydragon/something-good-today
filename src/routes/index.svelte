@@ -181,10 +181,14 @@
 
   .chart {
     min-width: min(30ch, 100%);
+    flex: 2;
+  }
+
+  .sidebar-wrapper {
+    flex: 1;
   }
 
   .sidebar {
-    max-width: 40ch;
     display: flex;
     flex-direction: column;
     gap: 2ch;
