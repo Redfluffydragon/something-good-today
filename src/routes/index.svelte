@@ -88,46 +88,49 @@
   
   <div class="main-content">
     <div class="chart">
-      <Card>
+      <Card style="height: 100%;">
         <h1>Today</h1>
         <PieChart goal={$user.goal} projects={$user.today} />
       </Card>
     </div>
-    
-    <Card>
-      <div class="sidebar">
-        <div>
-          <h2>Active Projects:</h2>
-          {#if $user.projects?.length}
-            <form name="projects" on:submit={e => { e.preventDefault() }}
-              on:input={() => {
-                // @ts-ignore
-                $user.today = [...(new FormData(document.forms.projects)).entries()]
-                  .map(selected => $user.projects[parseInt(selected[1])]);
-              }}>
-              <ul>
-                {#each $user.projects as project, i}
-                  <li>
-                    <input type="checkbox" 
-                      name={titleToId(project.title)} 
-                      id={titleToId(project.title)}
-                      value={i}
-                      checked={$user.today?.find((p) => p.id === project.id)}
-                    >
-                    <label for={titleToId(project.title)}>
-                      <Project color={project.color}>{project.title}</Project>
-                    </label>
-                  </li>
-                {/each}
-              </ul>
-            </form>
-          {:else}
-            <p>You don't have any projects.</p>
-          {/if}
-        </div>
 
-        <NewProject />
-        <EditProjects />
+    <div class="sidebar-wrapper">
+      <Card style="height: 100%;">
+        <div class="sidebar">
+          <div>
+            <h2>Active Projects:</h2>
+            {#if $user.projects?.length}
+              <form name="projects" on:submit={e => { e.preventDefault() }}
+                on:input={() => {
+                  $user.today = [...(new FormData(document.forms.projects)).entries()]
+                    .map(selected => $user.projects[parseInt(selected[1])]);
+                }}>
+                <ul>
+                  {#each $user.projects as project, i}
+                    <li>
+                      <input type="checkbox"
+                    <input type="checkbox" 
+                      <input type="checkbox"
+                        name={titleToId(project.title)}
+                      name={titleToId(project.title)} 
+                        name={titleToId(project.title)}
+                        id={titleToId(project.title)}
+                        value={i}
+                        checked={$user.today?.find((p) => p.id === project.id)}
+                      >
+                      <label for={titleToId(project.title)}>
+                        <Project color={project.color}>{project.title}</Project>
+                      </label>
+                    </li>
+                  {/each}
+                </ul>
+              </form>
+            {:else}
+              <p>You don't have any projects.</p>
+            {/if}
+          </div>
+          <NewProject />
+          <EditProjects />
           <div>
             <label for="goal">
               <h2>Goal:</h2>
@@ -140,7 +143,9 @@
               <option value="5">Five projects every day</option>
             </select>
           </div>
-    </Card>
+        </div>
+      </Card>
+    </div>
   </div>
 
   <div class="history">
