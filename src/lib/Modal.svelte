@@ -2,6 +2,8 @@
   import { browser } from "$app/env";
   import { onDestroy, onMount } from "svelte";
   import Card from "./Card.svelte";
+  import { safeScale } from './transitions';
+  import { fade } from 'svelte/transition';
 
   export let open;
   export let maxWidth = '';
@@ -21,16 +23,17 @@
   });
 </script>
 
-
-<div class="shadow {open ? 'open' : ''}" on:click={e => { if (!e.target.
-  // @ts-ignore
-  closest('.modal')) open = false; }}>
-  <div class="modal" style="max-width: {maxWidth};">
-    <Card>
-      <slot />
-    </Card>
+{#if open}
+  <div class="shadow" transition:fade on:click={e => { if (!e.target.closest('.modal')) open = false; }}>
+    <div class="modal" transition:safeScale style="max-width: {maxWidth};">
+      <Card>
+        <div class="wrapper">
+          <slot />
+        </div>
+      </Card>
+    </div>
   </div>
-</div>
+{/if}
 
 <style>
   .shadow {
@@ -39,8 +42,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    display: none;
+    display: flex;
     padding: 2em;
     justify-content: center;
     align-items: start;
