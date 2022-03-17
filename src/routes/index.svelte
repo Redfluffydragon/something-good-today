@@ -150,7 +150,7 @@
       {#if $user.history?.length}
         {$user.history}
       {:else}
-        <p>No history</p>
+        <p>No history.</p>
       {/if}
     </Card>
   </div>
