@@ -162,7 +162,7 @@
 
 <style>
   main {
-    margin: 18px;
+    padding: 2ch;
     display: flex;
     flex-direction: column;
     gap: 2ch;

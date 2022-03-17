@@ -104,3 +104,8 @@ ul {
   list-style: none;
   padding-inline-start: 15px;
 }
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
