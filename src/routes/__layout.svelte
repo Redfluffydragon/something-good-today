@@ -93,6 +93,11 @@
 
 <slot />
 
+<footer>
+  <h2>Did you do something you feel good about today?</h2>
+  <p>&copy; 2022 Kai-Shen Deru</p>
+</footer>
+
 <style>
   button {
     position: absolute;
@@ -104,4 +109,10 @@
     stroke: var(--color);
   }
 
+  footer {
+    padding: 2ch;
+    background: var(--overlay-bg);
+    margin-top: 6em;
+    box-shadow: var(--shadow-elevation-high);
+  }
 </style>
