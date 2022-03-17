@@ -109,10 +109,6 @@
                   {#each $user.projects as project, i}
                     <li>
                       <input type="checkbox"
-                    <input type="checkbox" 
-                      <input type="checkbox"
-                        name={titleToId(project.title)}
-                      name={titleToId(project.title)} 
                         name={titleToId(project.title)}
                         id={titleToId(project.title)}
                         value={i}
