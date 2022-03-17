@@ -170,12 +170,9 @@
     gap: 2ch;
     flex-wrap: wrap;
     flex-direction: row-reverse;
-    place-content: stretch;
-    justify-content: center;
   }
 
   .main-content > * {
-    flex: 1;
     max-width: 100%;
   }
 
