@@ -45,7 +45,7 @@
     class='popup {position}'
     style='left: {button.offsetWidth + 15}px;'
   >
-    <Card>
+    <Card style="border: 2px solid var(--color);">
       <slot />
     </Card>
   </div>
