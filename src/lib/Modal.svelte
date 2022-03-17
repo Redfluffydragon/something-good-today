@@ -50,7 +50,14 @@
     -webkit-backdrop-filter: blur(2px);
   }
 
-  .open {
-    display: flex;
+  .wrapper {
+    max-height: 80vh;
+    overflow: auto;
+  }
+
+  @media screen and (max-width: 400px) {
+    .wrapper {
+      max-height: 70vh;
+    }
   }
 </style>
