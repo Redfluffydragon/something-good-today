@@ -8,12 +8,16 @@
   export let newTitle;
   export let selectedProject;
 
+  const dropTargetStyle = {
+    outline: 'rgba(150, 150, 150, 0.7) solid 2px'
+  }
+
   function handleDnd(e) {
     items = e.detail.items;
   }
 </script>
 
-<ul use:dndzone={{items}} on:consider="{handleDnd}" on:finalize="{handleDnd}">
+<ul use:dndzone={{items, dropTargetStyle}} on:consider="{handleDnd}" on:finalize="{handleDnd}">
   {#each items as project(project.id)}
     <li class="relative" class:selected={selectedProject === project.id} animate:flip={{duration: 300}}>
       <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
