@@ -126,6 +126,12 @@ button:disabled {
   text-align: left;
 }
 
+.img-btn {
+  width: 2em;
+  height: 2em;
+  padding: 0;
+}
+
 .danger-btn {
   background: #ca3333;
   color: white;
