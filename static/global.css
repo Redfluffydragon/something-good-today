@@ -119,6 +119,7 @@ button:disabled {
 .clearBtn {
   background: transparent;
   color: var(--color);
+  text-align: left;
 }
 
 .danger-btn {
