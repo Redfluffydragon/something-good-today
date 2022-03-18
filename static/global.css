@@ -84,11 +84,11 @@ input, button, textarea, select {
 
 input[type=text] {
   width: 100%;
-  padding: 0.5ch 1ch;
+  padding: 0.5ch 0.7ch;
 }
 
 input[type=text], select {
-  border-radius: 1ch;
+  border-radius: 5px;
   border: 1px solid var(--color);
   color: var(--fancy-color);
 }
