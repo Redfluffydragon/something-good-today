@@ -49,7 +49,7 @@
    * @param {number} goal
   */
   function getData(projects, goal) {
-    if (!projects?.length) {
+    if (!projects) {
       return;
     }
 
