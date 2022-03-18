@@ -16,6 +16,7 @@ html {
 
   --bg: #e8ebee;
   --color: black;
+  --fancy-color: black;
 
   --overlay-bg: white;
   --shadow: rgba(255, 255, 255, 0.7);
@@ -51,6 +52,7 @@ html[dark] {
   color-scheme: dark;
   --bg: hsl(191, 100%, 5%);
   --color: white;
+  --fancy-color: var(--btn-bg);
 
   --overlay-bg: #003844;
   --shadow: rgba(0, 0, 0, 0.7);
@@ -74,6 +76,21 @@ img, picture, video, canvas, svg {
 input, button, textarea, select {
   font: inherit;
   accent-color: var(--btn-bg);
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 0.5ch 1ch;
+}
+
+input[type=text], select {
+  border-radius: 1ch;
+  border: 1px solid var(--color);
+  color: var(--fancy-color);
+}
+
+select {
+  padding: 0.5ch;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
