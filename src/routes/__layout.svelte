@@ -61,11 +61,6 @@
 
 <button class='clearBtn' on:click={animateIcon}>
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
-    <path
-      id="darkModeIcon"
-      d={startPath}
-      stroke-width="5"
-    />
     <path class="sun-ray"
       style="transform: scale({startScale});"
       d="M29.2929 6.85715L31.7143 3.59516L34.1357 6.85715H29.2929Z"
@@ -95,6 +90,12 @@
       style="transform: scale({startScale});"
       d="M11.0064 16.0124L6.97071 16.4784L8.58498 20.2063L11.0064 16.0124Z"
       stroke-width="4.28572"
+    />
+    <path
+      id="darkModeIcon"
+      d={startPath}
+      stroke-width="5"
+      fill="var(--bg)"
     />
   </svg>
 </button>
