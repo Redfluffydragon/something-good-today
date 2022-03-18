@@ -11,6 +11,8 @@
 
   let startPath = sunPath;
   let startScale = 1;
+  let timeline;
+  let running = false;
 
   onMount(() => {
     document.documentElement.toggleAttribute('dark', $darkMode);
@@ -26,32 +28,38 @@
       $reducedMotion = mediaQuery.matches;
     });
   });
-</script>
 
-<button
-  class='clearBtn'
-  on:click={() => {
+  function animateIcon() {
     document.documentElement.toggleAttribute('dark');
     $darkMode = !$darkMode;
+    localStorage.setItem('darkMode', JSON.stringify($darkMode));
 
-    const timeline = anime.timeline({
+    if (running) {
+      timeline.reverse();
+    }
+
+    timeline = anime.timeline({
       duration: 750,
       easing: 'easeOutElastic',
+      begin: () => running = true,
+      complete: () => running = false,
     });
 
     timeline.add({
       targets: '#darkModeIcon',
       d: [{ value: $darkMode ? moonPath : sunPath }],
-    }, $darkMode ? 700 : 0)
+      delay: $darkMode ? 700 : 0,
+    })
     .add({
       targets: '.sun-ray',
       scale: $darkMode ? 0 : 1,
       delay: anime.stagger(100),
     }, $darkMode ? 0 : 300);
 
-    localStorage.setItem('darkMode', JSON.stringify($darkMode));
-  }}
->
+  }
+</script>
+
+<button class='clearBtn' on:click={animateIcon}>
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
     <path
       id="darkModeIcon"
