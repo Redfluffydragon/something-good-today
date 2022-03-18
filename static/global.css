@@ -22,7 +22,7 @@ html {
   --shadow: rgba(255, 255, 255, 0.7);
   --invert: 0;
 
-  --btn-bg: #33CA7F;
+  --accent-color: #33CA7F;
   --btn-color: black;
 
   --border-radius: 16px;
@@ -52,7 +52,7 @@ html[dark] {
   color-scheme: dark;
   --bg: hsl(191, 100%, 5%);
   --color: white;
-  --fancy-color: var(--btn-bg);
+  --fancy-color: var(--accent-color);
 
   --overlay-bg: #003844;
   --shadow: rgba(0, 0, 0, 0.7);
@@ -75,7 +75,7 @@ img, picture, video, canvas, svg {
 
 input, button, textarea, select {
   font: inherit;
-  accent-color: var(--btn-bg);
+  accent-color: var(--accent-color);
 }
 
 input[type=text] {
@@ -104,7 +104,7 @@ h1 {
 
 button {
   border: 0;
-  background: var(--btn-bg);
+  background: var(--accent-color);
   color: var(--btn-color);
   padding: 1ch 2ch;
   border-radius: 1ch;
