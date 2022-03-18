@@ -20,5 +20,5 @@
   </ul>
   <i>Click to mark as unfinished</i>
 {:else}
-  <p>No finished projects</p>
+  <p>No finished projects.</p>
 {/if}
