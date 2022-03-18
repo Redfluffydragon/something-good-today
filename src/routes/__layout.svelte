@@ -19,7 +19,7 @@
 <script>
   import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile } from '$lib/stores';
   import { onMount } from 'svelte';
-  import anime from 'animejs/lib/anime.es.js';
+  import anime from 'animejs';
   import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
   import { initializeApp } from 'firebase/app';
   import { get } from 'svelte/store';
