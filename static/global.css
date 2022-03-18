@@ -106,6 +106,10 @@ h1 {
   font-size: 3em;
 }
 
+p, ul, ol {
+  font-size: 1.125rem;
+}
+
 button {
   border: 0;
   background: var(--accent-color);
