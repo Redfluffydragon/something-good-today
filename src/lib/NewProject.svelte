@@ -1,10 +1,9 @@
 <script>
-  import Popup from "./Popup.svelte";
+  import Modal from "./Modal.svelte";
   import { user } from "./stores";
   import Tooltip from "./Tooltip.svelte";
 
-  let open;
-  let newProjectBtn;
+  let open = false;
 
   let titleInput;
   let hasSameName = false;
@@ -40,7 +39,7 @@
 </script>
 
 <div class="relative">
-  <button bind:this={newProjectBtn} on:click={() => {
+  <button on:click={() => {
     open = !open;
     hasSameName = false;
     setTimeout(() => {
@@ -52,7 +51,7 @@
     </svg>
     Add a new project
   </button>
-  <Popup bind:open button={newProjectBtn}>
+  <Modal bind:open>
     <h2>New project</h2>
     <br>
     <form action="" id="newProject"
@@ -75,7 +74,7 @@
 
       <button>Add</button>
     </form>
-  </Popup>
+  </Modal>
 </div>
 
 <style>
