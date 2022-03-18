@@ -123,5 +123,7 @@
     background: var(--overlay-bg);
     margin-top: 6em;
     box-shadow: var(--shadow-elevation-high);
+    position: sticky;
+    top: 100vh;
   }
 </style>
