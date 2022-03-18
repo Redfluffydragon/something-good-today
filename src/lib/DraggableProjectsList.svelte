@@ -28,7 +28,7 @@
         <path d="M25 53C25 55.7614 22.7614 58 20 58C17.2386 58 15 55.7614 15 53C15 50.2386 17.2386 48 20 48C22.7614 48 25 50.2386 25 53Z" fill="black" />
         <path d="M48 53C48 55.7614 45.7614 58 43 58C40.2386 58 38 55.7614 38 53C38 50.2386 40.2386 48 43 48C45.7614 48 48 50.2386 48 53Z" fill="black" />
       </svg>
-      <button class:clearBtn={selectedProject !== project.id} on:click={() => {
+      <button class:clear-btn={selectedProject !== project.id} on:click={() => {
         selectedProject = project.id;
         newColor = project.color;
         newTitle = project.title;

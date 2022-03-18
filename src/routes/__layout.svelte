@@ -59,7 +59,7 @@
   }
 </script>
 
-<button class='clearBtn' on:click={animateIcon}>
+<button on:click={animateIcon} class='clear-btn'>
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
     <path class="sun-ray"
       style="transform: scale({startScale});"

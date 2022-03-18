@@ -9,7 +9,7 @@
   <ul>
     {#each $user.finishedProjects as finishedProject, i}
       <li>
-        <button title="Mark as unfinished" class="clearBtn" on:click={() => {
+        <button title="Mark as unfinished" class="clear-btn" on:click={() => {
           $user.projects = [...$user.projects, $user.finishedProjects[i]];
           $user.finishedProjects = [...$user.finishedProjects.slice(0, i), ...$user.finishedProjects.slice(i + 1)];
         }}>
