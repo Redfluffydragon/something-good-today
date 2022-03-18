@@ -7,19 +7,12 @@
   export let button;
   export let open = false;
 
-  /** @type {'right'|'bottom'} */
-  export let position = browser && window.innerWidth > 600 ? 'right' : 'bottom';
-
-  let popup;
-  $: calcLeft = position === 'right' ? `${button?.offsetWidth + 15}px` : '';
+  /** @type {'right'|'below'} */
+  export let position = 'below right';
 
   onMount(() => {
     document.addEventListener('click', closeOnClick, false);
     addEventListener('keydown', escape, false);
-
-    addEventListener('resize', () => {
-      position = browser && window.innerWidth > 600 ? 'right' : 'bottom';
-    }, false);
   });
 
   onDestroy(() => {
@@ -30,11 +23,9 @@
   });
 
   function closeOnClick(e) {
-    setTimeout(() => {
-      if (!e.target.closest('.popup') && e.target !== button) {
-        open = false;
-      }
-    }, 100);
+    if (!e.target.closest('.popup') && !e.target.closest(button)) {
+      open = false;
+    }
   }
 
   function escape(e) {
@@ -46,10 +37,8 @@
 
 {#if open}
   <div
-    bind:this={popup}
     transition:safeScale={{ duration: 300 }}
     class='popup {position}'
-    style='left: {calcLeft}; max-width: calc(100vw - {popup?.offsetLeft}px - 2ch);'
   >
     <Card style="border: 2px solid var(--color);">
       <slot />
@@ -67,7 +56,12 @@
     transform: translateY(-50%);
   }
 
-  .bottom {
+  .below {
     top: calc(100% + 1.5ch);
+  }
+
+  .below.right {
+    transform: none;
+    right: 0;
   }
 </style>
