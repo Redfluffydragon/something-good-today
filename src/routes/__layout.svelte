@@ -1,8 +1,31 @@
+<script context="module">
+  export async function load() {
+    const app = initializeApp(get(firebaseConfig));
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+    const db = getFirestore(app);
+
+    return {
+      stuff: {
+        app: app,
+        provider: provider,
+        auth: auth,
+        db: db,
+      }
+    }
+  }
+</script>
+
 <script>
-  import { reducedMotion } from '$lib/stores';
+  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile } from '$lib/stores';
   import { onMount } from 'svelte';
-  import { darkMode } from '$lib/stores';
   import anime from 'animejs/lib/anime.es.js';
+  import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+  import { initializeApp } from 'firebase/app';
+  import { get } from 'svelte/store';
+  import { page } from "$app/stores";
+  import { getFirestore, getDoc, doc, setDoc } from 'firebase/firestore';
+  import Popup from '$lib/Popup.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
   const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
@@ -12,7 +35,9 @@
   let startPath = sunPath;
   let startScale = 1;
   let timeline;
-  let running = false;
+  let isAnimationRunning = false;
+
+  let accountPopupOpen = false;
 
   onMount(() => {
     document.documentElement.toggleAttribute('dark', $darkMode);
@@ -27,6 +52,15 @@
     mediaQuery.addEventListener('change', () => {
       $reducedMotion = mediaQuery.matches;
     });
+
+    onAuthStateChanged($page.stuff.auth, async newUser => {
+      if (newUser) {
+        $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
+        $profile = newUser;
+        console.log($profile);
+        $loggedIn = true;
+      }
+    });
   });
 
   function animateIcon() {
@@ -34,15 +68,15 @@
     $darkMode = !$darkMode;
     localStorage.setItem('darkMode', JSON.stringify($darkMode));
 
-    if (running) {
+    if (isAnimationRunning) {
       timeline.reverse();
     }
 
     timeline = anime.timeline({
       duration: 750,
       easing: 'easeOutElastic',
-      begin: () => running = true,
-      complete: () => running = false,
+      begin: () => isAnimationRunning = true,
+      complete: () => isAnimationRunning = false,
     });
 
     timeline.add({
@@ -56,6 +90,54 @@
       delay: anime.stagger(100),
     }, $darkMode ? 0 : 300);
 
+  }
+
+  function loginWithGoogle() {
+    signInWithPopup($page.stuff.auth, $page.stuff.provider)
+    .then(async result => {
+      // The signed-in user info.
+      const newUser = result.user;
+      $profile = newUser;
+
+      const defaultUserData = {
+        finishedProjects: [],
+        goal: "1",
+        name: newUser.displayName,
+        nextId: 0,
+        projects: [],
+        today: [],
+        uid: newUser.uid,
+      }
+
+      $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
+
+      if (!$user) {
+        await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, { merge: true });
+        $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
+      }
+
+    }).catch((error) => {
+      console.log(error);
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+    });
+  }
+
+  function logout() {
+    console.log('Logged out');
+    signOut($page.stuff.auth).then(() => {
+      $user = {};
+      $loggedIn = false;
+      location.reload(); // Maybe not the best solution, but it's the easiest way to get the chart to update
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }
 </script>
 
@@ -100,6 +182,27 @@
   </svg>
 </button>
 
+<div class="account">
+  {#if $loggedIn}
+    <button on:click={() => {
+      accountPopupOpen = !accountPopupOpen;
+    }} class="img-btn" id="account-btn">
+      {#if $profile.photoURL}
+        <img src={$profile.photoURL} alt="">
+      {:else}
+        {$user.name[0]}
+      {/if}
+    </button>
+    <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
+      <button on:click={logout} class="login-btn">Log out</button>
+    </Popup>
+  {:else}
+    <button on:click={loginWithGoogle} class="login-btn">Log in</button>
+  {/if}
+</div>
+
+<div class="spacer"></div>
+
 <slot />
 
 <footer>
@@ -108,9 +211,28 @@
 </footer>
 
 <style>
-  button {
-    position: absolute;
+  .clear-btn {
     padding: 1ch;
+    position: absolute;
+  }
+
+  .account {
+    position: absolute;
+    right: 0.5ch;
+    top: 0.75ch;
+    width: max-content;
+  }
+
+  .img-btn {
+    border: 3px solid var(--accent-color);
+    width: 2.25em;
+    height: 2.25em;
+    font-weight: 600;
+  }
+
+  .img-btn, .img-btn img {
+    border-radius: 50%;
+    background-clip: content-box;
   }
 
   path {
@@ -125,5 +247,11 @@
     box-shadow: var(--shadow-elevation-high);
     position: sticky;
     top: 100vh;
+  }
+
+  @media (max-width: 900px) {
+    .spacer {
+      height: 3em;
+    }
   }
 </style>

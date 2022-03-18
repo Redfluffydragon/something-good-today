@@ -7,32 +7,18 @@
   import NewProject from "$lib/NewProject.svelte";
   import EditProjects from "$lib/EditProjects.svelte";
   import PieChart from "$lib/PieChart.svelte";
-  import { firebaseConfig, user } from "$lib/stores";
-  import { onMount } from "svelte";
-  import { initializeApp } from 'firebase/app';
-  import { getFirestore, doc, setDoc } from 'firebase/firestore';
-  import { browser } from "$app/env";
   import FinishedProjects from "$lib/FinishedProjects.svelte";
   import Project from "$lib/Project.svelte";
+  import { loggedIn, user } from "$lib/stores";
   import { beforeNavigate } from "$app/navigation";
-  
-  export let fetchedUser;
-  $user = fetchedUser;
-
-  let firebaseApp;
-  let db;
+  import { browser } from "$app/env";
+  import { doc, setDoc } from 'firebase/firestore';
+  import { page } from "$app/stores";
 
   let updateDelay;
   let firstLoad = true;
 
   $: browser && waitUpdateUser($user);
-
-  onMount(() => {
-    // Have to initialize app on client-side it seems
-    // Even though the app is also initialized in the endpoint
-    firebaseApp = initializeApp($firebaseConfig);
-    db = getFirestore();
-  });
 
   beforeNavigate(async () => {
     await updateUser($user);
@@ -42,12 +28,12 @@
    * @param {Object} user
   */
   async function updateUser(user) {
-    if (!db) {
+    if (!$page.stuff.db || !$loggedIn) {
       return;
     }
 
     try {
-      await setDoc(doc(db, 'users', user.name), user, { merge: true });
+      await setDoc(doc($page.stuff.db, 'users', user.uid), user, { merge: true });
 
       console.log('Updated', user.name);
     } catch (err) {
@@ -80,7 +66,7 @@
 </script>
 
 <main>
-  {#if $user.name}
+  {#if $user?.name}
     <h1>Hi, {$user.name}!</h1>
   {:else}
     <h1>Hello!</h1>
@@ -90,7 +76,7 @@
     <div class="chart">
       <Card style="height: 100%;">
         <h1>Today</h1>
-        <PieChart goal={$user.goal} projects={$user.today} />
+        <PieChart goal={$user.goal} bind:projects={$user.today} />
       </Card>
     </div>
 
