@@ -49,6 +49,10 @@
    * @param {number} goal
   */
   function getData(projects, goal) {
+    if (!projects?.length) {
+      return;
+    }
+
     bgColors.length = 0;
     getLabels.length = 0;
     for (const project of projects) {
@@ -79,7 +83,7 @@
 </script>
 
 <div class="relative">
-  {#if !Object.keys(projects).length}
+  {#if !projects || !Object.keys(projects).length}
     <p>Nothing yet today.</p>
   {/if}
 

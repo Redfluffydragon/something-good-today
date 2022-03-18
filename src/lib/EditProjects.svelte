@@ -6,7 +6,7 @@
   let open = false;
 
   let selectedProject = null;
-  $: selectedIndex = $user.projects.findIndex(p => p.id === selectedProject);
+  $: selectedIndex = $user.projects?.findIndex(p => p.id === selectedProject);
 
   let newColor = '#000000';
   let newTitle = '';
@@ -37,7 +37,7 @@
   }
 </script>
 
-<div><button disabled={!$user.projects.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
+<div><button disabled={!$user.projects?.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
 
 <Modal bind:open maxWidth="80ch">
   <h2>Edit projects</h2>
