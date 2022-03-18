@@ -6,6 +6,7 @@ export const reducedMotion = writable(false);
 export const darkMode = writable(browser && localStorage.getItem('darkMode') === 'true');
 
 export const user = writable({});
+export const profile = writable();
 
 export const firebaseConfig = readable({
   apiKey: "AIzaSyAHCt552UgH7VJGxjiFJlH1D0iLYxuE8iQ",
@@ -15,3 +16,5 @@ export const firebaseConfig = readable({
   messagingSenderId: "805543978877",
   appId: "1:805543978877:web:d425996272cc609a368e14"
 });
+
+export const loggedIn = writable(false);
