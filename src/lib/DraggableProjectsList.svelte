@@ -50,6 +50,7 @@
   button {
     padding-left: 2em;
     width: 100%;
+    text-align: left;
   }
 
   svg {
