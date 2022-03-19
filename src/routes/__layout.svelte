@@ -222,7 +222,6 @@
   }
 
   .img-btn {
-    border: 3px solid var(--accent-color);
     width: 2.25em;
     height: 2.25em;
     font-weight: 600;
@@ -230,7 +229,10 @@
 
   .img-btn, .img-btn img {
     border-radius: 50%;
-    background-clip: content-box;
+  }
+
+  .img-btn img {
+    border: 3px solid var(--accent-color);
   }
 
   path {
