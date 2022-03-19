@@ -149,6 +149,7 @@
     .catch(error => {
       console.log(error);
     })
+    accountPopupOpen = false;
   }
 </script>
 
