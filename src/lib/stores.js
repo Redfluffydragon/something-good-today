@@ -18,3 +18,60 @@ export const firebaseConfig = readable({
 });
 
 export const loggedIn = writable(false);
+
+export const demoUserData = readable({
+  goal: "3",
+  name: "Demo user",
+  nextId: 6,
+  projects: [
+    {
+      color: "#6119ac",
+      id: 4,
+      title: "Sample project",
+    },
+    {
+      color: "#ff2962",
+      id: 0,
+      title: "Write",
+    },
+    {
+      color: "#9573c7",
+      id: 1,
+      title: "Practice instrument",
+    },
+    {
+      color: "#f5d51e",
+      id: 2,
+      title: "Yes",
+    },
+    {
+      color: "#4aa260",
+      id: 5,
+      title: "Stuff",
+    }
+  ],
+  finishedProjects: [
+    {
+      color: "#e41b57",
+      id: 3,
+      title: "Things",
+    },
+  ],
+  today: [
+    {
+      color: "#6119ac",
+      id: 4,
+      title: "Sample project",
+    },
+    {
+      color: "#9573c7",
+      id: 1,
+      title: "Practice instrument",
+    },
+    {
+      color: "#f5d51e",
+      id: 2,
+      title: "Yes",
+    },
+  ]
+})
