@@ -54,7 +54,7 @@
     clearTimeout(updateDelay);
     updateDelay = setTimeout(() => {
       updateUser(user);
-    }, 10000);
+    }, 2000);
   }
 
   /**
