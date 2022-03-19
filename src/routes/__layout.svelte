@@ -24,7 +24,7 @@
   import { initializeApp } from 'firebase/app';
   import { get } from 'svelte/store';
   import { page } from "$app/stores";
-  import { getFirestore, getDoc, doc, setDoc } from 'firebase/firestore';
+  import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
@@ -111,6 +111,12 @@
       await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, { merge: true });
       $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
     }
+
+    onSnapshot(doc($page.stuff.db, 'users', newUser.uid), doc => {
+      if (!doc.metadata.hasPendingWrites) {
+        $user = doc.data();
+      }
+    });
   }
 
   function loginWithGoogle() {
