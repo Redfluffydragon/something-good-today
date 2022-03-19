@@ -17,7 +17,7 @@
 </script>
 
 <script>
-  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile } from '$lib/stores';
+  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
   import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
@@ -55,10 +55,8 @@
 
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
-        $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
-        $profile = newUser;
-        console.log($profile);
-        $loggedIn = true;
+      else {
+        $user = $demoUserData;
       }
     });
   });
