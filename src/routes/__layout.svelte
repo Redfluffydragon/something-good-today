@@ -55,6 +55,8 @@
 
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
+        initializeUser(newUser);
+      }
       else {
         $user = $demoUserData;
       }
@@ -90,13 +92,12 @@
 
   }
 
-  function loginWithGoogle() {
-    signInWithPopup($page.stuff.auth, $page.stuff.provider)
-    .then(async result => {
-      // The signed-in user info.
-      const newUser = result.user;
-      $profile = newUser;
+  async function initializeUser(newUser) {
+    $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
+    $profile = newUser;
+    $loggedIn = true;
 
+    if (!$user) {
       const defaultUserData = {
         finishedProjects: [],
         goal: "1",
@@ -107,12 +108,18 @@
         uid: newUser.uid,
       }
 
+      await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, { merge: true });
       $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
+    }
+  }
 
-      if (!$user) {
-        await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, { merge: true });
-        $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
-      }
+  function loginWithGoogle() {
+    signInWithPopup($page.stuff.auth, $page.stuff.provider)
+    .then(async result => {
+      // The signed-in user info.
+      const newUser = result.user;
+
+      initializeUser(newUser);
 
     }).catch((error) => {
       console.log(error);
