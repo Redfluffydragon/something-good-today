@@ -230,8 +230,8 @@
 
   .account {
     position: absolute;
-    right: 0.5ch;
-    top: 0.75ch;
+    right: 1ch;
+    top: 1ch;
     width: max-content;
   }
 
