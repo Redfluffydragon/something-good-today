@@ -26,6 +26,7 @@
   import { page } from "$app/stores";
   import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
+  import Modal from '$lib/Modal.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
   const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
@@ -38,6 +39,7 @@
   let isAnimationRunning = false;
 
   let accountPopupOpen = false;
+  let changeNameModalOpen = false;
 
   onMount(() => {
     document.documentElement.toggleAttribute('dark', $darkMode);
@@ -113,6 +115,7 @@
     }
 
     onSnapshot(doc($page.stuff.db, 'users', newUser.uid), doc => {
+      // Only update local data if the write is completed
       if (!doc.metadata.hasPendingWrites) {
         $user = doc.data();
       }
@@ -206,12 +209,23 @@
       {/if}
     </button>
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
-      <button on:click={logout} class="login-btn">Log out</button>
+      <div class="flex">
+        <button on:click={() => { changeNameModalOpen = true; }}>Change display name</button>
+        <button on:click={logout} class="login-btn">Log out</button>
+      </div>
     </Popup>
   {:else}
     <button on:click={loginWithGoogle} class="login-btn">Log in</button>
   {/if}
 </div>
+
+<Modal bind:open={changeNameModalOpen}>
+  <div class="flex">
+    <label for="change-name">Change your display name</label>
+    <input type="text" id="change-name" bind:value={$user.name}>
+    <button on:click={() => { changeNameModalOpen = false; }}>Done</button>
+  </div>
+</Modal>
 
 <div class="spacer"></div>
 
@@ -226,6 +240,11 @@
   .clear-btn {
     padding: 1ch;
     position: absolute;
+  }
+
+  path {
+    transform-origin: center;
+    stroke: var(--color);
   }
 
   .account {
@@ -249,9 +268,10 @@
     border: 3px solid var(--accent-color);
   }
 
-  path {
-    transform-origin: center;
-    stroke: var(--color);
+  .flex {
+    display: flex;
+    flex-direction: column;
+    gap: 2ch;
   }
 
   footer {
