@@ -42,7 +42,7 @@
   }
 
   /**
-   * Every time this is called, it further delays updateUser by 10 seconds
+   * Every time this is called, it further delays updateUser by 2 seconds
    * @param {Object} user
   */
   function waitUpdateUser(user) {
