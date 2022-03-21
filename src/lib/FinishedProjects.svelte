@@ -22,3 +22,9 @@
 {:else}
   <p>No finished projects.</p>
 {/if}
+
+<style>
+  .clear-btn {
+    padding: 1ch;
+  }
+</style>

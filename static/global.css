@@ -155,7 +155,7 @@ button:disabled {
 
 ul {
   list-style: none;
-  padding-inline-start: 15px;
+  padding-inline-start: 0;
 }
 
 main {
