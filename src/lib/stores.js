@@ -59,5 +59,16 @@ export const demoUserData = readable({
   finishedProjects: [3],
   deletedProjects: [],
   today: [4, 1, 2],
-  history: [],
+  history: [
+    {
+      date: 1648092427427,
+      goal: '3',
+      projects: [0, 1, 3],
+    },
+    {
+      date: 1648006027427,
+      goal: '3',
+      projects: [3, 4, 5],
+    }
+  ],
 });
