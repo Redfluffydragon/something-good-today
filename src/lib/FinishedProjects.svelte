@@ -7,13 +7,14 @@
 <h2>Finished Projects:</h2>
 {#if $user.finishedProjects?.length}
   <ul>
-    {#each $user.finishedProjects as finishedProject, i}
+    {#each $user.finishedProjects as id(id)}
       <li>
         <button title="Mark as unfinished" class="clear-btn" on:click={() => {
-          $user.projects = [...$user.projects, $user.finishedProjects[i]];
-          $user.finishedProjects = [...$user.finishedProjects.slice(0, i), ...$user.finishedProjects.slice(i + 1)];
+          $user.activeProjects.push(id);
+          $user.finishedProjects.splice($user.finishedProjects.indexOf(id), 1);
+          $user = $user; // So Svelte updates
         }}>
-          <Project color={finishedProject.color}>{finishedProject.title}</Project>
+          <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
         </button>
       </li>
     {/each}
