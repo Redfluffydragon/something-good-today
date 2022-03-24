@@ -6,28 +6,26 @@
   let open = false;
 
   let selectedProject = null;
-  $: selectedIndex = $user.projects?.findIndex(p => p.id === selectedProject);
 
   let newColor = '#000000';
   let newTitle = '';
 
   function updateProject() {
-    $user.projects[selectedIndex].color = newColor;
-    $user.projects[selectedIndex].title = newTitle;
+    $user.projects[selectedProject].color = newColor;
+    $user.projects[selectedProject].title = newTitle;
   }
 
   function deleteProject() {
-    // Remove the current project with = so Svelte will update
-    $user.projects = [...$user.projects.slice(0, selectedIndex), ...$user.projects.slice(selectedIndex + 1)];
+    $user.deletedProjects.push(selectedProject);
+    $user.activeProjects.splice($user.activeProjects.indexOf(selectedProject), 1);
+    $user = $user; // So Svelte updates
   }
 
   // TODO be able to mark a project as finished and have it marked off today
   function finishProject() {
-    if (!$user.finishedProjects) {
-      $user.finishedProjects = [];
-    }
-    $user.finishedProjects.push($user.projects[selectedIndex]);
-    deleteProject();
+    $user.finishedProjects.push(selectedProject);
+    $user.activeProjects.splice($user.activeProjects.indexOf(selectedProject), 1);
+    $user = $user; // So Svelte updates
   }
 
   function reset() {
@@ -37,20 +35,20 @@
   }
 </script>
 
-<div><button disabled={!$user.projects?.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
+<div><button disabled={!$user.activeProjects?.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
 
 <Modal bind:open maxWidth="80ch">
   <h2>Edit projects</h2>
   <div class="flex column">
     <div class="flex">
-      {#if $user.projects?.length}
-        <DraggableProjectsList bind:items={$user.projects} bind:selectedProject bind:newColor bind:newTitle />
+      {#if $user.activeProjects?.length}
+        <DraggableProjectsList bind:projects={$user.activeProjects} bind:selectedProject bind:newColor bind:newTitle />
       {/if}
       <form on:input={updateProject} on:submit={e => {
         e.preventDefault();
         open = false;
       }}>
-        <fieldset disabled={selectedIndex === -1}>
+        <fieldset disabled={selectedProject === -1}>
           <div class="flex column">
             <input type="text" name="newTitle" id="newTitle" bind:value={newTitle}>
             <div>
