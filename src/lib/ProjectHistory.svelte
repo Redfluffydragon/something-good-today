@@ -2,7 +2,6 @@
   import Card from "./Card.svelte";
   import PieChart from "./PieChart.svelte";
   import { user } from "./stores";
-
 </script>
 
 <Card>
@@ -12,7 +11,7 @@
       {#each $user.history.sort((a, b) => b.date - a.date) as day(day.date)}
         <li>
           {(new Date(day.date)).toLocaleDateString()}
-          <PieChart projects={day.projects} goal={day.goal} size="15ch" />
+          <PieChart projects={day.projects} goal={day.goal} size="12ch" />
         </li>
       {/each}
     </ul>
@@ -23,14 +22,10 @@
 
 <style>
   ul {
-    display: flex;
-    justify-content: start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12ch, 1fr));
+    place-items: center;
     gap: 2ch;
-  }
-
-  li {
-    max-width: 15ch;
     text-align: center;
   }
 </style>
