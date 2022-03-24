@@ -9,7 +9,7 @@
   import PieChart from "$lib/PieChart.svelte";
   import FinishedProjects from "$lib/FinishedProjects.svelte";
   import Project from "$lib/Project.svelte";
-  import { loggedIn, user } from "$lib/stores";
+  import { loggedIn, shouldUpdate, user } from "$lib/stores";
   import { beforeNavigate } from "$app/navigation";
   import { browser } from "$app/env";
   import { doc, setDoc } from 'firebase/firestore';
@@ -18,7 +18,6 @@
   import ProjectHistory from "$lib/ProjectHistory.svelte";
 
   let updateDelay;
-  let firstLoad = true;
 
   $: browser && waitUpdateUser($user);
 
@@ -52,8 +51,8 @@
    * @param {Object} user
   */
   function waitUpdateUser(user) {
-    if (firstLoad) {
-      firstLoad = false;
+    if (!$shouldUpdate) {
+      $shouldUpdate = true;
       return;
     }
 
