@@ -17,7 +17,7 @@
 </script>
 
 <script>
-  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData } from '$lib/stores';
+  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData, shouldUpdate } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
   import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
@@ -103,6 +103,7 @@
   }
 
   async function initializeUser(newUser) {
+    $shouldUpdate = false;
     $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
     $profile = newUser;
     $loggedIn = true;
@@ -123,12 +124,14 @@
       }
 
       await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, { merge: true });
+      $shouldUpdate = false;
       $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
     }
 
     onSnapshot(doc($page.stuff.db, 'users', newUser.uid), doc => {
       // Only update local data if the write is completed
       if (!doc.metadata.hasPendingWrites) {
+        $shouldUpdate = false;
         $user = doc.data();
       }
     });
