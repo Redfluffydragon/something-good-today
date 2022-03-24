@@ -56,6 +56,12 @@
       $reducedMotion = mediaQuery.matches;
     });
 
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        addToHistory();
+      }
+    }, false);
+
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
         initializeUser(newUser);
