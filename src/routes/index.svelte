@@ -48,7 +48,7 @@
   }
 
   /**
-   * Every time this is called, it further delays updateUser by 2 seconds
+   * Every time this is called, it further delays updateUser by 5 seconds
    * @param {Object} user
   */
   function waitUpdateUser(user) {
@@ -60,7 +60,7 @@
     clearTimeout(updateDelay);
     updateDelay = setTimeout(() => {
       updateUser(user);
-    }, 2000);
+    }, 5000);
   }
 
   /**
