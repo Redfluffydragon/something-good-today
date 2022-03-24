@@ -5,7 +5,8 @@ import { user } from "./stores";
 export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {
     user.update(user => {
-      user.history.push({
+      // Use unshift for reverse chronological order
+      user.history.unshift({
         date: user.lastUpdated,
         projects: user.today,
         goal: user.goal,

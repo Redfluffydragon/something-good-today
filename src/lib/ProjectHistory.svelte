@@ -8,7 +8,7 @@
   <h2>History</h2>
   {#if $user.history?.length}
     <ul>
-      {#each $user.history.sort((a, b) => b.date - a.date) as day(day.date)}
+      {#each $user.history as day(day.date)}
         <li>
           {(new Date(day.date)).toLocaleDateString()}
           <PieChart projects={day.projects} goal={day.goal} size="12ch" />
