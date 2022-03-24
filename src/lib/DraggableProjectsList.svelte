@@ -1,8 +1,12 @@
 <script>
   import { dndzone } from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
+  import { user } from './stores';
 
-  export let items;
+  export let projects;
+
+  // map to an object because the drag and drop needs an array of objects
+  let items = projects.map(id => { return { id: id } })
 
   export let newColor;
   export let newTitle;
@@ -12,12 +16,18 @@
     outline: 'rgba(150, 150, 150, 0.7) solid 2px'
   }
 
-  function handleDnd(e) {
+  function considerDnd(e) {
     items = e.detail.items;
+  }
+
+  function finalizeDnd(e) {
+    items = e.detail.items;
+    // map it back to an array of numbers
+    projects = items.map(item => item.id);
   }
 </script>
 
-<ul use:dndzone={{items, dropTargetStyle}} on:consider="{handleDnd}" on:finalize="{handleDnd}">
+<ul use:dndzone={{items, dropTargetStyle}} on:consider="{considerDnd}" on:finalize="{finalizeDnd}">
   {#each items as project(project.id)}
     <li class="relative" class:selected={selectedProject === project.id} animate:flip={{duration: 300}}>
       <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,10 +40,10 @@
       </svg>
       <button class:clear-btn={selectedProject !== project.id} on:click={() => {
         selectedProject = project.id;
-        newColor = project.color;
-        newTitle = project.title;
+        newColor = $user.projects[project.id].color;
+        newTitle = $user.projects[project.id].title;
       }}>
-        {project.title}
+        {$user.projects[project.id]?.title}
       </button>
     </li>
   {/each}
