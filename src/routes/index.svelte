@@ -14,6 +14,7 @@
   import { browser } from "$app/env";
   import { doc, setDoc } from 'firebase/firestore';
   import { page } from "$app/stores";
+  import { addToHistory } from "$lib/user-utils";
 
   let updateDelay;
   let firstLoad = true;
@@ -33,7 +34,11 @@
     }
 
     try {
-      await setDoc(doc($page.stuff.db, 'users', user.uid), user, { merge: true });
+      addToHistory();
+      await setDoc(doc($page.stuff.db, 'users', user.uid), {
+        ...user,
+        lastUpdated: Date.now(),
+      }, { merge: true });
 
       console.log('Updated', user.name);
     } catch (err) {
