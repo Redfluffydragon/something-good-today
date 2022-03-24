@@ -82,7 +82,7 @@
     <div class="chart">
       <Card style="height: 100%;">
         <h1>Today</h1>
-        <PieChart goal={$user.goal} bind:projects={$user.today} id="mainChart" />
+        <PieChart goal={$user.goal} projects={$user.today} />
       </Card>
     </div>
 
