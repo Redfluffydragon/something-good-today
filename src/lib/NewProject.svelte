@@ -32,6 +32,8 @@
 
     $user.nextId++;
 
+    $user = $user; // So Svelte updates and triggers sync
+
     open = false;
   }
 
