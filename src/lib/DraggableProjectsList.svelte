@@ -22,8 +22,22 @@
 
   function finalizeDnd(e) {
     items = e.detail.items;
-    // map it back to an array of numbers
+    // map it back to an array of just numbers
     projects = items.map(item => item.id);
+    reorderHistory();
+  }
+
+  function reorderHistory() {
+    for (const entry of $user.history) {
+      entry.projects.sort((project1, project2) => {
+        const index1 = $user.activeProjects.indexOf(project1);
+        const index2 = $user.activeProjects.indexOf(project2);
+        // If a project isn't in active projects (i.e. finshed or deleted) sort it to the back
+        // Not sure if this is the best solution
+        return ((index1 > -1 ? index1 : Infinity) - (index2 > -1 ? index2 : Infinity));
+      });
+    }
+    $user = $user;
   }
 </script>
 
