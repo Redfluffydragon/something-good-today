@@ -76,6 +76,13 @@
       options: {
         layout: {
           padding: HOVER_OFFSET,
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: item => item.label
+            }
+          }
         }
       }
     });
