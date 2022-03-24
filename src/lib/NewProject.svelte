@@ -13,16 +13,13 @@
   }
 
   function addNewProject(e) {
-    // @ts-ignore
     const data = Object.fromEntries((new FormData(document.forms.newProject)).entries());
+
+    // Check if the title field is filled out before preventDefault - this way it still uses the browser's built-in form validation
     if (!data.title) {
       return;
     }
     e.preventDefault();
-    if ($user.projects.find(project => project.title === data.title)) {
-      hasSameName = true;
-      return;
-    }
 
     const newProject = {
       title: data.title,
@@ -30,9 +27,11 @@
       id: $user.nextId || 0,
     }
 
+    $user.projects[$user.nextId] = newProject;
+    $user.activeProjects.push($user.nextId);
+
     $user.nextId++;
 
-    $user.projects = [...$user.projects, newProject];
     open = false;
   }
 
@@ -67,7 +66,6 @@
         {/if}
       </label>
       <input type="text" name="title" id="title" bind:this={titleInput} required>
-      
 
       <label for="color">Color:</label>
       <input type="color" name="color" id="color" value={randomColor()}>
