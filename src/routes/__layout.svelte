@@ -103,12 +103,16 @@
 
     if (!$user) {
       const defaultUserData = {
-        finishedProjects: [],
-        goal: "1",
+        goal: '1',
         name: newUser.displayName,
         nextId: 0,
-        projects: [],
+        projects: {},
+        finishedProjects: [],
+        activeProjects: [],
+        deletedProjects: [],
         today: [],
+        history: [],
+        lastUpdated: Date.now(),
         uid: newUser.uid,
       }
 
