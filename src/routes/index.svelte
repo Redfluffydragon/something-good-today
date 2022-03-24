@@ -82,7 +82,7 @@
     <div class="chart">
       <Card style="height: 100%;">
         <h1>Today</h1>
-        <PieChart goal={$user.goal} bind:projects={$user.today} />
+        <PieChart goal={$user.goal} bind:projects={$user.today} id="mainChart" />
       </Card>
     </div>
 
@@ -91,23 +91,23 @@
         <div class="sidebar">
           <div>
             <h2>Active Projects:</h2>
-            {#if $user.projects?.length}
+            {#if $user.activeProjects?.length}
               <form name="projects" on:submit={e => { e.preventDefault() }}
                 on:input={() => {
                   $user.today = [...(new FormData(document.forms.projects)).entries()]
-                    .map(selected => $user.projects[parseInt(selected[1])]);
+                    .map(selected => parseInt(selected[1]));
                 }}>
                 <ul>
-                  {#each $user.projects as project, i}
+                  {#each $user.activeProjects as id(id)}
                     <li>
                       <input type="checkbox"
-                        name={titleToId(project.title)}
-                        id={titleToId(project.title)}
-                        value={i}
-                        checked={$user.today?.find((p) => p.id === project.id)}
+                        name={titleToId($user.projects[id].title)}
+                        id={titleToId($user.projects[id].title)}
+                        value={id}
+                        checked={$user.today?.includes(id)}
                       >
-                      <label for={titleToId(project.title)}>
-                        <Project color={project.color}>{project.title}</Project>
+                      <label for={titleToId($user.projects[id].title)}>
+                        <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
                       </label>
                     </li>
                   {/each}
