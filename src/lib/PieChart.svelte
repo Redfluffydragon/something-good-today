@@ -4,6 +4,7 @@
 
   export let projects = [];
   export let goal = 1;
+  export let size = '40ch';
 
   let canvas;
 
@@ -89,7 +90,7 @@
   });
 </script>
 
-<div class="relative">
+<div class="relative" style="max-width: {size};">
   {#if !projects || !Object.keys(projects).length}
     <p>Nothing yet today.</p>
   {/if}
@@ -99,7 +100,6 @@
 
 <style>
   div {
-    max-width: 40ch;
     aspect-ratio: 1;
     margin: 0 auto;
   }
