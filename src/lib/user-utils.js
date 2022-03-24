@@ -4,7 +4,6 @@ import { user } from "./stores";
 
 export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {
-    console.log('NEW DAY!');
     user.update(user => {
       user.history.push({
         date: user.lastUpdated,
