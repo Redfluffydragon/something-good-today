@@ -1,6 +1,7 @@
 <script>
-  import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
+  import { Chart, PieController, ArcElement, Tooltip } from 'chart.js';
   import { onMount } from 'svelte';
+  import { user } from './stores';
 
   export let projects = [];
   export let goal = 1;
@@ -18,14 +19,15 @@
   let oldLength = projects.length;
   let oldGoal = goal;
 
+  $: getData(projects, goal);
+
   /**
-  * @param {number} goal
+   * @param {number} goal
   */
   function updateData(goal) {
     data = {
       labels: getLabels,
       datasets: [{
-        label: 'Today',
         backgroundColor: bgColors,
         hoverOffset: HOVER_OFFSET,
         clip: 100,
@@ -56,17 +58,14 @@
 
     bgColors.length = 0;
     getLabels.length = 0;
-    for (const project of projects) {
-      getLabels = [...getLabels, project.title];
-      bgColors = [...bgColors, project.color];
+    for (const id of projects) {
+      getLabels.push($user.projects[id]?.title);
+      bgColors.push($user.projects[id]?.color);
     }
-    sizes = Array(getLabels.length).fill(1);
     sizes = Array(getLabels.length).fill(1);
 
     updateData(goal);
   }
-
-  $: getData(projects, goal);
 
   onMount(() => {
     Chart.register(PieController, ArcElement, Tooltip);
