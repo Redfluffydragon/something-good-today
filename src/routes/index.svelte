@@ -15,6 +15,7 @@
   import { doc, setDoc } from 'firebase/firestore';
   import { page } from "$app/stores";
   import { addToHistory } from "$lib/user-utils";
+  import ProjectHistory from "$lib/ProjectHistory.svelte";
 
   let updateDelay;
   let firstLoad = true;
@@ -136,14 +137,7 @@
   </div>
 
   <div class="history">
-    <Card>
-      <h2>History</h2>
-      {#if $user.history?.length}
-        {$user.history}
-      {:else}
-        <p>No history.</p>
-      {/if}
-    </Card>
+    <ProjectHistory />
   </div>
 
   <Card>
