@@ -29,7 +29,7 @@
    * @param {Object} user
   */
   async function updateUser(user) {
-    if (!$page.stuff.db || !$loggedIn) {
+    if (!$page.stuff.db || !$loggedIn || !user.uid) {
       return;
     }
 
