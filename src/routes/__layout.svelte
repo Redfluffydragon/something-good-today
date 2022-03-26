@@ -1,6 +1,6 @@
 <script context="module">
   export async function load() {
-    const app = initializeApp(get(firebaseConfig));
+    const app = initializeApp(firebaseConfig);
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
     const db = getFirestore(app);
@@ -22,7 +22,6 @@
   import anime from 'animejs';
   import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
   import { initializeApp } from 'firebase/app';
-  import { get } from 'svelte/store';
   import { page } from "$app/stores";
   import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
@@ -68,7 +67,7 @@
         addToHistory();
       }
       else {
-        $user = $demoUserData;
+        $user = demoUserData;
       }
     });
   });

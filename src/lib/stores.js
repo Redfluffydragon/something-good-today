@@ -1,5 +1,5 @@
 import { browser } from "$app/env";
-import { readable, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 export const reducedMotion = writable(false);
 
@@ -11,16 +11,16 @@ export const loggedIn = writable(false);
 
 export const shouldUpdate = writable(false);
 
-export const firebaseConfig = readable({
+export const firebaseConfig = {
   apiKey: "AIzaSyAHCt552UgH7VJGxjiFJlH1D0iLYxuE8iQ",
   authDomain: "something-good-70b39.firebaseapp.com",
   projectId: "something-good-70b39",
   storageBucket: "something-good-70b39.appspot.com",
   messagingSenderId: "805543978877",
   appId: "1:805543978877:web:d425996272cc609a368e14"
-});
+};
 
-export const demoUserData = readable({
+export const demoUserData = {
   goal: "3",
   name: "Demo user",
   nextId: 6,
@@ -72,4 +72,4 @@ export const demoUserData = readable({
       projects: [3, 4, 5],
     }
   ],
-});
+};
