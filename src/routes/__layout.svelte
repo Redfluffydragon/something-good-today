@@ -297,7 +297,7 @@
     top: 100vh;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1270px) {
     .spacer {
       height: 3em;
     }
