@@ -71,10 +71,8 @@
 </script>
 
 <main>
-  {#if $user?.name}
+  {#if $user.name}
     <h1>Hi, {$user.name}!</h1>
-  {:else}
-    <h1>Hello!</h1>
   {/if}
   
   <div class="main-content">
