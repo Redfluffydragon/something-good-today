@@ -35,10 +35,11 @@
   }
 </script>
 
+<!-- FIX It syncs with Firestore when the edit projects modal is opened -->
 <div><button disabled={!$user.activeProjects?.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
 
 <Modal title="Edit projects" bind:open maxWidth="80ch">
-  <div class="flex column">
+  <div class="flex flex-column">
     <div class="flex">
       {#if $user.activeProjects?.length}
         <DraggableProjectsList bind:projects={$user.activeProjects} bind:selectedProject bind:newColor bind:newTitle />
@@ -48,7 +49,7 @@
         open = false;
       }}>
         <fieldset disabled={selectedProject === -1}>
-          <div class="flex column">
+          <div class="flex flex-column">
             <input type="text" name="newTitle" id="newTitle" bind:value={newTitle}>
             <div>
               <label for="newColor">Color:</label>
@@ -66,14 +67,8 @@
 
 <style>
   .flex {
-    display: flex;
     flex-wrap: wrap;
-    gap: 2ch;
     justify-content: center;
-  }
-
-  .column {
-    flex-direction: column;
   }
 
   form {

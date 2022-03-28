@@ -223,7 +223,7 @@
     </button>
 
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
-      <div class="flex">
+      <div class="flex flex-column">
         <button on:click={() => { changeNameModalOpen = true; accountPopupOpen = false; }}>Change display name</button>
         <button on:click={logout} class="login-btn">Log out</button>
       </div>
@@ -234,7 +234,7 @@
 </div>
 
 <Modal title="Change display name" bind:open={changeNameModalOpen}>
-  <div class="flex">
+  <div class="flex flex-column">
     <label for="change-name">Name:</label>
     <input type="text" id="change-name" bind:value={$user.name}>
     <button on:click={() => { changeNameModalOpen = false; }}>Done</button>
@@ -280,12 +280,6 @@
 
   .img-btn img {
     border: 3px solid var(--accent-color);
-  }
-
-  .flex {
-    display: flex;
-    flex-direction: column;
-    gap: 2ch;
   }
 
   footer {

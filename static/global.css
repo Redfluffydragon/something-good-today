@@ -153,10 +153,6 @@ button:disabled {
   src: url('/fonts/Raleway-Light.ttf');
 }
 
-.relative {
-  position: relative;
-}
-
 ul {
   list-style: none;
   padding-inline-start: 0;
@@ -165,6 +161,24 @@ ul {
 main {
   max-width: 120ch;
   margin: 0 auto;
+}
+
+.flex {
+  display: flex;
+  gap: 2ch;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.grid {
+  display: grid;
+  gap: 2ch;
+}
+
+.relative {
+  position: relative;
 }
 
 ::-webkit-scrollbar {

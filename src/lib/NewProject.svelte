@@ -54,7 +54,7 @@
   </button>
   <Modal title="New project" bind:open>
     <br>
-    <form action="" id="newProject"
+    <form action="" id="newProject" class="grid"
       on:input={() => { hasSameName = false; }}
       on:submit={addNewProject}
     >
@@ -84,9 +84,7 @@
   }
 
   form {
-    display: grid;
     grid-template-columns: 10ch 1fr;
-    gap: 2ch;
     justify-content: start;
   }
 

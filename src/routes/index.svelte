@@ -61,21 +61,14 @@
       updateUser(user);
     }, 5000);
   }
-
-  /**
-   * @param {string} title
-  */
-  function titleToId(title) {
-    return title.toLowerCase().replace(/\s/g, '-');
-  }
 </script>
 
-<main>
+<main class="flex flex-column">
   {#if $user.name}
     <h1>Hi, {$user.name}!</h1>
   {/if}
   
-  <div class="main-content">
+  <div class="main-content flex">
     <div class="chart">
       <Card style="height: 100%;">
         <h1>Today</h1>
@@ -85,7 +78,7 @@
 
     <div class="sidebar-wrapper">
       <Card style="height: 100%;">
-        <div class="sidebar">
+        <div class="flex flex-column">
           <div>
             <h2>Active Projects:</h2>
             {#if $user.activeProjects?.length}
@@ -145,14 +138,9 @@
 <style>
   main {
     padding: 2ch;
-    display: flex;
-    flex-direction: column;
-    gap: 2ch;
   }
 
   .main-content {
-    display: flex;
-    gap: 2ch;
     flex-wrap: wrap;
     flex-direction: row-reverse;
   }
@@ -169,13 +157,7 @@
   .sidebar-wrapper {
     flex: 1;
   }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 2ch;
-  }
-
+  
   ul {
     padding-inline-start: 25px;
   }

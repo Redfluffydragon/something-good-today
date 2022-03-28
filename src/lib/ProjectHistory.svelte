@@ -9,8 +9,9 @@
 </script>
 
 <Card>
-  <div class="header">
+  <div class="header flex">
     <h2>History</h2>
+
     <div>
       <label for="historyAmount">Show: </label>
       <select id="historyAmount" bind:value={$historyShown}>
@@ -22,9 +23,7 @@
     </div>
   </div>
   {#if $user.history?.length}
-    <ul>
-      {#each $user.history.slice(0, $historyShown) as day(day.date)}
-        <li>
+    <ul class="grid">
           {(new Date(day.date)).toLocaleDateString()}
           <PieChart projects={day.projects} goal={day.goal} size="12ch" />
         </li>
@@ -48,7 +47,6 @@
   }
 
   ul {
-    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(12ch, 1fr));
     place-items: center;
     gap: 2ch;
