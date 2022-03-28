@@ -139,6 +139,10 @@ button:disabled {
   padding: 0;
 }
 
+.img-btn svg {
+  height: 100%;
+}
+
 .danger-btn {
   background: #ca3333;
   color: white;
