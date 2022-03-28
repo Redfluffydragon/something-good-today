@@ -224,7 +224,7 @@
     </button>
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
       <div class="flex">
-        <button on:click={() => { changeNameModalOpen = true; }}>Change display name</button>
+        <button on:click={() => { changeNameModalOpen = true; accountPopupOpen = false; }}>Change display name</button>
         <button on:click={logout} class="login-btn">Log out</button>
       </div>
     </Popup>
