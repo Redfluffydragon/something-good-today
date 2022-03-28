@@ -8,7 +8,6 @@
   import EditProjects from "$lib/EditProjects.svelte";
   import PieChart from "$lib/PieChart.svelte";
   import FinishedProjects from "$lib/FinishedProjects.svelte";
-  import Project from "$lib/Project.svelte";
   import { loggedIn, shouldUpdate, user } from "$lib/stores";
   import { beforeNavigate } from "$app/navigation";
   import { browser } from "$app/env";
@@ -16,6 +15,7 @@
   import { page } from "$app/stores";
   import { addToHistory } from "$lib/user-utils";
   import ProjectHistory from "$lib/ProjectHistory.svelte";
+  import ProjectsChecklist from "$lib/ProjectsChecklist.svelte";
   import GoalSelect from "$lib/GoalSelect.svelte";
 
   let updateDelay;
@@ -83,27 +83,7 @@
           <div>
             <h2>Active Projects:</h2>
             {#if $user.activeProjects?.length}
-              <form name="projects" on:submit={e => { e.preventDefault() }}
-                on:input={() => {
-                  $user.today = [...(new FormData(document.forms.projects)).entries()]
-                    .map(selected => parseInt(selected[1]));
-                }}>
-                <ul>
-                  {#each $user.activeProjects as id(id)}
-                    <li>
-                      <input type="checkbox"
-                        name={titleToId($user.projects[id].title)}
-                        id={titleToId($user.projects[id].title)}
-                        value={id}
-                        checked={$user.today?.includes(id)}
-                      >
-                      <label for={titleToId($user.projects[id].title)}>
-                        <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
-                      </label>
-                    </li>
-                  {/each}
-                </ul>
-              </form>
+              <ProjectsChecklist name="main-projects" projects={$user.activeProjects} bind:selected={$user.today} isSelected={id => $user.today?.includes(id)} />
             {:else}
               <p>You don't have any projects.</p>
             {/if}
@@ -148,13 +128,5 @@
 
   .sidebar-wrapper {
     flex: 1;
-  }
-  
-  ul {
-    padding-inline-start: 25px;
-  }
-
-  li label {
-    cursor: pointer;
   }
 </style>
