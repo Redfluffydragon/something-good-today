@@ -6,7 +6,6 @@
   let open = false;
 
   let titleInput;
-  let hasSameName = false;
 
   function randomColor() {
     return `#${Math.trunc(Math.random() * 0xffffff).toString(16).padEnd(6, '0')}`;
@@ -42,7 +41,6 @@
 <div class="relative">
   <button on:click={() => {
     open = !open;
-    hasSameName = false;
     setTimeout(() => {
       titleInput.focus();
     });
@@ -55,17 +53,9 @@
   <Modal title="New project" bind:open>
     <br>
     <form action="" id="newProject" class="grid"
-      on:input={() => { hasSameName = false; }}
       on:submit={addNewProject}
     >
-      <label for="title" class="relative">
-        Project title:
-        {#if hasSameName}
-          <Tooltip>
-            <p>Names must be unique</p>
-          </Tooltip>
-        {/if}
-      </label>
+      <label for="title" class="relative">Project title:</label>
       <input type="text" name="title" id="title" bind:this={titleInput} required>
 
       <label for="color">Color:</label>
