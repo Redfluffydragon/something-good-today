@@ -52,8 +52,7 @@
     </svg>
     Add a new project
   </button>
-  <Modal bind:open>
-    <h2>New project</h2>
+  <Modal title="New project" bind:open>
     <br>
     <form action="" id="newProject"
       on:input={() => { hasSameName = false; }}

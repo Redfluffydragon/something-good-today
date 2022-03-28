@@ -233,9 +233,9 @@
   {/if}
 </div>
 
-<Modal bind:open={changeNameModalOpen}>
+<Modal title="Change display name" bind:open={changeNameModalOpen}>
   <div class="flex">
-    <label for="change-name">Change your display name</label>
+    <label for="change-name">Name:</label>
     <input type="text" id="change-name" bind:value={$user.name}>
     <button on:click={() => { changeNameModalOpen = false; }}>Done</button>
   </div>

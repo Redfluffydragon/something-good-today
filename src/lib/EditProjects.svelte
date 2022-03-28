@@ -37,8 +37,7 @@
 
 <div><button disabled={!$user.activeProjects?.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
 
-<Modal bind:open maxWidth="80ch">
-  <h2>Edit projects</h2>
+<Modal title="Edit projects" bind:open maxWidth="80ch">
   <div class="flex column">
     <div class="flex">
       {#if $user.activeProjects?.length}
