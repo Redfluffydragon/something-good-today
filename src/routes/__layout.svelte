@@ -213,15 +213,15 @@
 
 <div class="account">
   {#if $loggedIn}
-    <button on:click={() => {
-      accountPopupOpen = !accountPopupOpen;
-    }} class="img-btn" id="account-btn">
+    <button on:click={() => { accountPopupOpen = !accountPopupOpen; }} title="Account options" class="img-btn" id="account-btn">
+
       {#if $profile.photoURL}
         <img src={$profile.photoURL} alt="">
       {:else}
         {$user.name[0]}
       {/if}
     </button>
+
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
       <div class="flex">
         <button on:click={() => { changeNameModalOpen = true; accountPopupOpen = false; }}>Change display name</button>
