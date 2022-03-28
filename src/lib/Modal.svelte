@@ -5,7 +5,13 @@
   import { safeScale } from './transitions';
   import { fade } from 'svelte/transition';
 
+  /** @type {bool} */
   export let open;
+
+  /** @type {string} */
+  export let title = '';
+
+  /** @type {string} */
   export let maxWidth = '';
 
   function escape(e) {
@@ -24,10 +30,22 @@
 </script>
 
 {#if open}
-  <div class="shadow" transition:fade={{duration: 300}} on:click={e => { if (!e.target.closest('.modal')) open = false; }}>
+  <div class="shadow" transition:fade={{duration: 300}}>
     <div class="modal" transition:safeScale={{duration: 300}} style="max-width: {maxWidth};">
       <Card>
         <div class="wrapper">
+
+          <div class="header">
+            {#if title}
+              <h2>{title}</h2>
+            {/if}
+            <button class="img-btn clear-btn" on:click={() => { open = false }}>
+              <svg width="64" height="64" viewBox="0 0 64 64">
+                <path d="M56 8L8 56M8 8L56 56" stroke="var(--color)" stroke-width="5"/>
+              </svg>
+            </button>
+          </div>
+
           <slot />
         </div>
       </Card>
@@ -50,6 +68,23 @@
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     z-index: 1000;
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns: 1fr 1.5em;
+    align-items: center;
+    margin-bottom: 2ch;
+    gap: 3ch;
+  }
+
+  h2 {
+    line-height: 1;
+  }
+
+  .img-btn {
+    height: 1em;
+    width: 1em;
   }
 
   .wrapper {
