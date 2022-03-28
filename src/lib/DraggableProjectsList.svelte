@@ -1,6 +1,7 @@
 <script>
   import { dndzone } from 'svelte-dnd-action';
   import { flip } from 'svelte/animate';
+  import { sortByActive } from './project-utils';
   import { user } from './stores';
 
   export let projects;
@@ -29,13 +30,7 @@
 
   function reorderHistory() {
     for (const entry of $user.history) {
-      entry.projects.sort((project1, project2) => {
-        const index1 = $user.activeProjects.indexOf(project1);
-        const index2 = $user.activeProjects.indexOf(project2);
-        // If a project isn't in active projects (i.e. finshed or deleted) sort it to the back
-        // Not sure if this is the best solution
-        return ((index1 > -1 ? index1 : Infinity) - (index2 > -1 ? index2 : Infinity));
-      });
+      entry.projects.sort(sortByActive);
     }
     $user = $user;
   }
