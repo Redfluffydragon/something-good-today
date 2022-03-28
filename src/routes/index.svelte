@@ -16,6 +16,7 @@
   import { page } from "$app/stores";
   import { addToHistory } from "$lib/user-utils";
   import ProjectHistory from "$lib/ProjectHistory.svelte";
+  import GoalSelect from "$lib/GoalSelect.svelte";
 
   let updateDelay;
 
@@ -110,16 +111,7 @@
           <NewProject />
           <EditProjects />
           <div>
-            <label for="goal">
-              <h2>Goal:</h2>
-            </label>
-            <select name="goal" id="goal" bind:value={$user.goal}>
-              <option value="1" selected>One project every day</option>
-              <option value="2">Two projects every day</option>
-              <option value="3">Three projects every day</option>
-              <option value="4">Four projects every day</option>
-              <option value="5">Five projects every day</option>
-            </select>
+            <GoalSelect bind:goal={$user.goal} />
           </div>
         </div>
       </Card>
