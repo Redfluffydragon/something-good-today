@@ -120,11 +120,17 @@ button {
   padding: 1ch 2ch;
   border-radius: 1ch;
   cursor: pointer;
+  transition: filter 0.2s, box-shadow 0.2s;
 }
 
 button:disabled {
   cursor: default;
   filter: brightness(0.7) grayscale(1);
+}
+
+button:not(:disabled,.img-btn,.clear-btn):hover {
+  filter: brightness(1.1);
+  box-shadow: var(--shadow-elevation-low);
 }
 
 .clear-btn {
