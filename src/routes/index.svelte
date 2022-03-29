@@ -67,6 +67,8 @@
 <main class="flex flex-column">
   {#if $user.name}
     <h1>Hi, {$user.name}!</h1>
+  {:else}
+    <div class="spacer"></div>
   {/if}
   
   <div class="main-content flex">
@@ -128,5 +130,11 @@
 
   .sidebar-wrapper {
     flex: 1;
+  }
+
+  @media (min-width: 1270px) {
+    .spacer {
+      height: 2em;
+    }
   }
 </style>
