@@ -77,6 +77,7 @@
       isSelected={id => $user.history[dateToEdit].projects.includes(id)}
       on:input={updateHistory}
     />
+    <button on:click={() => { open = false; }}>Done</button>
   </div>
 </Modal>
 
