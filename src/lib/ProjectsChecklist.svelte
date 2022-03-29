@@ -12,7 +12,8 @@ import { createEventDispatcher } from "svelte";
   export let projects = $user.activeProjects;
 
   /** @type {array} An array of the selected projects' IDs */
-  export let selected = projects.filter(isSelected); // Start it with the already selected projects
+  export let selected;
+  selected = projects.filter(isSelected); // Start it with the already selected projects
 
   /** @type {string} A unique name to tell forms apart if there's more than one in the DOM at once */
   export let name;
