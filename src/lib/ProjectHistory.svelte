@@ -8,7 +8,7 @@
   import ProjectsChecklist from "./ProjectsChecklist.svelte";
   import GoalSelect from "./GoalSelect.svelte";
 
-  $: browser && localStorage.setItem('historyShown', JSON.stringify($historyShown));
+  $: browser && localStorage.setItem('historyShown', $historyShown);
 
   let editing = false;
   let open = false;
@@ -29,10 +29,10 @@
     <div class="space-right">
       <label for="historyAmount">Show: </label>
       <select id="historyAmount" bind:value={$historyShown}>
-        <option value={7}>Past week</option>
-        <option value={dayjs().daysInMonth()}>Past month</option>
-        <option value={365}>Past year</option>
-        <option value={undefined}>All</option>
+        <option value="7">Past week</option>
+        <option value={dayjs().daysInMonth().toString()}>Past month</option>
+        <option value="365">Past year</option>
+        <option value="Infinity">All</option>
       </select>
     </div>
 
