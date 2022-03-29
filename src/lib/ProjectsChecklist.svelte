@@ -1,6 +1,5 @@
 <script>
-import { createEventDispatcher } from "svelte";
-
+  import { createEventDispatcher } from "svelte";
   import { sortByActive } from "./project-utils";
   import Project from "./Project.svelte";
   import { user } from "./stores";
@@ -50,13 +49,13 @@ import { createEventDispatcher } from "svelte";
   <ul>
     {#each projects as id(id)}
       <li>
-        <input type="checkbox"
-          name={titleToId($user.projects[id].title)}
-          id="{name}-{titleToId($user.projects[id].title)}"
-          value={id}
-          checked={isSelected(id)}
-        >
         <label for="{name}-{titleToId($user.projects[id].title)}">
+          <input type="checkbox"
+            name={titleToId($user.projects[id].title)}
+            id="{name}-{titleToId($user.projects[id].title)}"
+            value={id}
+            checked={isSelected(id)}
+          >
           <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
         </label>
       </li>
