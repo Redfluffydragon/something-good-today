@@ -50,6 +50,7 @@
   .popup {
     position: absolute;
     width: max-content;
+    z-index: 900;
   }
 
   .right {
