@@ -23,25 +23,27 @@
 
   /**
    * @param {number} goal
-  */
+   */
   function updateData(goal) {
     data = {
       labels: getLabels,
-      datasets: [{
-        backgroundColor: bgColors,
-        hoverOffset: HOVER_OFFSET,
-        clip: 100,
-        borderWidth: 0,
-        circumference: 360 * Math.min(sizes.length / goal, 1),
-        data: sizes,
-      }],
+      datasets: [
+        {
+          backgroundColor: bgColors,
+          hoverOffset: HOVER_OFFSET,
+          clip: 100,
+          borderWidth: 0,
+          circumference: 360 * Math.min(sizes.length / goal, 1),
+          data: sizes,
+        },
+      ],
     };
 
     pieChart && (pieChart.data = data);
 
     // Don't animate unless adding or removing a project
     // Don't animate when changing colors, for example
-    pieChart?.update((oldLength !== projects.length || oldGoal !== goal) ? '' : 'none');
+    pieChart?.update(oldLength !== projects.length || oldGoal !== goal ? '' : 'none');
 
     oldGoal = goal;
     oldLength = projects.length;
@@ -50,7 +52,7 @@
   /**
    * @param {any[]} projects
    * @param {number} goal
-  */
+   */
   function getData(projects, goal) {
     if (!projects) {
       return;
@@ -80,11 +82,11 @@
         plugins: {
           tooltip: {
             callbacks: {
-              label: item => item.label
-            }
-          }
-        }
-      }
+              label: item => item.label,
+            },
+          },
+        },
+      },
     });
   });
 </script>
@@ -94,7 +96,7 @@
     <p>Nothing yet today.</p>
   {/if}
 
-  <canvas bind:this={canvas}></canvas>
+  <canvas bind:this={canvas} />
 </div>
 
 <style>

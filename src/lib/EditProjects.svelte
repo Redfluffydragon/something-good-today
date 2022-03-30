@@ -1,7 +1,7 @@
 <script>
-  import Modal from "./Modal.svelte";
-  import { user } from "./stores";
-  import DraggableProjectsList from "./DraggableProjectsList.svelte";
+  import Modal from './Modal.svelte';
+  import { user } from './stores';
+  import DraggableProjectsList from './DraggableProjectsList.svelte';
 
   let open = false;
 
@@ -30,13 +30,21 @@
 
   function reset() {
     selectedProject = null;
-    newColor = ''
-    newTitle = ''
+    newColor = '';
+    newTitle = '';
   }
 </script>
 
 <!-- FIX It syncs with Firestore when the edit projects modal is opened -->
-<div><button disabled={!$user.activeProjects?.length} on:click={() => { open = true; reset(); }}>Edit projects</button></div>
+<div>
+  <button
+    disabled={!$user.activeProjects?.length}
+    on:click={() => {
+      open = true;
+      reset();
+    }}>Edit projects</button
+  >
+</div>
 
 <Modal title="Edit projects" bind:open maxWidth="80ch">
   <div class="flex flex-column">
@@ -44,16 +52,19 @@
       {#if $user.activeProjects?.length}
         <DraggableProjectsList bind:projects={$user.activeProjects} bind:selectedProject bind:newColor bind:newTitle />
       {/if}
-      <form on:input={updateProject} on:submit={e => {
-        e.preventDefault();
-        open = false;
-      }}>
+      <form
+        on:input={updateProject}
+        on:submit={e => {
+          e.preventDefault();
+          open = false;
+        }}
+      >
         <fieldset disabled={selectedProject === -1}>
           <div class="flex flex-column">
-            <input type="text" name="newTitle" id="newTitle" bind:value={newTitle}>
+            <input type="text" name="newTitle" id="newTitle" bind:value={newTitle} />
             <div>
               <label for="newColor">Color:</label>
-              <input type="color" name="newColor" id="newColor" bind:value={newColor}>
+              <input type="color" name="newColor" id="newColor" bind:value={newColor} />
             </div>
             <button on:click={finishProject}>Mark project as finished</button>
             <button class="danger-btn" on:click={deleteProject}>Delete project</button>
@@ -61,7 +72,13 @@
         </fieldset>
       </form>
     </div>
-    <div class="flex"><button on:click={() => { open = false; }}>Done</button></div>
+    <div class="flex">
+      <button
+        on:click={() => {
+          open = false;
+        }}>Done</button
+      >
+    </div>
   </div>
 </Modal>
 
@@ -81,7 +98,7 @@
     display: contents;
   }
 
-  input[type=text] {
+  input[type='text'] {
     width: 100%;
   }
 </style>

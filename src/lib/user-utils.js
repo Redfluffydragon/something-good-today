@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
-import { get } from "svelte/store";
-import { user } from "./stores";
+import dayjs from 'dayjs';
+import { get } from 'svelte/store';
+import { user } from './stores';
 
 export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {

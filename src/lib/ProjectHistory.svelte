@@ -1,12 +1,12 @@
 <script>
-  import { browser } from "$app/env";
-  import Card from "./Card.svelte";
-  import PieChart from "./PieChart.svelte";
-  import { historyShown, user } from "./stores";
+  import { browser } from '$app/env';
+  import Card from './Card.svelte';
+  import PieChart from './PieChart.svelte';
+  import { historyShown, user } from './stores';
   import dayjs from 'dayjs';
-  import Modal from "./Modal.svelte";
-  import ProjectsChecklist from "./ProjectsChecklist.svelte";
-  import GoalSelect from "./GoalSelect.svelte";
+  import Modal from './Modal.svelte';
+  import ProjectsChecklist from './ProjectsChecklist.svelte';
+  import GoalSelect from './GoalSelect.svelte';
 
   $: browser && localStorage.setItem('historyShown', $historyShown);
 
@@ -36,18 +36,27 @@
       </select>
     </div>
 
-    <button on:click={() => {editing = !editing;}}>{editing ? 'Done' : 'Edit'}</button>
-
+    <button
+      on:click={() => {
+        editing = !editing;
+      }}>{editing ? 'Done' : 'Edit'}</button
+    >
   </div>
 
   {#if $user.history?.length}
     <ul class="grid">
-      {#each $user.history.slice(0, $historyShown) as day, i(day.date)}
+      {#each $user.history.slice(0, $historyShown) as day, i (day.date)}
         <li class="relative">
-          {(new Date(day.date)).toLocaleDateString()}
+          {new Date(day.date).toLocaleDateString()}
           <PieChart projects={day.projects} goal={day.goal} size="12ch" />
           {#if editing}
-            <button on:click={() => { open = true; dateToEdit = i; }} class="edit-history clear-btn">Edit</button>
+            <button
+              on:click={() => {
+                open = true;
+                dateToEdit = i;
+              }}
+              class="edit-history clear-btn">Edit</button
+            >
           {/if}
         </li>
       {/each}
@@ -57,27 +66,20 @@
   {/if}
 </Card>
 
-<Modal title="Edit {(new Date($user.history?.[dateToEdit]?.date))?.toLocaleDateString()}" bind:open>
+<Modal title="Edit {new Date($user.history?.[dateToEdit]?.date)?.toLocaleDateString()}" bind:open>
   <div class="flex flex-column">
     <div>
       <GoalSelect bind:goal={$user.history[dateToEdit].goal} />
     </div>
     <h3>Active projects</h3>
-    <ProjectsChecklist
-      name="editing-active"
-      bind:selected={editingActive}
-      isSelected={id => $user.history[dateToEdit].projects.includes(id)}
-      on:input={updateHistory}
-    />
+    <ProjectsChecklist name="editing-active" bind:selected={editingActive} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
     <h3>Finished Projects</h3>
-    <ProjectsChecklist
-      name="editing-finished"
-      bind:selected={editingFinished}
-      projects={$user.finishedProjects}
-      isSelected={id => $user.history[dateToEdit].projects.includes(id)}
-      on:input={updateHistory}
-    />
-    <button on:click={() => { open = false; }}>Done</button>
+    <ProjectsChecklist name="editing-finished" bind:selected={editingFinished} projects={$user.finishedProjects} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
+    <button
+      on:click={() => {
+        open = false;
+      }}>Done</button
+    >
   </div>
 </Modal>
 

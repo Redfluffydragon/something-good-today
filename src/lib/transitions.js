@@ -1,6 +1,6 @@
-import { get } from "svelte/store";
-import { fade, scale } from "svelte/transition";
-import { reducedMotion } from "./stores";
+import { get } from 'svelte/store';
+import { fade, scale } from 'svelte/transition';
+import { reducedMotion } from './stores';
 
 /**
  * @param {Element} node

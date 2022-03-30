@@ -11,8 +11,8 @@
         provider: provider,
         auth: auth,
         db: db,
-      }
-    }
+      },
+    };
   }
 </script>
 
@@ -20,9 +20,9 @@
   import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData, shouldUpdate } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
-  import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+  import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
-  import { page } from "$app/stores";
+  import { page } from '$app/stores';
   import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
   import Modal from '$lib/Modal.svelte';
@@ -55,18 +55,21 @@
       $reducedMotion = mediaQuery.matches;
     });
 
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) {
-        addToHistory();
-      }
-    }, false);
+    document.addEventListener(
+      'visibilitychange',
+      () => {
+        if (!document.hidden) {
+          addToHistory();
+        }
+      },
+      false
+    );
 
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
         initializeUser(newUser);
         addToHistory();
-      }
-      else {
+      } else {
         $user = demoUserData;
       }
     });
@@ -84,21 +87,24 @@
     timeline = anime.timeline({
       duration: 750,
       easing: 'easeOutElastic',
-      begin: () => isAnimationRunning = true,
-      complete: () => isAnimationRunning = false,
+      begin: () => (isAnimationRunning = true),
+      complete: () => (isAnimationRunning = false),
     });
 
-    timeline.add({
-      targets: '#darkModeIcon',
-      d: [{ value: $darkMode ? moonPath : sunPath }],
-      delay: $darkMode ? 700 : 0,
-    })
-    .add({
-      targets: '.sun-ray',
-      scale: $darkMode ? 0 : 1,
-      delay: anime.stagger(100),
-    }, $darkMode ? 0 : 300);
-
+    timeline
+      .add({
+        targets: '#darkModeIcon',
+        d: [{ value: $darkMode ? moonPath : sunPath }],
+        delay: $darkMode ? 700 : 0,
+      })
+      .add(
+        {
+          targets: '.sun-ray',
+          scale: $darkMode ? 0 : 1,
+          delay: anime.stagger(100),
+        },
+        $darkMode ? 0 : 300
+      );
   }
 
   async function initializeUser(newUser) {
@@ -120,9 +126,11 @@
         history: [],
         lastUpdated: Date.now(),
         uid: newUser.uid,
-      }
+      };
 
-      await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, { merge: true });
+      await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, {
+        merge: true,
+      });
       $shouldUpdate = false;
       $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
     }
@@ -138,85 +146,63 @@
 
   function loginWithGoogle() {
     signInWithPopup($page.stuff.auth, $page.stuff.provider)
-    .then(async result => {
-      // The signed-in user info.
-      const newUser = result.user;
+      .then(async result => {
+        // The signed-in user info.
+        const newUser = result.user;
 
-      initializeUser(newUser);
-
-    }).catch((error) => {
-      console.log(error);
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-    });
+        initializeUser(newUser);
+      })
+      .catch(error => {
+        console.log(error);
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+      });
   }
 
   function logout() {
     console.log('Logged out');
-    signOut($page.stuff.auth).then(() => {
-      $user = {};
-      $loggedIn = false;
-      location.reload(); // Maybe not the best solution, but it's the easiest way to get the chart to update
-    })
-    .catch(error => {
-      console.log(error);
-    })
+    signOut($page.stuff.auth)
+      .then(() => {
+        $user = {};
+        $loggedIn = false;
+        location.reload(); // Maybe not the best solution, but it's the easiest way to get the chart to update
+      })
+      .catch(error => {
+        console.log(error);
+      });
     accountPopupOpen = false;
   }
 </script>
 
-<button on:click={animateIcon} class='clear-btn'>
+<button on:click={animateIcon} class="clear-btn">
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
-    <path class="sun-ray"
-      style="transform: scale({startScale});"
-      d="M29.2929 6.85715L31.7143 3.59516L34.1357 6.85715H29.2929Z"
-      stroke-width="4.28572"
-    />
-    <path class="sun-ray"
-      style="transform: scale({startScale});"
-      d="M53.1003 16.0124L57.136 16.4784L55.5217 20.2063L53.1003 16.0124Z"
-      stroke-width="4.28572"
-    />
-    <path class="sun-ray"
-      style="transform: scale({startScale});"
-      d="M56.5217 41.1552L58.1359 44.8832L54.1003 45.3492L56.5217 41.1552Z"
-      stroke-width="4.28572"
-    />
-    <path class="sun-ray"
-      style="transform: scale({startScale});"
-      d="M29.2929 57.1428L31.7143 60.4048L34.1357 57.1428H29.2929Z"
-      stroke-width="4.28572"
-    />
-    <path class="sun-ray"
-      style="transform: scale({startScale});"
-      d="M7.58491 41.1552L5.97065 44.8832L10.0063 45.3492L7.58491 41.1552Z"
-      stroke-width="4.28572"
-    />
-    <path class="sun-ray"
-      style="transform: scale({startScale});"
-      d="M11.0064 16.0124L6.97071 16.4784L8.58498 20.2063L11.0064 16.0124Z"
-      stroke-width="4.28572"
-    />
-    <path
-      id="darkModeIcon"
-      d={startPath}
-      stroke-width="5"
-      fill="var(--bg)"
-    />
+    <path class="sun-ray" style="transform: scale({startScale});" d="M29.2929 6.85715L31.7143 3.59516L34.1357 6.85715H29.2929Z" stroke-width="4.28572" />
+    <path class="sun-ray" style="transform: scale({startScale});" d="M53.1003 16.0124L57.136 16.4784L55.5217 20.2063L53.1003 16.0124Z" stroke-width="4.28572" />
+    <path class="sun-ray" style="transform: scale({startScale});" d="M56.5217 41.1552L58.1359 44.8832L54.1003 45.3492L56.5217 41.1552Z" stroke-width="4.28572" />
+    <path class="sun-ray" style="transform: scale({startScale});" d="M29.2929 57.1428L31.7143 60.4048L34.1357 57.1428H29.2929Z" stroke-width="4.28572" />
+    <path class="sun-ray" style="transform: scale({startScale});" d="M7.58491 41.1552L5.97065 44.8832L10.0063 45.3492L7.58491 41.1552Z" stroke-width="4.28572" />
+    <path class="sun-ray" style="transform: scale({startScale});" d="M11.0064 16.0124L6.97071 16.4784L8.58498 20.2063L11.0064 16.0124Z" stroke-width="4.28572" />
+    <path id="darkModeIcon" d={startPath} stroke-width="5" fill="var(--bg)" />
   </svg>
 </button>
 
 <div class="account">
   {#if $loggedIn}
-    <button on:click={() => { accountPopupOpen = !accountPopupOpen; }} title="Account options" class="img-btn" id="account-btn">
-
+    <button
+      on:click={() => {
+        accountPopupOpen = !accountPopupOpen;
+      }}
+      title="Account options"
+      class="img-btn"
+      id="account-btn"
+    >
       {#if $profile.photoURL}
-        <img src={$profile.photoURL} alt="">
+        <img src={$profile.photoURL} alt="" />
       {:else}
         {$user.name[0]}
       {/if}
@@ -224,7 +210,12 @@
 
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
       <div class="flex flex-column">
-        <button on:click={() => { changeNameModalOpen = true; accountPopupOpen = false; }}>Change display name</button>
+        <button
+          on:click={() => {
+            changeNameModalOpen = true;
+            accountPopupOpen = false;
+          }}>Change display name</button
+        >
         <button on:click={logout} class="login-btn">Log out</button>
       </div>
     </Popup>
@@ -236,12 +227,16 @@
 <Modal title="Change display name" bind:open={changeNameModalOpen}>
   <div class="flex flex-column">
     <label for="change-name">Name:</label>
-    <input type="text" id="change-name" bind:value={$user.name}>
-    <button on:click={() => { changeNameModalOpen = false; }}>Done</button>
+    <input type="text" id="change-name" bind:value={$user.name} />
+    <button
+      on:click={() => {
+        changeNameModalOpen = false;
+      }}>Done</button
+    >
   </div>
 </Modal>
 
-<div class="spacer"></div>
+<div class="spacer" />
 
 <slot />
 
@@ -274,7 +269,8 @@
     font-weight: 600;
   }
 
-  .img-btn, .img-btn img {
+  .img-btn,
+  .img-btn img {
     border-radius: 50%;
   }
 

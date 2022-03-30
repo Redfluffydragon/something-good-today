@@ -1,8 +1,8 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import { sortByActive } from "./project-utils";
-  import Project from "./Project.svelte";
-  import { user } from "./stores";
+  import { createEventDispatcher } from 'svelte';
+  import { sortByActive } from './project-utils';
+  import Project from './Project.svelte';
+  import { user } from './stores';
 
   /** @type {function(int):bool} A callback function that determines whether each project starts selected based on the project id */
   export let isSelected;
@@ -24,19 +24,24 @@
 
   /**
    * @param {string} title
-  */
+   */
   function titleToId(title) {
     return title.toLowerCase().replace(/\s/g, '-');
   }
 </script>
 
-<form {name} id={name} on:submit={e => { e.preventDefault() }}
+<form
+  {name}
+  id={name}
+  on:submit={e => {
+    e.preventDefault();
+  }}
   on:input={e => {
     const form = e.target.closest('#' + name);
 
     // get all checkboxes in the current form
     const checkboxes = [...form.querySelectorAll('input[type=checkbox]')];
-    
+
     // add or delete the project IDs based on whether the corresponding checkbox is checked
     // do it this way because it won't remove finished projects from the today array
     checkboxes.forEach(checkbox => _selected[checkbox.checked ? 'add' : 'delete'](parseInt(checkbox.value)));
@@ -45,17 +50,13 @@
     selected = [..._selected].sort(sortByActive);
 
     dispatch('input', e);
-  }}>
+  }}
+>
   <ul>
-    {#each projects as id(id)}
+    {#each projects as id (id)}
       <li>
         <label for="{name}-{titleToId($user.projects[id].title)}">
-          <input type="checkbox"
-            name={titleToId($user.projects[id].title)}
-            id="{name}-{titleToId($user.projects[id].title)}"
-            value={id}
-            checked={isSelected(id)}
-          >
+          <input type="checkbox" name={titleToId($user.projects[id].title)} id="{name}-{titleToId($user.projects[id].title)}" value={id} checked={isSelected(id)} />
           <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
         </label>
       </li>

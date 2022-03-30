@@ -1,22 +1,18 @@
-<svelte:head>
-  <title>Something Good</title>
-</svelte:head>
-
 <script>
-  import Card from "$lib/Card.svelte";
-  import NewProject from "$lib/NewProject.svelte";
-  import EditProjects from "$lib/EditProjects.svelte";
-  import PieChart from "$lib/PieChart.svelte";
-  import FinishedProjects from "$lib/FinishedProjects.svelte";
-  import { loggedIn, shouldUpdate, user } from "$lib/stores";
-  import { beforeNavigate } from "$app/navigation";
-  import { browser } from "$app/env";
+  import Card from '$lib/Card.svelte';
+  import NewProject from '$lib/NewProject.svelte';
+  import EditProjects from '$lib/EditProjects.svelte';
+  import PieChart from '$lib/PieChart.svelte';
+  import FinishedProjects from '$lib/FinishedProjects.svelte';
+  import { loggedIn, shouldUpdate, user } from '$lib/stores';
+  import { beforeNavigate } from '$app/navigation';
+  import { browser } from '$app/env';
   import { doc, setDoc } from 'firebase/firestore';
-  import { page } from "$app/stores";
-  import { addToHistory } from "$lib/user-utils";
-  import ProjectHistory from "$lib/ProjectHistory.svelte";
-  import ProjectsChecklist from "$lib/ProjectsChecklist.svelte";
-  import GoalSelect from "$lib/GoalSelect.svelte";
+  import { page } from '$app/stores';
+  import { addToHistory } from '$lib/user-utils';
+  import ProjectHistory from '$lib/ProjectHistory.svelte';
+  import ProjectsChecklist from '$lib/ProjectsChecklist.svelte';
+  import GoalSelect from '$lib/GoalSelect.svelte';
 
   let updateDelay;
 
@@ -28,7 +24,7 @@
 
   /**
    * @param {Object} user
-  */
+   */
   async function updateUser(user) {
     if (!$page.stuff.db || !$loggedIn || !user.uid) {
       return;
@@ -36,10 +32,14 @@
 
     try {
       addToHistory();
-      await setDoc(doc($page.stuff.db, 'users', user.uid), {
-        ...user,
-        lastUpdated: Date.now(),
-      }, { merge: true });
+      await setDoc(
+        doc($page.stuff.db, 'users', user.uid),
+        {
+          ...user,
+          lastUpdated: Date.now(),
+        },
+        { merge: true }
+      );
 
       console.log('Updated', user.name);
     } catch (err) {
@@ -50,7 +50,7 @@
   /**
    * Every time this is called, it further delays updateUser by 5 seconds
    * @param {Object} user
-  */
+   */
   function waitUpdateUser(user) {
     if (!$shouldUpdate) {
       $shouldUpdate = true;
@@ -64,13 +64,17 @@
   }
 </script>
 
+<svelte:head>
+  <title>Something Good</title>
+</svelte:head>
+
 <main class="flex flex-column">
   {#if $user.name}
     <h1>Hi, {$user.name}!</h1>
   {:else}
-    <div class="spacer"></div>
+    <div class="spacer" />
   {/if}
-  
+
   <div class="main-content flex">
     <div class="chart">
       <Card style="height: 100%;">

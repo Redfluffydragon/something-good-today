@@ -36,10 +36,7 @@
 </script>
 
 {#if open}
-  <div
-    transition:safeScale={{ duration: 300 }}
-    class='popup {position}'
-  >
+  <div transition:safeScale={{ duration: 300 }} class="popup {position}">
     <Card style="border: 2px solid var(--color);">
       <slot />
     </Card>

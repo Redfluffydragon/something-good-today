@@ -1,7 +1,7 @@
 <script>
-  import { browser } from "$app/env";
-  import { onDestroy, onMount } from "svelte";
-  import Card from "./Card.svelte";
+  import { browser } from '$app/env';
+  import { onDestroy, onMount } from 'svelte';
+  import Card from './Card.svelte';
   import { safeScale } from './transitions';
   import { fade } from 'svelte/transition';
 
@@ -30,18 +30,22 @@
 </script>
 
 {#if open}
-  <div class="shadow" transition:fade={{duration: 300}}>
-    <div class="modal" transition:safeScale={{duration: 300}} style="max-width: {maxWidth};">
+  <div class="shadow" transition:fade={{ duration: 300 }}>
+    <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth};">
       <Card>
         <div class="wrapper">
-
           <div class="header">
             {#if title}
               <h2>{title}</h2>
             {/if}
-            <button class="img-btn clear-btn" on:click={() => { open = false }}>
+            <button
+              class="img-btn clear-btn"
+              on:click={() => {
+                open = false;
+              }}
+            >
               <svg width="64" height="64" viewBox="0 0 64 64">
-                <path d="M56 8L8 56M8 8L56 56" stroke="var(--color)" stroke-width="5"/>
+                <path d="M56 8L8 56M8 8L56 56" stroke="var(--color)" stroke-width="5" />
               </svg>
             </button>
           </div>
