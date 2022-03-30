@@ -1,6 +1,5 @@
 <script>
   import { browser } from '$app/env';
-  import Card from './Card.svelte';
   import PieChart from './PieChart.svelte';
   import { historyShown, user } from './stores';
   import dayjs from 'dayjs';
@@ -22,49 +21,47 @@
   }
 </script>
 
-<Card>
-  <div class="header flex">
-    <h2>History</h2>
+<div class="header flex">
+  <h2>History</h2>
 
-    <div class="space-right">
-      <label for="historyAmount">Show: </label>
-      <select id="historyAmount" bind:value={$historyShown}>
-        <option value="7">Past week</option>
-        <option value={dayjs().daysInMonth().toString()}>Past month</option>
-        <option value="365">Past year</option>
-        <option value="Infinity">All</option>
-      </select>
-    </div>
-
-    <button
-      on:click={() => {
-        editing = !editing;
-      }}>{editing ? 'Done' : 'Edit'}</button
-    >
+  <div class="space-right">
+    <label for="historyAmount">Show: </label>
+    <select id="historyAmount" bind:value={$historyShown}>
+      <option value="7">Past week</option>
+      <option value={dayjs().daysInMonth().toString()}>Past month</option>
+      <option value="365">Past year</option>
+      <option value="Infinity">All</option>
+    </select>
   </div>
 
-  {#if $user.history?.length}
-    <ul class="grid">
-      {#each $user.history.slice(0, $historyShown) as day, i (day.date)}
-        <li class="relative">
-          {new Date(day.date).toLocaleDateString()}
-          <PieChart projects={day.projects} goal={day.goal} size="12ch" />
-          {#if editing}
-            <button
-              on:click={() => {
-                open = true;
-                dateToEdit = i;
-              }}
-              class="edit-history clear-btn">Edit</button
-            >
-          {/if}
-        </li>
-      {/each}
-    </ul>
-  {:else}
-    <p>No history.</p>
-  {/if}
-</Card>
+  <button
+    on:click={() => {
+      editing = !editing;
+    }}>{editing ? 'Done' : 'Edit'}</button
+  >
+</div>
+
+{#if $user.history?.length}
+  <ul class="grid">
+    {#each $user.history.slice(0, $historyShown) as day, i (day.date)}
+      <li class="relative">
+        {new Date(day.date).toLocaleDateString()}
+        <PieChart projects={day.projects} goal={day.goal} size="12ch" />
+        {#if editing}
+          <button
+            on:click={() => {
+              open = true;
+              dateToEdit = i;
+            }}
+            class="edit-history clear-btn">Edit</button
+          >
+        {/if}
+      </li>
+    {/each}
+  </ul>
+{:else}
+  <p>No history.</p>
+{/if}
 
 <Modal title="Edit {new Date($user.history?.[dateToEdit]?.date)?.toLocaleDateString()}" bind:open>
   <div class="flex flex-column">

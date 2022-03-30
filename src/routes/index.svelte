@@ -104,9 +104,9 @@
     </div>
   </div>
 
-  <div class="history">
+  <Card>
     <ProjectHistory />
-  </div>
+  </Card>
 
   <Card>
     <FinishedProjects />
