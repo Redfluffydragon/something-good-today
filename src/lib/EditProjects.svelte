@@ -1,6 +1,6 @@
 <script>
   import Modal from './Modal.svelte';
-  import { user } from './stores';
+  import { shouldUpdate, user } from './stores';
   import DraggableProjectsList from './DraggableProjectsList.svelte';
 
   let open = false;
@@ -35,12 +35,12 @@
   }
 </script>
 
-<!-- FIX It syncs with Firestore when the edit projects modal is opened -->
 <div>
   <button
     disabled={!$user.activeProjects?.length}
     on:click={() => {
       open = true;
+      $shouldUpdate = false;
       reset();
     }}>Edit projects</button
   >
