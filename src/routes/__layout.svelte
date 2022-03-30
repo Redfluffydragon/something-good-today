@@ -181,6 +181,7 @@
 
 <button on:click={animateIcon} class="clear-btn">
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+    <title>Switch to {$darkMode ? 'light' : 'dark'} mode</title>
     <path class="sun-ray" style="transform: scale({startScale});" d="M29.2929 6.85715L31.7143 3.59516L34.1357 6.85715H29.2929Z" stroke-width="4.28572" />
     <path class="sun-ray" style="transform: scale({startScale});" d="M53.1003 16.0124L57.136 16.4784L55.5217 20.2063L53.1003 16.0124Z" stroke-width="4.28572" />
     <path class="sun-ray" style="transform: scale({startScale});" d="M56.5217 41.1552L58.1359 44.8832L54.1003 45.3492L56.5217 41.1552Z" stroke-width="4.28572" />
