@@ -87,6 +87,10 @@ input[type='text'] {
   padding: 0.5ch 0.7ch;
 }
 
+input[type='text']:disabled {
+  background-color: transparent;
+}
+
 input[type='text'],
 select {
   border-radius: 5px;
