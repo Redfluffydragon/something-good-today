@@ -82,6 +82,7 @@
     position: absolute;
     top: 50%;
     transform: translate(0.6em, -50%);
+    z-index: 1;
   }
 
   .selected svg {
