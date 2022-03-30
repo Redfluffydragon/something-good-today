@@ -14,7 +14,7 @@
   import ProjectsChecklist from '$lib/ProjectsChecklist.svelte';
   import GoalSelect from '$lib/GoalSelect.svelte';
 
-  let updateDelay;
+  let updateTimeout;
 
   $: browser && waitUpdateUser($user);
 
@@ -57,8 +57,8 @@
       return;
     }
 
-    clearTimeout(updateDelay);
-    updateDelay = setTimeout(() => {
+    clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(() => {
       updateUser(user);
     }, 5000);
   }
