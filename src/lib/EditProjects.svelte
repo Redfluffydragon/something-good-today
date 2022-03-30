@@ -21,7 +21,6 @@
     $user = $user; // So Svelte updates
   }
 
-  // TODO be able to mark a project as finished and have it marked off today
   function finishProject() {
     $user.finishedProjects.push(selectedProject);
     $user.activeProjects.splice($user.activeProjects.indexOf(selectedProject), 1);
