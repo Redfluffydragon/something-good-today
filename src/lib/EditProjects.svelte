@@ -59,7 +59,7 @@
           open = false;
         }}
       >
-        <fieldset disabled={selectedProject === -1}>
+        <fieldset disabled={selectedProject === null}>
           <div class="flex flex-column">
             <input type="text" name="newTitle" id="newTitle" bind:value={newTitle} />
             <div>
