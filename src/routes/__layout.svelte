@@ -203,7 +203,7 @@
       id="account-btn"
     >
       {#if $profile.photoURL}
-        <img src={$profile.photoURL} alt="" />
+        <img src={$profile.photoURL} alt="" width="64" height="64" />
       {:else}
         {$user.name[0]}
       {/if}
