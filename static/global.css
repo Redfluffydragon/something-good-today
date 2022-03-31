@@ -56,7 +56,7 @@ html[dark] {
 body {
   margin: 0;
   line-height: 1.5;
-  font-family: 'Raleway-Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Raleway Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: var(--bg);
 }
 
@@ -165,8 +165,9 @@ button:not(:disabled, .img-btn, .clear-btn):hover {
 }
 
 @font-face {
-  font-family: 'Raleway-Light';
+  font-family: 'Raleway Light';
   src: url('/fonts/Raleway-Light.ttf');
+  font-display: swap;
 }
 
 ul {
