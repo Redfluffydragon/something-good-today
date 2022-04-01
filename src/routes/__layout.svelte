@@ -114,7 +114,6 @@
     if (!$user) {
       const defaultUserData = {
         goal: '1',
-        name: newUser.displayName,
         nextId: 0,
         projects: {},
         activeProjects: [],
@@ -203,7 +202,7 @@
       {#if $profile.photoURL}
         <img src={$profile.photoURL} alt="" width="64" height="64" />
       {:else}
-        {$user.name[0]}
+        {$profile.displayName[0]}
       {/if}
     </button>
 

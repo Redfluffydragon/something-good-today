@@ -24,7 +24,6 @@ export const firebaseConfig = {
 
 export const demoUserData = {
   goal: '3',
-  name: 'Demo user',
   nextId: 6,
   projects: {
     0: {
