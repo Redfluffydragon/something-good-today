@@ -16,7 +16,7 @@
 
   let updateTimeout;
 
-  $: browser && waitUpdateUser($user);
+  $: browser && waitToUpdateUser($user);
 
   beforeNavigate(async () => {
     await updateUser($user);
@@ -48,10 +48,10 @@
   }
 
   /**
-   * Every time this is called, it further delays updateUser by 5 seconds
+   * Every time this is called, it further delays updateUser by 3 seconds
    * @param {Object} user
    */
-  function waitUpdateUser(user) {
+  function waitToUpdateUser(user) {
     if (!$shouldUpdate) {
       $shouldUpdate = true;
       return;
@@ -60,7 +60,7 @@
     clearTimeout(updateTimeout);
     updateTimeout = setTimeout(() => {
       updateUser(user);
-    }, 5000);
+    }, 3000);
   }
 </script>
 
