@@ -25,7 +25,6 @@
   import { page } from '$app/stores';
   import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
-  import Modal from '$lib/Modal.svelte';
   import { addToHistory } from '$lib/user-utils';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
@@ -39,7 +38,6 @@
   let isAnimationRunning = false;
 
   let accountPopupOpen = false;
-  let changeNameModalOpen = false;
 
   onMount(() => {
     document.documentElement.toggleAttribute('dark', $darkMode);
@@ -211,12 +209,6 @@
 
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
       <div class="flex flex-column">
-        <button
-          on:click={() => {
-            changeNameModalOpen = true;
-            accountPopupOpen = false;
-          }}>Change display name</button
-        >
         <button on:click={logout} class="login-btn">Log out</button>
       </div>
     </Popup>
@@ -224,18 +216,6 @@
     <button on:click={loginWithGoogle} class="login-btn">Log in</button>
   {/if}
 </div>
-
-<Modal title="Change display name" bind:open={changeNameModalOpen}>
-  <div class="flex flex-column">
-    <label for="change-name">Name:</label>
-    <input type="text" id="change-name" bind:value={$user.name} />
-    <button
-      on:click={() => {
-        changeNameModalOpen = false;
-      }}>Done</button
-    >
-  </div>
-</Modal>
 
 <div class="spacer" />
 
@@ -288,9 +268,7 @@
     top: 100vh;
   }
 
-  @media (max-width: 1270px) {
-    .spacer {
-      height: 3em;
-    }
+  .spacer {
+    height: 3em;
   }
 </style>
