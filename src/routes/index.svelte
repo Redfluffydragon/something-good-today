@@ -15,11 +15,15 @@
   import GoalSelect from '$lib/GoalSelect.svelte';
 
   let updateTimeout;
+  let waitingToUpdate = false;
 
   $: browser && waitToUpdateUser($user);
 
-  beforeNavigate(async () => {
-    await updateUser($user);
+  beforeNavigate(() => {
+    if (waitingToUpdate) {
+      const blob = new Blob([JSON.stringify($user)], { type: 'application/json' });
+      navigator.sendBeacon('/sync', blob);
+    }
   });
 
   /**
@@ -44,6 +48,8 @@
       console.log('Updated', $profile.displayName);
     } catch (err) {
       console.log('Failed to update:', err);
+    } finally {
+      waitingToUpdate = false;
     }
   }
 
@@ -61,6 +67,8 @@
     updateTimeout = setTimeout(() => {
       updateUser(user);
     }, 3000);
+
+    waitingToUpdate = true;
   }
 </script>
 
