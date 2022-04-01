@@ -15,11 +15,15 @@
   import GoalSelect from '$lib/GoalSelect.svelte';
 
   let updateTimeout;
+  let waitingToUpdate = false;
 
   $: browser && waitToUpdateUser($user);
 
-  beforeNavigate(async () => {
-    await updateUser($user);
+  beforeNavigate(() => {
+    if (waitingToUpdate) {
+      const blob = new Blob([JSON.stringify($user)], { type: 'application/json' });
+      navigator.sendBeacon('/sync', blob);
+    }
   });
 
   /**
@@ -44,6 +48,8 @@
       console.log('Updated', $profile.displayName);
     } catch (err) {
       console.log('Failed to update:', err);
+    } finally {
+      waitingToUpdate = false;
     }
   }
 
@@ -61,11 +67,17 @@
     updateTimeout = setTimeout(() => {
       updateUser(user);
     }, 3000);
+
+    waitingToUpdate = true;
   }
 </script>
 
 <svelte:head>
-  <title>Something Good</title>
+  <title>Something Good Today</title>
+  <meta property="og:title" content="Something Good Today" />
+
+  <meta name="description" content="A tool to help motivate you on long-term projects or daily habits. Did you do something you feel good about today?" />
+  <meta property="og:description" content="A tool to help motivate you on long-term projects or daily habits. Did you do something you feel good about today?" />
 </svelte:head>
 
 <main class="flex flex-column">
