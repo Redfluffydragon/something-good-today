@@ -167,6 +167,8 @@ button:not(:disabled, .img-btn, .clear-btn):hover {
 @font-face {
   font-family: 'Raleway Light';
   src: url('/fonts/Raleway-Light.ttf');
+  font-weight: 300;
+  font-style: normal;
   font-display: swap;
 }
 
