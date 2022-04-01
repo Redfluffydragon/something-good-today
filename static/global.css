@@ -155,7 +155,8 @@ button:not(:disabled, .img-btn, .clear-btn):hover {
   padding: 0;
 }
 
-.img-btn svg, .img-btn img {
+.img-btn svg,
+.img-btn img {
   height: 100%;
 }
 
