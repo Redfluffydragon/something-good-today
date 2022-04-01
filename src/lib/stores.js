@@ -11,7 +11,7 @@ export const loggedIn = writable(false);
 
 export const shouldUpdate = writable(false);
 
-export const historyShown = writable((browser && localStorage.getItem('historyShown')) || 7);
+export const historyShown = writable((browser && localStorage.getItem('historyShown')) || '7');
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyAHCt552UgH7VJGxjiFJlH1D0iLYxuE8iQ',

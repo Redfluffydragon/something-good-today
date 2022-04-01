@@ -27,7 +27,7 @@
   <div class="space-right">
     <label for="historyAmount">Show: </label>
     <select id="historyAmount" bind:value={$historyShown}>
-      <option value="7">Past week</option>
+      <option value="7" selected>Past week</option>
       <option value={dayjs().daysInMonth().toString()}>Past month</option>
       <option value="365">Past year</option>
       <option value="Infinity">All</option>
