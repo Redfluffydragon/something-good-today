@@ -4,7 +4,7 @@
   import EditProjects from '$lib/EditProjects.svelte';
   import PieChart from '$lib/PieChart.svelte';
   import FinishedProjects from '$lib/FinishedProjects.svelte';
-  import { loggedIn, shouldUpdate, user } from '$lib/stores';
+  import { loggedIn, profile, shouldUpdate, user } from '$lib/stores';
   import { beforeNavigate } from '$app/navigation';
   import { browser } from '$app/env';
   import { doc, setDoc } from 'firebase/firestore';
@@ -41,7 +41,7 @@
         { merge: true }
       );
 
-      console.log('Updated', user.name);
+      console.log('Updated', $profile.displayName);
     } catch (err) {
       console.log('Failed to update:', err);
     }
