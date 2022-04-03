@@ -45,23 +45,19 @@ async function fetchAndCache(request) {
 }
 
 worker.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET' || event.request.headers.has('range')) return;
+  if (event.request.mode !== 'navigate') {
+    // Not a page navigation, bail.
+    return;
+  }
 
   const url = new URL(event.request.url);
+  const isStaticAsset = staticAssets.has(url.pathname);
 
-  // don't try to handle e.g. data: URIs
-  const isHttp = url.protocol.startsWith('http');
-  const isDevServerRequest = url.hostname === self.location.hostname && url.port !== self.location.port;
-  const isStaticAsset = url.host === self.location.host && staticAssets.has(url.pathname);
-  const skipBecauseUncached = event.request.cache === 'only-if-cached' && !isStaticAsset;
+  event.respondWith(
+    (async () => {
+      const cachedAsset = isStaticAsset && (await caches.match(event.request));
 
-  if (isHttp && !isDevServerRequest && !skipBecauseUncached) {
-    event.respondWith(
-      (async () => {
-        const cachedAsset = isStaticAsset && (await caches.match(event.request));
-
-        return cachedAsset || fetchAndCache(event.request);
-      })()
-    );
-  }
+      return cachedAsset || fetchAndCache(event.request);
+    })()
+  );
 });
