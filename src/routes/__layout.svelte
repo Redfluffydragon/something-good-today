@@ -23,7 +23,7 @@
   import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
-  import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
+  import { getFirestore, getDoc, doc, setDoc, onSnapshot, enableIndexedDbPersistence } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
   import { addToHistory } from '$lib/user-utils';
 
@@ -69,6 +69,12 @@
         addToHistory();
       } else {
         $user = demoUserData;
+      }
+    });
+
+    enableIndexedDbPersistence($page.stuff.db).catch(err => {
+      if (err.code == 'failed-precondition') {
+        console.log('Offline persistence can only be enabled in one tab at a a time.');
       }
     });
   });
