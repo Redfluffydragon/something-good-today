@@ -21,8 +21,8 @@
 
   beforeNavigate(() => {
     if (waitingToUpdate) {
-      const blob = new Blob([JSON.stringify($user)], { type: 'application/json' });
-      navigator.sendBeacon('/sync', blob);
+      const userBlob = new Blob([JSON.stringify($user)], { type: 'application/json' });
+      navigator.sendBeacon('/sync', userBlob);
     }
   });
 
