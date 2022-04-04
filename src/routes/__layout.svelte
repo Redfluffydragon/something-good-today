@@ -256,7 +256,7 @@
   }
 
   .img-btn img {
-    border: 3px solid var(--accent-color);
+    border: 2.5px solid var(--accent-color);
   }
 
   footer {
