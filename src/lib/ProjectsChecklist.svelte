@@ -28,15 +28,8 @@
   function titleToId(title) {
     return title.toLowerCase().replace(/\s/g, '-');
   }
-</script>
 
-<form
-  {name}
-  id={name}
-  on:submit={e => {
-    e.preventDefault();
-  }}
-  on:input={e => {
+  function input(e) {
     const form = e.target.closest('#' + name);
 
     // get all checkboxes in the current form
@@ -50,7 +43,16 @@
     selected = [..._selected].sort(sortByActive);
 
     dispatch('input', e);
+  }
+</script>
+
+<form
+  {name}
+  id={name}
+  on:submit={e => {
+    e.preventDefault();
   }}
+  on:input={input}
 >
   <ul>
     {#each projects as id (id)}
