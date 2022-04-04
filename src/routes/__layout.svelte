@@ -111,6 +111,7 @@
     $profile = newUser;
     $loggedIn = true;
 
+    // If user is undefined, it's a new user and we need to create a doc in Firestore
     if (!$user) {
       const defaultUserData = {
         goal: '1',
@@ -125,11 +126,11 @@
         uid: newUser.uid,
       };
 
-      await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, {
-        merge: true,
-      });
-      $shouldUpdate = false;
-      $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
+      await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData);
+
+      // Not a perfect solution, but the easiest way to make sure user data is correct
+      location.reload();
+      return;
     }
 
     onSnapshot(doc($page.stuff.db, 'users', newUser.uid), doc => {
