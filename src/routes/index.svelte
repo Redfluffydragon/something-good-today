@@ -13,9 +13,11 @@
   import ProjectHistory from '$lib/ProjectHistory.svelte';
   import ProjectsChecklist from '$lib/ProjectsChecklist.svelte';
   import GoalSelect from '$lib/GoalSelect.svelte';
+  import Celebrate from '$lib/Celebrate.svelte';
 
   let updateTimeout;
   let waitingToUpdate = false;
+  let playCelebrate = false;
 
   $: browser && waitToUpdateUser($user);
 
@@ -70,6 +72,12 @@
 
     waitingToUpdate = true;
   }
+
+  function celebrate() {
+    if ($user.today.length >= parseInt($user.goal)) {
+      playCelebrate = true;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -85,7 +93,10 @@
     <div class="chart">
       <Card style="height: 100%;">
         <h1>Today</h1>
-        <PieChart goal={$user.goal} projects={$user.today} />
+        <div class="relative">
+          <Celebrate bind:play={playCelebrate} />
+          <PieChart goal={$user.goal} projects={$user.today} />
+        </div>
       </Card>
     </div>
 
@@ -95,7 +106,7 @@
           <div>
             <h2>Active Projects:</h2>
             {#if $user.activeProjects?.length}
-              <ProjectsChecklist name="main-projects" projects={$user.activeProjects} bind:selected={$user.today} isSelected={id => $user.today?.includes(id)} />
+              <ProjectsChecklist name="main-projects" projects={$user.activeProjects} bind:selected={$user.today} isSelected={id => $user.today?.includes(id)} on:input={celebrate} />
             {:else}
               <p>You don't have any projects.</p>
             {/if}
