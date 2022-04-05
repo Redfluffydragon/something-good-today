@@ -26,6 +26,7 @@
   import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
   import { addToHistory } from '$lib/user-utils';
+  import Modal from '$lib/Modal.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
   const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
@@ -38,6 +39,7 @@
   let isAnimationRunning = false;
 
   let accountPopupOpen = false;
+  let optionsModalOpen = false;
 
   onMount(() => {
     document.documentElement.toggleAttribute('dark', $darkMode);
@@ -210,6 +212,12 @@
 
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
       <div class="flex flex-column">
+        <button
+          on:click={() => {
+            optionsModalOpen = true;
+            accountPopupOpen = false;
+          }}>Options</button
+        >
         <button on:click={logout} class="login-btn">Log out</button>
       </div>
     </Popup>
@@ -217,6 +225,24 @@
     <button on:click={loginWithGoogle} class="login-btn">Log in</button>
   {/if}
 </div>
+
+<Modal bind:open={optionsModalOpen} title="Options">
+  <div class="flex flex-column">
+    <label for="celebration">
+      Celebration type:
+      <select id="celebration" bind:value={$user.celebration}>
+        <option value="confetti">Confetti</option>
+        <option value="fireworks">Fireworks</option>
+        <option value="none">None</option>
+      </select>
+    </label>
+    <button
+      on:click={() => {
+        optionsModalOpen = false;
+      }}>Done</button
+    >
+  </div>
+</Modal>
 
 <div class="spacer" />
 
