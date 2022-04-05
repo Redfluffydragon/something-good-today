@@ -94,7 +94,7 @@
       <Card style="height: 100%;">
         <h1>Today</h1>
         <div class="relative">
-          <Celebrate bind:play={playCelebrate} />
+          <Celebrate bind:play={playCelebrate} bind:type={$user.celebration} />
           <PieChart goal={$user.goal} projects={$user.today} />
         </div>
       </Card>

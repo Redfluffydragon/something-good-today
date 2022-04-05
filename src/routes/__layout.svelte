@@ -124,6 +124,7 @@
         history: [],
         lastUpdated: Date.now(),
         uid: newUser.uid,
+        celebration: 'confetti',
       };
 
       await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData);
