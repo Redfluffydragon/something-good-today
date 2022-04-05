@@ -4,6 +4,7 @@
   import Card from './Card.svelte';
   import { safeScale } from './transitions';
   import { fade } from 'svelte/transition';
+  import { beforeNavigate } from '$app/navigation';
 
   /** @type {bool} */
   export let open;
@@ -27,6 +28,10 @@
   onDestroy(() => {
     browser && window.removeEventListener('keydown', escape, false);
   });
+
+  beforeNavigate(() => {
+    open = false;
+  })
 </script>
 
 {#if open}
