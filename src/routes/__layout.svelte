@@ -40,6 +40,7 @@
 
   let accountPopupOpen = false;
   let optionsModalOpen = false;
+  let loginModalOpen = false;
 
   onMount(() => {
     document.documentElement.toggleAttribute('dark', $darkMode);
@@ -222,9 +223,23 @@
       </div>
     </Popup>
   {:else}
-    <button on:click={loginWithGoogle} class="login-btn">Log in</button>
+    <button
+      on:click={() => {
+        loginModalOpen = true;
+      }}>Log in</button
+    >
   {/if}
 </div>
+
+<Modal bind:open={loginModalOpen} title="Log In" minWidth="40ch">
+  <div class="grid login-wrapper">
+    <div class="flex flex-column">
+      <button on:click={loginWithGoogle} class="login-btn">Log in with Google</button>
+      <button>Log in with email</button>
+    </div>
+    <a href="/new-account">Create an account</a>
+  </div>
+</Modal>
 
 <Modal bind:open={optionsModalOpen} title="Options">
   <div class="flex flex-column">
@@ -284,6 +299,13 @@
 
   .img-btn img {
     border: 2.5px solid var(--accent-color);
+  }
+
+  .login-wrapper {
+    margin: 0 auto;
+    width: max-content;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
   }
 
   footer {
