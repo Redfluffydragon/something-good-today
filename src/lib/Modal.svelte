@@ -15,6 +15,8 @@
   /** @type {string} */
   export let maxWidth = '';
 
+  export let minWidth = '';
+
   function escape(e) {
     if (e.key === 'Escape') {
       open = false;
@@ -31,12 +33,12 @@
 
   beforeNavigate(() => {
     open = false;
-  })
+  });
 </script>
 
 {#if open}
   <div class="shadow" transition:fade={{ duration: 300 }}>
-    <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth};">
+    <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth}; min-width: min(100%, {minWidth});">
       <Card>
         <div class="wrapper">
           <div class="header">
