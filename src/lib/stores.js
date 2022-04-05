@@ -25,6 +25,7 @@ export const firebaseConfig = {
 export const demoUserData = {
   goal: '3',
   nextId: 6,
+  celebration: 'fireworks',
   projects: {
     0: {
       color: '#ff2962',
