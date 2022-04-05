@@ -60,14 +60,14 @@ async function fireworks(options = {}) {
       },
       {
         delay: 20,
-        offset: { x: Math.random() * minDim / 2 - minDim / 4, y: Math.random() * minDim / 2 - minDim / 4 },
+        offset: { x: (Math.random() * minDim) / 2 - minDim / 4, y: (Math.random() * minDim) / 2 - minDim / 4 },
         velocities: randomVelocities(options.particleCount || 70),
       },
       {
         delay: 40,
-        offset: { x: Math.random() * minDim / 2 - minDim / 4, y: Math.random() * minDim / 2 - minDim / 4 },
+        offset: { x: (Math.random() * minDim) / 2 - minDim / 4, y: (Math.random() * minDim) / 2 - minDim / 4 },
         velocities: randomVelocities(options.particleCount || 70),
-      }
+      },
     ],
   };
   options = { ...defaults, ...options };
@@ -103,14 +103,14 @@ function fireworkPoint(x, y) {
 
 function randomVelocities(number, scale = 1.4, randomness = 0.3) {
   return Array.from(new Array(number), () => {
-    return { x: scale - Math.random() * randomness, y: scale- Math.random() * randomness };
+    return { x: scale - Math.random() * randomness, y: scale - Math.random() * randomness };
   });
 }
 
 /**
  * Draw firework particles - animates recursively with requestAnimationFrame
- * @param {Object} options 
- * @param {function} resolve 
+ * @param {Object} options
+ * @param {function} resolve
  * @returns {void}
  */
 function drawFireworkParticles(options, resolve) {
@@ -128,7 +128,6 @@ function drawFireworkParticles(options, resolve) {
 
   for (const burst of options.bursts) {
     if (maxLifespan - options.countdown > burst.delay) {
-
       // Rotate the hue for color fading
       context.fillStyle = `hsl(${hue - burst.delay * 5}, 100%, 76%)`;
       hue += 5;
