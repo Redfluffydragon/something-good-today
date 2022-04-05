@@ -33,8 +33,8 @@
       await newFireworks({
         origin: {
           y: 0.3,
-          x: 0.5
-        }
+          x: 0.5,
+        },
       });
     }
 
