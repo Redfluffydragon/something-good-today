@@ -76,8 +76,8 @@
   <title>Something Good Today</title>
   <meta property="og:title" content="Something Good Today" />
 
-  <meta name="description" content="A tool to help motivate you on long-term projects or daily habits. Did you do something you feel good about today?" />
-  <meta property="og:description" content="A tool to help motivate you on long-term projects or daily habits. Did you do something you feel good about today?" />
+  <meta name="description" content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?" />
+  <meta property="og:description" content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?" />
 </svelte:head>
 
 <main class="flex flex-column">
