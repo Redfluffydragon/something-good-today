@@ -1,27 +1,43 @@
 <script>
   import confetti from 'canvas-confetti';
   import { onMount } from 'svelte';
+  import fireworks from './fireworks';
 
   export let play;
 
+  export let type = 'fireworks';
+
   let canvas;
   let newConfetti;
+  let newFireworks;
 
   onMount(() => {
     newConfetti = confetti.create(canvas, {
       resize: true,
     });
+
+    newFireworks = fireworks.create(canvas);
   });
 
-  $: play && playConfetti();
+  $: play && playCelebration();
 
-  async function playConfetti() {
-    await newConfetti({
-      startVelocity: 40,
-      origin: {
-        y: 0.7, // Down from center slightly because they launch up
-      }
-    });
+  async function playCelebration() {
+    if (type === 'confetti') {
+      await newConfetti({
+        startVelocity: 40,
+        origin: {
+          y: 0.7, // Down from center slightly because they launch up
+        },
+      });
+    } else if (type === 'fireworks') {
+      await newFireworks({
+        origin: {
+          y: 0.3,
+          x: 0.5
+        }
+      });
+    }
+
     play = false;
   }
 </script>
