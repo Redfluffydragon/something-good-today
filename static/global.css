@@ -181,6 +181,7 @@ ul {
 main {
   max-width: 120ch;
   margin: 0 auto;
+  padding: 2ch;
 }
 
 .flex {

@@ -131,10 +131,6 @@
 </main>
 
 <style>
-  main {
-    padding: 2ch;
-  }
-
   .main-content {
     flex-wrap: wrap;
     flex-direction: row-reverse;
