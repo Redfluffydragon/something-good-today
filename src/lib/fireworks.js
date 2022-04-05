@@ -1,3 +1,8 @@
+/**
+Somewhat based on this: https://medium.com/front-end-weekly/how-to-add-some-fireworks-to-your-website-18b594b06cca
+But using canvas and Svelte easing functions and stuff. 
+*/
+
 import { expoOut, quadIn } from 'svelte/easing';
 
 // canvas element
