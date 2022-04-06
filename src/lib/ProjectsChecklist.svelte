@@ -20,6 +20,8 @@
   // internally, use a Set to keep track of selected projects. Have to use an array for Firestore (I think, there's not a Set option anyway)
   let _selected = new Set(selected);
 
+  let oldSize = _selected.size;
+
   const dispatch = createEventDispatcher();
 
   /**
@@ -30,6 +32,8 @@
   }
 
   function input(e) {
+    oldSize = _selected.size;
+
     const form = e.target.closest('#' + name);
 
     // get all checkboxes in the current form
@@ -42,7 +46,9 @@
     // Transform back into an array for external, and sort according to the active projects (inactive projects are sorted to the end)
     selected = [..._selected].sort(sortByActive);
 
-    dispatch('input', e);
+    dispatch('input', {
+      oldSize
+    });
   }
 </script>
 

@@ -178,7 +178,7 @@
 </div>
 
 <Modal bind:open={loginModalOpen} title="Log In" minWidth="40ch">
-  <div class="grid login-wrapper">
+  <div class="flex login-wrapper">
     <div class="flex flex-column">
       <button
         on:click={() => {
@@ -188,6 +188,7 @@
       >
       <LogInWithEmail />
     </div>
+    <p>OR</p>
     <a href="/new-account" sveltekit:prefetch>Create an account</a>
   </div>
 </Modal>
@@ -269,9 +270,9 @@
 
   .login-wrapper {
     margin: 0 auto;
-    width: max-content;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
+    place-content: center;
+    place-items: center;
+    flex-wrap: wrap;
   }
 
   footer {
