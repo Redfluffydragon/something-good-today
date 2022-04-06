@@ -1,7 +1,6 @@
 <script>
   import Modal from './Modal.svelte';
   import { user } from './stores';
-  import Tooltip from './Tooltip.svelte';
 
   let open = false;
 
