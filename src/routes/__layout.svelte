@@ -216,6 +216,20 @@
 
 <footer>
   <h2>Did you do something you feel good about today?</h2>
+  <div class="flex">
+    <div class="flex links">
+      <a href="/">Home</a>
+      {#if !$loggedIn}
+        <a href="/new-account">Create an account</a>
+      {/if}
+      <a href="https://github.com/Redfluffydragon/something-good-today">Source code</a>
+      <a href="https://github.com/Redfluffydragon/something-good-today/issues/new">Report an issue</a>
+    </div>
+    <div class="flex links right">
+      <a href="/privacy-policy">Privacy Policy</a>
+    </div>
+  </div>
+  <br />
   <p>&copy; 2022 Kai-Shen Deru</p>
 </footer>
 
@@ -223,6 +237,7 @@
   .clear-btn {
     padding: 1ch;
     position: absolute;
+    top: 0;
   }
 
   path {
@@ -266,6 +281,23 @@
     box-shadow: var(--shadow-elevation-high);
     position: sticky;
     top: 100vh;
+  }
+
+  footer .flex {
+    flex-wrap: wrap;
+  }
+
+  footer .links {
+    margin-top: 0.5ch;
+  }
+
+  footer .right {
+    margin-left: auto;
+  }
+
+  footer a {
+    color: var(--color);
+    font-size: 1.25rem;
   }
 
   .spacer {
