@@ -31,9 +31,8 @@ self.addEventListener('activate', event => {
   );
 });
 
-
 /**
- * Fetch the asset from the network and store it in the cache. 
+ * Fetch the asset from the network and store it in the cache.
  * Fall back to the cache if the user is offline.
  */
 async function fetchAndCache(request) {
@@ -68,7 +67,7 @@ self.addEventListener('fetch', event => {
         // always serve static files and bundler-generated assets from cache.
         // if your application has other URLs with data that will never change,
         // set this variable to true for them and they will only be fetched once.
-        const cachedAsset = isStaticAsset && await caches.match(event.request);
+        const cachedAsset = isStaticAsset && (await caches.match(event.request));
 
         // for pages, you might want to serve a build `service-worker-index.html` file,
         // which Sapper has generated for you. It's not right for every
