@@ -14,8 +14,8 @@ let context;
 // center of the canvas
 let center = {};
 
-// Max lifespan in frames (approximately)
-let maxLifespan = 120;
+// Max lifespan in ms (approximately)
+let maxLifespan = 2000;
 
 // spread of the firework - set to half the minimum dimension of the canvas
 let spread;
@@ -28,6 +28,8 @@ let downVel = gravity;
 
 // For changing color
 let hue = 59;
+
+let startTime;
 
 /**
  * Set up to play a fireworks animation. Returns a fireworks function you can call to play fireworks
@@ -50,7 +52,7 @@ async function fireworks(options = {}) {
 
   const defaults = {
     particleCount: 70,
-    countdown: maxLifespan,
+    lifespan: maxLifespan,
     origin: { x: 0.5, y: 0.5 },
     bursts: [
       {
@@ -59,12 +61,12 @@ async function fireworks(options = {}) {
         velocities: randomVelocities(options.particleCount || 70),
       },
       {
-        delay: 20,
+        delay: 300,
         offset: { x: (Math.random() * minDim) / 2 - minDim / 4, y: (Math.random() * minDim) / 2 - minDim / 4 },
         velocities: randomVelocities(options.particleCount || 70),
       },
       {
-        delay: 40,
+        delay: 600,
         offset: { x: (Math.random() * minDim) / 2 - minDim / 4, y: (Math.random() * minDim) / 2 - minDim / 4 },
         velocities: randomVelocities(options.particleCount || 70),
       },
@@ -84,6 +86,7 @@ async function fireworks(options = {}) {
   context.strokeStyle = 'none';
 
   const promise = new Promise(resolve => {
+    startTime = Date.now();
     // reset downwards velocity
     downVel = gravity;
     drawFireworkParticles(options, resolve);
@@ -117,7 +120,7 @@ function drawFireworkParticles(options, resolve) {
   // Clear the canvas before checking if it should stop
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  if (options.countdown === 0) {
+  if (Date.now() >= startTime + options.lifespan) {
     resolve();
     return;
   }
@@ -127,14 +130,14 @@ function drawFireworkParticles(options, resolve) {
   });
 
   for (const burst of options.bursts) {
-    if (maxLifespan - options.countdown > burst.delay) {
+    if (Date.now() - startTime > burst.delay) {
       // Rotate the hue for color fading
       context.fillStyle = `hsl(${hue - burst.delay * 5}, 100%, 76%)`;
       hue += 5;
 
       for (let i = 0; i < options.particleCount; i++) {
         const rotation = (i / options.particleCount) * Math.PI * 2;
-        const time = 1 - (options.countdown + burst.delay) / maxLifespan;
+        const time = (Date.now() - startTime - burst.delay) / maxLifespan;
 
         context.beginPath();
         fireworkPoint(
@@ -148,8 +151,6 @@ function drawFireworkParticles(options, resolve) {
       }
     }
   }
-
-  options.countdown--;
 }
 
 export default {
