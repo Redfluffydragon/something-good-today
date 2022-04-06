@@ -64,8 +64,8 @@
     waitingToUpdate = true;
   }
 
-  function celebrate() {
-    if ($user.today.length >= parseInt($user.goal)) {
+  function celebrate(e) {
+    if ($user.today.length >= parseInt($user.goal) && e.detail.oldSize <= $user.today.length) {
       playCelebrate = true;
     }
   }
