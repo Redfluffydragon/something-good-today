@@ -25,7 +25,7 @@
   import { page } from '$app/stores';
   import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
-  import { addToHistory } from '$lib/user-utils';
+  import { addToHistory, initializeUser, updateUser } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
@@ -68,7 +68,7 @@
 
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
-        initializeUser(newUser);
+        initializeUser($page.stuff.db, newUser);
         addToHistory();
       } else {
         $user = demoUserData;
@@ -108,61 +108,13 @@
       );
   }
 
-  async function initializeUser(newUser) {
-    $shouldUpdate = false;
-    $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
-    $profile = newUser;
-    $loggedIn = true;
-
-    // If user is undefined, it's a new user and we need to create a doc in Firestore
-    if (!$user) {
-      const defaultUserData = {
-        goal: '1',
-        nextId: 0,
-        projects: {},
-        activeProjects: [],
-        finishedProjects: [],
-        deletedProjects: [],
-        today: [],
-        history: [],
-        lastUpdated: Date.now(),
-        uid: newUser.uid,
-        celebration: 'confetti',
-      };
-
-      await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData);
-
-      // Not a perfect solution, but the easiest way to make sure user data is correct
-      location.reload();
-      return;
-    }
-
-    onSnapshot(doc($page.stuff.db, 'users', newUser.uid), doc => {
-      // Only update local data if the write is completed
-      if (!doc.metadata.hasPendingWrites) {
-        $shouldUpdate = false;
-        $user = doc.data();
-      }
-    });
-  }
-
   function loginWithGoogle() {
     signInWithPopup($page.stuff.auth, $page.stuff.provider)
-      .then(async result => {
-        // The signed-in user info.
-        const newUser = result.user;
-
-        initializeUser(newUser);
+      .then(result => {
+        initializeUser($page.stuff.db, result.user);
       })
       .catch(error => {
         console.log(error);
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
       });
   }
 
