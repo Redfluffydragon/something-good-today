@@ -20,12 +20,12 @@
   import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
-  import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+  import { GoogleAuthProvider, getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
   import { getFirestore } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
-  import { addToHistory, initializeUser, updateUser } from '$lib/user-utils';
+  import { addToHistory, initializeUser, loginWithGoogle, updateUser } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
   import LogInWithEmail from '$lib/LogInWithEmail.svelte';
 
@@ -109,16 +109,6 @@
       );
   }
 
-  function loginWithGoogle() {
-    signInWithPopup($page.stuff.auth, $page.stuff.provider)
-      .then(result => {
-        initializeUser($page.stuff.db, result.user);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
   function logout() {
     // Sync before logout
     updateUser($page.stuff.db, $user);
@@ -192,7 +182,7 @@
     <div class="flex flex-column">
       <button
         on:click={() => {
-          loginWithGoogle();
+          loginWithGoogle($page.stuff.auth, $page.stuff.provider, $page.stuff.db);
           loginModalOpen = false;
         }}>Log in with Google</button
       >

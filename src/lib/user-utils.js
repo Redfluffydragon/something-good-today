@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { signInWithPopup } from 'firebase/auth';
 import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { get } from 'svelte/store';
 import { loggedIn, profile, shouldUpdate, user } from './stores';
@@ -75,4 +76,14 @@ export async function updateUser(db, user) {
     },
     { merge: true }
   );
+}
+
+export async function loginWithGoogle(auth, provider, db) {
+  signInWithPopup(auth, provider)
+    .then(result => {
+      initializeUser(db, result.user);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
