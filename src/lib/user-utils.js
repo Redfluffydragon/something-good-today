@@ -56,7 +56,7 @@ export async function initializeUser(db, newUser) {
       history: [],
       lastUpdated: Date.now(),
       uid: newUser.uid,
-      celebration: 'confetti',
+      celebration: 'fireworks',
     };
 
     await setDoc(doc(db, 'users', newUser.uid), defaultUserData);
