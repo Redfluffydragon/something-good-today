@@ -175,7 +175,7 @@
             accountPopupOpen = false;
           }}>Options</button
         >
-        <button on:click={logout} class="login-btn">Log out</button>
+        <button on:click={logout}>Log out</button>
       </div>
     </Popup>
   {:else}
@@ -194,8 +194,7 @@
         on:click={() => {
           loginWithGoogle();
           loginModalOpen = false;
-        }}
-        class="login-btn">Log in with Google</button
+        }}>Log in with Google</button
       >
       <LogInWithEmail />
     </div>
