@@ -5,14 +5,16 @@ const CACHE_NAME = `static-cache-${version}`;
 
 const to_cache = build.concat(files);
 
-worker.addEventListener('install', event => {
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(to_cache))
+    caches
+      .open(CACHE_NAME)
+      .then(cache => cache.addAll(to_cache))
       .then(worker.skipWaiting)
   );
 });
 
-worker.addEventListener('activate', event => {
+self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(async keys => {
       for (const key of keys) {
@@ -24,19 +26,15 @@ worker.addEventListener('activate', event => {
   );
 });
 
-worker.addEventListener('fetch', event => {
+self.addEventListener('fetch', event => {
   if (event.request.mode !== 'navigate') {
     // Not a page navigation, bail.
     return;
   }
 
   event.respondWith(
-    fetch(event.request)
-      .catch(async () => {
-        return caches.open(CACHE_NAME)
-          .then(cache => {
-            return cache.match(event.request);
-          });
-      })
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
   );
 });
