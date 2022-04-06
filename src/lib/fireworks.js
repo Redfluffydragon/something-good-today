@@ -93,12 +93,12 @@ async function fireworks(options = {}) {
 }
 
 /**
- * Draw an ellipse at the given x and y
+ * Draw an ellipse at the given x and y (it rounds them for better performance)
  * @param {number} x x-coordinate on the canvas
  * @param {number} y y-coordinate on the canvas
  */
 function fireworkPoint(x, y) {
-  context.ellipse(x, y, 4, 4, 0, 0, Math.PI * 2);
+  context.ellipse(Math.round(x), Math.round(y), 4, 4, 0, 0, Math.PI * 2);
 }
 
 function randomVelocities(number, scale = 1.4, randomness = 0.3) {
