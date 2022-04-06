@@ -20,7 +20,7 @@
   import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData, shouldUpdate } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
-  import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+  import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
   import { getFirestore, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
