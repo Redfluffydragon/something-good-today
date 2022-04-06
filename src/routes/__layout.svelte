@@ -163,7 +163,7 @@
       {#if $profile.photoURL}
         <img src={$profile.photoURL} alt="" width="64" height="64" />
       {:else}
-        {$profile.displayName[0]}
+        {$profile.displayName?.[0] || $profile.email[0]}
       {/if}
     </button>
 
