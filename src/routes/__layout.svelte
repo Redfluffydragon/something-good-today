@@ -291,10 +291,6 @@
     margin-top: 0.5ch;
   }
 
-  footer .right {
-    margin-left: auto;
-  }
-
   footer a {
     color: var(--color);
     font-size: 1.25rem;
@@ -302,5 +298,11 @@
 
   .spacer {
     height: 3em;
+  }
+
+  @media (min-width: 570px) {
+    footer .right {
+      margin-left: auto;
+    }
   }
 </style>
