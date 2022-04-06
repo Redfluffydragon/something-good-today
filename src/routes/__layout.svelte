@@ -27,6 +27,7 @@
   import Popup from '$lib/Popup.svelte';
   import { addToHistory, initializeUser, updateUser } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
+  import LogInWithEmail from '$lib/LogInWithEmail.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
   const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
@@ -189,8 +190,14 @@
 <Modal bind:open={loginModalOpen} title="Log In" minWidth="40ch">
   <div class="grid login-wrapper">
     <div class="flex flex-column">
-      <button on:click={loginWithGoogle} class="login-btn">Log in with Google</button>
-      <button>Log in with email</button>
+      <button
+        on:click={() => {
+          loginWithGoogle();
+          loginModalOpen = false;
+        }}
+        class="login-btn">Log in with Google</button
+      >
+      <LogInWithEmail />
     </div>
     <a href="/new-account">Create an account</a>
   </div>
