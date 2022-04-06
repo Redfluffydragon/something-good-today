@@ -7,9 +7,8 @@
   import { loggedIn, profile, shouldUpdate, user } from '$lib/stores';
   import { beforeNavigate } from '$app/navigation';
   import { browser } from '$app/env';
-  import { doc, setDoc } from 'firebase/firestore';
   import { page } from '$app/stores';
-  import { addToHistory } from '$lib/user-utils';
+  import { updateUser } from '$lib/user-utils';
   import ProjectHistory from '$lib/ProjectHistory.svelte';
   import ProjectsChecklist from '$lib/ProjectsChecklist.svelte';
   import GoalSelect from '$lib/GoalSelect.svelte';
@@ -31,21 +30,13 @@
   /**
    * @param {Object} user
    */
-  async function updateUser(user) {
+  async function safeUpdateUser(user) {
     if (!$page.stuff.db || !$loggedIn || !user.uid) {
       return;
     }
 
     try {
-      addToHistory();
-      await setDoc(
-        doc($page.stuff.db, 'users', user.uid),
-        {
-          ...user,
-          lastUpdated: Date.now(),
-        },
-        { merge: true }
-      );
+      await updateUser($page.stuff.db, user);
 
       console.log('Updated', $profile.displayName);
     } catch (err) {
@@ -67,7 +58,7 @@
 
     clearTimeout(updateTimeout);
     updateTimeout = setTimeout(() => {
-      updateUser(user);
+      safeUpdateUser(user);
     }, 3000);
 
     waitingToUpdate = true;
@@ -131,10 +122,6 @@
 </main>
 
 <style>
-  main {
-    padding: 2ch;
-  }
-
   .main-content {
     flex-wrap: wrap;
     flex-direction: row-reverse;

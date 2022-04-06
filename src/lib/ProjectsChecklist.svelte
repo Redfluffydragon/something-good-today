@@ -8,7 +8,7 @@
   export let isSelected;
 
   /** @type {array} The projects to list */
-  export let projects = $user.activeProjects;
+  export let projects;
 
   /** @type {array} An array of the selected projects' IDs */
   export let selected;
