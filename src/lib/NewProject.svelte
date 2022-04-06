@@ -55,7 +55,7 @@
   </button>
   <Modal title="New project" bind:open>
     <br />
-    <form action="" id="newProject" class="grid" on:submit={addNewProject}>
+    <form id="newProject" class="grid" on:submit={addNewProject}>
       <label for="title" class="relative">Project title:</label>
       <input type="text" name="title" id="title" bind:this={titleInput} required />
 
