@@ -198,7 +198,7 @@
       >
       <LogInWithEmail />
     </div>
-    <a href="/new-account">Create an account</a>
+    <a href="/new-account" sveltekit:prefetch>Create an account</a>
   </div>
 </Modal>
 
