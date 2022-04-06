@@ -257,6 +257,7 @@
   .clear-btn {
     padding: 1ch;
     position: absolute;
+    top: 0;
   }
 
   path {
