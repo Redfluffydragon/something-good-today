@@ -4,6 +4,7 @@
   import Card from './Card.svelte';
   import { safeScale } from './transitions';
   import { fade } from 'svelte/transition';
+  import { beforeNavigate } from '$app/navigation';
 
   /** @type {bool} */
   export let open;
@@ -13,6 +14,8 @@
 
   /** @type {string} */
   export let maxWidth = '';
+
+  export let minWidth = '';
 
   function escape(e) {
     if (e.key === 'Escape') {
@@ -27,11 +30,15 @@
   onDestroy(() => {
     browser && window.removeEventListener('keydown', escape, false);
   });
+
+  beforeNavigate(() => {
+    open = false;
+  });
 </script>
 
 {#if open}
   <div class="shadow" transition:fade={{ duration: 300 }}>
-    <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth};">
+    <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth}; min-width: min(100%, {minWidth});">
       <Card>
         <div class="wrapper">
           <div class="header">

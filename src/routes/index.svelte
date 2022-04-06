@@ -7,43 +7,36 @@
   import { loggedIn, profile, shouldUpdate, user } from '$lib/stores';
   import { beforeNavigate } from '$app/navigation';
   import { browser } from '$app/env';
-  import { doc, setDoc } from 'firebase/firestore';
   import { page } from '$app/stores';
-  import { addToHistory } from '$lib/user-utils';
+  import { updateUser } from '$lib/user-utils';
   import ProjectHistory from '$lib/ProjectHistory.svelte';
   import ProjectsChecklist from '$lib/ProjectsChecklist.svelte';
   import GoalSelect from '$lib/GoalSelect.svelte';
+  import Celebrate from '$lib/Celebrate.svelte';
 
   let updateTimeout;
   let waitingToUpdate = false;
+  let playCelebrate = false;
 
   $: browser && waitToUpdateUser($user);
 
   beforeNavigate(() => {
     if (waitingToUpdate) {
-      const blob = new Blob([JSON.stringify($user)], { type: 'application/json' });
-      navigator.sendBeacon('/sync', blob);
+      const userBlob = new Blob([JSON.stringify($user)], { type: 'application/json' });
+      navigator.sendBeacon('/sync', userBlob);
     }
   });
 
   /**
    * @param {Object} user
    */
-  async function updateUser(user) {
+  async function safeUpdateUser(user) {
     if (!$page.stuff.db || !$loggedIn || !user.uid) {
       return;
     }
 
     try {
-      addToHistory();
-      await setDoc(
-        doc($page.stuff.db, 'users', user.uid),
-        {
-          ...user,
-          lastUpdated: Date.now(),
-        },
-        { merge: true }
-      );
+      await updateUser($page.stuff.db, user);
 
       console.log('Updated', $profile.displayName);
     } catch (err) {
@@ -65,10 +58,16 @@
 
     clearTimeout(updateTimeout);
     updateTimeout = setTimeout(() => {
-      updateUser(user);
+      safeUpdateUser(user);
     }, 3000);
 
     waitingToUpdate = true;
+  }
+
+  function celebrate(e) {
+    if ($user.today.length >= parseInt($user.goal) && e.detail.oldSize <= $user.today.length) {
+      playCelebrate = true;
+    }
   }
 </script>
 
@@ -76,8 +75,8 @@
   <title>Something Good Today</title>
   <meta property="og:title" content="Something Good Today" />
 
-  <meta name="description" content="A tool to help motivate you on long-term projects or daily habits. Did you do something you feel good about today?" />
-  <meta property="og:description" content="A tool to help motivate you on long-term projects or daily habits. Did you do something you feel good about today?" />
+  <meta name="description" content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?" />
+  <meta property="og:description" content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?" />
 </svelte:head>
 
 <main class="flex flex-column">
@@ -85,7 +84,10 @@
     <div class="chart">
       <Card style="height: 100%;">
         <h1>Today</h1>
-        <PieChart goal={$user.goal} projects={$user.today} />
+        <div class="relative">
+          <Celebrate bind:play={playCelebrate} bind:type={$user.celebration} />
+          <PieChart goal={$user.goal} projects={$user.today} />
+        </div>
       </Card>
     </div>
 
@@ -95,7 +97,7 @@
           <div>
             <h2>Active Projects:</h2>
             {#if $user.activeProjects?.length}
-              <ProjectsChecklist name="main-projects" projects={$user.activeProjects} bind:selected={$user.today} isSelected={id => $user.today?.includes(id)} />
+              <ProjectsChecklist name="main-projects" projects={$user.activeProjects} bind:selected={$user.today} isSelected={id => $user.today?.includes(id)} on:input={celebrate} />
             {:else}
               <p>You don't have any projects.</p>
             {/if}
@@ -120,10 +122,6 @@
 </main>
 
 <style>
-  main {
-    padding: 2ch;
-  }
-
   .main-content {
     flex-wrap: wrap;
     flex-direction: row-reverse;

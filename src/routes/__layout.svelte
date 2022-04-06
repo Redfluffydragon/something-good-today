@@ -17,15 +17,17 @@
 </script>
 
 <script>
-  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData, shouldUpdate } from '$lib/stores';
+  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
-  import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+  import { GoogleAuthProvider, getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
-  import { getFirestore, getDoc, doc, setDoc, onSnapshot, enableIndexedDbPersistence } from 'firebase/firestore';
+  import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
-  import { addToHistory } from '$lib/user-utils';
+  import { addToHistory, initializeUser, loginWithGoogle, updateUser } from '$lib/user-utils';
+  import Modal from '$lib/Modal.svelte';
+  import LogInWithEmail from '$lib/LogInWithEmail.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
   const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
@@ -38,6 +40,8 @@
   let isAnimationRunning = false;
 
   let accountPopupOpen = false;
+  let optionsModalOpen = false;
+  let loginModalOpen = false;
 
   onMount(() => {
     document.documentElement.toggleAttribute('dark', $darkMode);
@@ -65,7 +69,7 @@
 
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
-        initializeUser(newUser);
+        initializeUser($page.stuff.db, newUser);
         addToHistory();
       } else {
         $user = demoUserData;
@@ -111,63 +115,10 @@
       );
   }
 
-  async function initializeUser(newUser) {
-    $shouldUpdate = false;
-    $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
-    $profile = newUser;
-    $loggedIn = true;
-
-    if (!$user) {
-      const defaultUserData = {
-        goal: '1',
-        nextId: 0,
-        projects: {},
-        activeProjects: [],
-        finishedProjects: [],
-        deletedProjects: [],
-        today: [],
-        history: [],
-        lastUpdated: Date.now(),
-        uid: newUser.uid,
-      };
-
-      await setDoc(doc($page.stuff.db, 'users', newUser.uid), defaultUserData, {
-        merge: true,
-      });
-      $shouldUpdate = false;
-      $user = (await getDoc(doc($page.stuff.db, 'users', newUser.uid)))?.data();
-    }
-
-    onSnapshot(doc($page.stuff.db, 'users', newUser.uid), doc => {
-      // Only update local data if the write is completed
-      if (!doc.metadata.hasPendingWrites) {
-        $shouldUpdate = false;
-        $user = doc.data();
-      }
-    });
-  }
-
-  function loginWithGoogle() {
-    signInWithPopup($page.stuff.auth, $page.stuff.provider)
-      .then(async result => {
-        // The signed-in user info.
-        const newUser = result.user;
-
-        initializeUser(newUser);
-      })
-      .catch(error => {
-        console.log(error);
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-      });
-  }
-
   function logout() {
+    // Sync before logout
+    updateUser($page.stuff.db, $user);
+
     console.log('Logged out');
     signOut($page.stuff.auth)
       .then(() => {
@@ -208,19 +159,63 @@
       {#if $profile.photoURL}
         <img src={$profile.photoURL} alt="" width="64" height="64" />
       {:else}
-        {$profile.displayName[0]}
+        {$profile.displayName?.[0] || $profile.email[0]}
       {/if}
     </button>
 
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
       <div class="flex flex-column">
-        <button on:click={logout} class="login-btn">Log out</button>
+        <button
+          on:click={() => {
+            optionsModalOpen = true;
+            accountPopupOpen = false;
+          }}>Options</button
+        >
+        <button on:click={logout}>Log out</button>
       </div>
     </Popup>
   {:else}
-    <button on:click={loginWithGoogle} class="login-btn">Log in</button>
+    <button
+      on:click={() => {
+        loginModalOpen = true;
+      }}>Log in</button
+    >
   {/if}
 </div>
+
+<Modal bind:open={loginModalOpen} title="Log In" minWidth="40ch">
+  <div class="flex login-wrapper">
+    <div class="flex flex-column">
+      <button
+        on:click={() => {
+          loginWithGoogle($page.stuff.auth, $page.stuff.provider, $page.stuff.db);
+          loginModalOpen = false;
+        }}>Log in with Google</button
+      >
+      <LogInWithEmail />
+    </div>
+    <p>OR</p>
+    <a href="/new-account" sveltekit:prefetch>Create an account</a>
+  </div>
+</Modal>
+
+<Modal bind:open={optionsModalOpen} title="Options">
+  <div class="flex flex-column">
+    <label for="celebration">
+      Celebration type:
+      <select id="celebration" bind:value={$user.celebration}>
+        <option value="confetti">Confetti</option>
+        <option value="fireworks">Fireworks</option>
+        <option value="none">None</option>
+      </select>
+    </label>
+    <button
+      on:click={() => {
+        optionsModalOpen = false;
+      }}>Done</button
+    >
+  </div>
+</Modal>
 
 <div class="spacer" />
 
@@ -228,6 +223,20 @@
 
 <footer>
   <h2>Did you do something you feel good about today?</h2>
+  <div class="flex">
+    <div class="flex links">
+      <a href="/">Home</a>
+      {#if !$loggedIn}
+        <a href="/new-account">Create an account</a>
+      {/if}
+      <a href="https://github.com/Redfluffydragon/something-good-today">Source code</a>
+      <a href="https://github.com/Redfluffydragon/something-good-today/issues/new">Report an issue</a>
+    </div>
+    <div class="flex links right">
+      <a href="/privacy-policy">Privacy Policy</a>
+    </div>
+  </div>
+  <br />
   <p>&copy; 2022 Kai-Shen Deru</p>
 </footer>
 
@@ -235,6 +244,7 @@
   .clear-btn {
     padding: 1ch;
     position: absolute;
+    top: 0;
   }
 
   path {
@@ -261,7 +271,14 @@
   }
 
   .img-btn img {
-    border: 3px solid var(--accent-color);
+    border: 2.5px solid var(--accent-color);
+  }
+
+  .login-wrapper {
+    margin: 0 auto;
+    place-content: center;
+    place-items: center;
+    flex-wrap: wrap;
   }
 
   footer {
@@ -273,7 +290,26 @@
     top: 100vh;
   }
 
+  footer .flex {
+    flex-wrap: wrap;
+  }
+
+  footer .links {
+    margin-top: 0.5ch;
+  }
+
+  footer a {
+    color: var(--color);
+    font-size: 1.25rem;
+  }
+
   .spacer {
     height: 3em;
+  }
+
+  @media (min-width: 570px) {
+    footer .right {
+      margin-left: auto;
+    }
   }
 </style>

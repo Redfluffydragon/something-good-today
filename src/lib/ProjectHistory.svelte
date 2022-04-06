@@ -27,7 +27,7 @@
   <div class="space-right">
     <label for="historyAmount">Show: </label>
     <select id="historyAmount" bind:value={$historyShown}>
-      <option value="7">Past week</option>
+      <option value="7" selected>Past week</option>
       <option value={dayjs().daysInMonth().toString()}>Past month</option>
       <option value="365">Past year</option>
       <option value="Infinity">All</option>
@@ -69,7 +69,7 @@
       <GoalSelect bind:goal={$user.history[dateToEdit].goal} />
     </div>
     <h3>Active projects</h3>
-    <ProjectsChecklist name="editing-active" bind:selected={editingActive} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
+    <ProjectsChecklist name="editing-active" bind:selected={editingActive} projects={$user.activeProjects} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
     <h3>Finished Projects</h3>
     <ProjectsChecklist name="editing-finished" bind:selected={editingFinished} projects={$user.finishedProjects} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
     <button

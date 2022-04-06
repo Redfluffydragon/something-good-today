@@ -8,7 +8,7 @@
   export let isSelected;
 
   /** @type {array} The projects to list */
-  export let projects = $user.activeProjects;
+  export let projects;
 
   /** @type {array} An array of the selected projects' IDs */
   export let selected;
@@ -20,6 +20,8 @@
   // internally, use a Set to keep track of selected projects. Have to use an array for Firestore (I think, there's not a Set option anyway)
   let _selected = new Set(selected);
 
+  let oldSize = _selected.size;
+
   const dispatch = createEventDispatcher();
 
   /**
@@ -28,15 +30,10 @@
   function titleToId(title) {
     return title.toLowerCase().replace(/\s/g, '-');
   }
-</script>
 
-<form
-  {name}
-  id={name}
-  on:submit={e => {
-    e.preventDefault();
-  }}
-  on:input={e => {
+  function input(e) {
+    oldSize = _selected.size;
+
     const form = e.target.closest('#' + name);
 
     // get all checkboxes in the current form
@@ -49,8 +46,19 @@
     // Transform back into an array for external, and sort according to the active projects (inactive projects are sorted to the end)
     selected = [..._selected].sort(sortByActive);
 
-    dispatch('input', e);
+    dispatch('input', {
+      oldSize
+    });
+  }
+</script>
+
+<form
+  {name}
+  id={name}
+  on:submit={e => {
+    e.preventDefault();
   }}
+  on:input={input}
 >
   <ul>
     {#each projects as id (id)}

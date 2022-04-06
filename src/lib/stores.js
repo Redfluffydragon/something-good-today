@@ -11,7 +11,7 @@ export const loggedIn = writable(false);
 
 export const shouldUpdate = writable(false);
 
-export const historyShown = writable((browser && localStorage.getItem('historyShown')) || 7);
+export const historyShown = writable((browser && localStorage.getItem('historyShown')) || '7');
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyAHCt552UgH7VJGxjiFJlH1D0iLYxuE8iQ',
@@ -25,6 +25,7 @@ export const firebaseConfig = {
 export const demoUserData = {
   goal: '3',
   nextId: 6,
+  celebration: 'fireworks',
   projects: {
     0: {
       color: '#ff2962',
