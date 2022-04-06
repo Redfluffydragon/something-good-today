@@ -119,6 +119,9 @@
   }
 
   function logout() {
+    // Sync before logout
+    updateUser($page.stuff.db, $user);
+
     console.log('Logged out');
     signOut($page.stuff.auth)
       .then(() => {
