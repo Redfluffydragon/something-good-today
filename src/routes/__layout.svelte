@@ -23,7 +23,7 @@
   import { GoogleAuthProvider, getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
-  import { getFirestore } from 'firebase/firestore';
+  import { getFirestore, enableIndexedDbPersistence, disableNetwork } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
   import { addToHistory, initializeUser, loginWithGoogle, updateUser } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
@@ -57,16 +57,6 @@
       $reducedMotion = mediaQuery.matches;
     });
 
-    document.addEventListener(
-      'visibilitychange',
-      () => {
-        if (!document.hidden) {
-          addToHistory();
-        }
-      },
-      false
-    );
-
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
         initializeUser($page.stuff.db, newUser);
@@ -75,6 +65,20 @@
         $user = demoUserData;
       }
     });
+
+    enableIndexedDbPersistence($page.stuff.db).catch(err => {
+      if (err.code == 'failed-precondition') {
+        console.log('Offline persistence can only be enabled in one tab at a a time.');
+      }
+    });
+
+    addEventListener('offline', () => {
+      disableNetwork($page.stuff.db);
+    }, false);
+
+    addEventListener('online', () => {
+      enableNetwork($page.stuff.db);
+    }, false);
   });
 
   function animateIcon() {
