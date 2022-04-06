@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
+import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { get } from 'svelte/store';
-import { user } from './stores';
+import { loggedIn, profile, shouldUpdate, user } from './stores';
 
 export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {
@@ -18,4 +19,16 @@ export function addToHistory() {
       return user;
     });
   }
+}
+
+export async function updateUser(db, user) {
+  addToHistory();
+  await setDoc(
+    doc(db, 'users', user.uid),
+    {
+      ...user,
+      lastUpdated: Date.now(),
+    },
+    { merge: true }
+  );
 }
