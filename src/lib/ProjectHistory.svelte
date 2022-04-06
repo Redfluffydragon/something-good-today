@@ -69,7 +69,7 @@
       <GoalSelect bind:goal={$user.history[dateToEdit].goal} />
     </div>
     <h3>Active projects</h3>
-    <ProjectsChecklist name="editing-active" bind:selected={editingActive} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
+    <ProjectsChecklist name="editing-active" bind:selected={editingActive} projects={$user.activeProjects} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
     <h3>Finished Projects</h3>
     <ProjectsChecklist name="editing-finished" bind:selected={editingFinished} projects={$user.finishedProjects} isSelected={id => $user.history[dateToEdit].projects.includes(id)} on:input={updateHistory} />
     <button
