@@ -3,6 +3,7 @@
   import { page } from '$app/stores';
   import Card from '$lib/Card.svelte';
   import InlineWarning from '$lib/InlineWarning.svelte';
+import { titleSuffix } from '$lib/stores';
   import { initializeUser, loginWithGoogle } from '$lib/user-utils';
   import { createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -45,7 +46,7 @@
 </script>
 
 <svelte:head>
-  <title>Create an account - Something Good Today</title>
+  <title>Create an account {titleSuffix}</title>
 </svelte:head>
 
 <main class="flex">
