@@ -15,4 +15,8 @@ export async function post({ request }) {
     },
     { merge: true }
   );
+
+  return {
+    status: 200,
+  };
 }
