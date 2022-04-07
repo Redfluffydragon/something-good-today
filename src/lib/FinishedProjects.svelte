@@ -3,7 +3,7 @@
   import { user } from './stores';
 </script>
 
-<h2>Finished Projects:</h2>
+<h2>Finished Projects</h2>
 {#if $user.finishedProjects?.length}
   <ul>
     {#each $user.finishedProjects as id (id)}

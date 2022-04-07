@@ -129,7 +129,7 @@
       <Card style="height: 100%;">
         <div class="flex flex-column">
           <div>
-            <h2>Active Projects:</h2>
+            <h2>Active Projects</h2>
             {#if $user.activeProjects?.length}
               <ProjectsChecklist
                 name="main-projects"
