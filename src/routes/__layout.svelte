@@ -72,10 +72,12 @@
       }
     });
 
+    // prettier-ignore
     addEventListener('offline', () => {
       disableNetwork($page.stuff.db);
     }, false);
 
+    // prettier-ignore
     addEventListener('online', () => {
       enableNetwork($page.stuff.db);
     }, false);
