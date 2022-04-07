@@ -15,7 +15,7 @@ export const historyShown = writable((browser && localStorage.getItem('historySh
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyAHCt552UgH7VJGxjiFJlH1D0iLYxuE8iQ',
-  authDomain: 'something-good-70b39.firebaseapp.com',
+  authDomain: 'app.something-good.today',
   projectId: 'something-good-70b39',
   storageBucket: 'something-good-70b39.appspot.com',
   messagingSenderId: '805543978877',
