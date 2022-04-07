@@ -1,6 +1,8 @@
 import { browser } from '$app/env';
 import { writable } from 'svelte/store';
 
+export const titleSuffix = '- Something Good Today';
+
 export const reducedMotion = writable(false);
 
 export const darkMode = writable(browser && localStorage.getItem('darkMode') === 'true');
