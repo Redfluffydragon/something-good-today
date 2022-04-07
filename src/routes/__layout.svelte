@@ -23,7 +23,7 @@
   import { GoogleAuthProvider, getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
-  import { getFirestore, enableIndexedDbPersistence, disableNetwork } from 'firebase/firestore';
+  import { getFirestore, enableIndexedDbPersistence, disableNetwork, enableNetwork } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
   import { addToHistory, initializeUser, loginWithGoogle, updateUser } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';

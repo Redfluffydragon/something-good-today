@@ -4,7 +4,7 @@
   import EditProjects from '$lib/EditProjects.svelte';
   import PieChart from '$lib/PieChart.svelte';
   import FinishedProjects from '$lib/FinishedProjects.svelte';
-  import { loggedIn, profile, shouldUpdate, user } from '$lib/stores';
+  import { loggedIn, shouldUpdate, user } from '$lib/stores';
   import { beforeNavigate } from '$app/navigation';
   import { browser } from '$app/env';
   import { page } from '$app/stores';
