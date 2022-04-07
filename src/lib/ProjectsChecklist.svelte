@@ -46,9 +46,7 @@
     // Transform back into an array for external, and sort according to the active projects (inactive projects are sorted to the end)
     selected = [..._selected].sort(sortByActive);
 
-    dispatch('input', {
-      oldSize,
-    });
+    dispatch('input', { oldSize });
   }
 </script>
 

@@ -1,0 +1,27 @@
+{
+  "short_name": "Something good",
+  "name": "Something good today",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "background_color": "#00151a",
+  "theme_color": "#33ca7f",
+  "display": "standalone",
+  "scope": "/",
+  "description": "A tool to help motivate you on long-term projects or daily habits. Did you do something you feel good about today?"
+}

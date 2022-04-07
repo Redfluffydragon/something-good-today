@@ -8,11 +8,13 @@
   import { beforeNavigate } from '$app/navigation';
   import { browser } from '$app/env';
   import { page } from '$app/stores';
-  import { updateUser } from '$lib/user-utils';
+  import { addToHistory, updateUser } from '$lib/user-utils';
   import ProjectHistory from '$lib/ProjectHistory.svelte';
   import ProjectsChecklist from '$lib/ProjectsChecklist.svelte';
   import GoalSelect from '$lib/GoalSelect.svelte';
   import Celebrate from '$lib/Celebrate.svelte';
+  import { onDestroy, onMount } from 'svelte';
+  import { doc, getDoc } from 'firebase/firestore';
 
   let updateTimeout;
   let waitingToUpdate = false;
@@ -22,10 +24,34 @@
 
   beforeNavigate(() => {
     if (waitingToUpdate) {
-      const userBlob = new Blob([JSON.stringify($user)], { type: 'application/json' });
-      navigator.sendBeacon('/sync', userBlob);
+      navigator.sendBeacon('/sync', new Blob([JSON.stringify($user)], { type: 'application/json' }));
     }
   });
+
+  onMount(() => {
+    document.addEventListener('visibilitychange', handleVisibilityChange, false);
+  });
+
+  onDestroy(() => {
+    if (!browser) return;
+    document.removeEventListener('visibilitychange', handleVisibilityChange, false);
+  });
+
+  async function handleVisibilityChange() {
+    if (!document.hidden) {
+      $shouldUpdate = false;
+      // Pull when unhidden - mostly for mobile
+      $user = (await getDoc(doc($page.stuff.db, 'users', $user.uid))).data();
+
+      // Check if it's a new day
+      addToHistory();
+    }
+    else if (document.hidden && waitingToUpdate) {
+      // Sync on page hidden - also mostly for mobile
+      clearTimeout(updateTimeout);
+      safeUpdateUser($user);
+    }
+  }
 
   /**
    * @param {Object} user
