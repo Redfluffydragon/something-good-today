@@ -1,9 +1,12 @@
 import dayjs from 'dayjs';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, signOut } from 'firebase/auth';
 import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { get } from 'svelte/store';
 import { loggedIn, profile, shouldUpdate, user } from './stores';
 
+/**
+ * Check to see if it's a new day, and if so, add user.today to history and reset user.today
+ */
 export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {
     user.update(user => {
@@ -66,7 +69,12 @@ export async function initializeUser(db, newUser) {
   }
 }
 
-export async function updateUser(db, user) {
+/**
+ * Push local user data to Firestore
+ * @param {any} db The Firestore database to push to
+ * @param {Object} user The user data to push
+ */
+export async function pushUser(db, user) {
   addToHistory();
   await setDoc(
     doc(db, 'users', user.uid),
@@ -78,10 +86,39 @@ export async function updateUser(db, user) {
   );
 }
 
+/**
+ * Log in with a Google popup and initialize the user if successful
+ * @param {any} auth Firebase auth object
+ * @param {any} provider Firebase auth provider
+ * @param {any} db Firestore database to initialize user in
+ */
 export async function loginWithGoogle(auth, provider, db) {
   signInWithPopup(auth, provider)
     .then(result => {
       initializeUser(db, result.user);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+/**
+ * Sync to Firestore and then log out the current user and reload the page
+ * @param {Object} user The user to log out
+ * @param {any} auth Firebase auth object
+ * @param {any} db Firestore database to sync to before loggin out
+ */
+export function logout(user, auth, db) {
+  // Sync before logout
+  pushUser(db, user);
+
+  signOut(auth)
+    .then(() => {
+      user.set({});
+      loggedIn.set(false);
+
+      // Maybe not the best solution, but it's the easiest way to get the chart to update
+      location.reload();
     })
     .catch(error => {
       console.log(error);

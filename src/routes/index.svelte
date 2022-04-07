@@ -8,7 +8,7 @@
   import { beforeNavigate } from '$app/navigation';
   import { browser } from '$app/env';
   import { page } from '$app/stores';
-  import { addToHistory, updateUser } from '$lib/user-utils';
+  import { addToHistory, pushUser } from '$lib/user-utils';
   import ProjectHistory from '$lib/ProjectHistory.svelte';
   import ProjectsChecklist from '$lib/ProjectsChecklist.svelte';
   import GoalSelect from '$lib/GoalSelect.svelte';
@@ -37,6 +37,9 @@
     document.removeEventListener('visibilitychange', handleVisibilityChange, false);
   });
 
+  /**
+   * Sync and add to history and such as needed on page visiblity changes
+   */
   async function handleVisibilityChange() {
     if (!document.hidden) {
       $shouldUpdate = false;
@@ -53,6 +56,7 @@
   }
 
   /**
+   * Safely try to push user data to Firestore
    * @param {Object} user
    */
   async function safeUpdateUser(user) {
@@ -61,7 +65,7 @@
     }
 
     try {
-      await updateUser($page.stuff.db, user);
+      await pushUser($page.stuff.db, user);
     } catch (err) {
       console.log('Failed to update:', err);
     } finally {
@@ -70,7 +74,7 @@
   }
 
   /**
-   * Every time this is called, it further delays updateUser by 3 seconds
+   * Every time this is called, it further delays safeUpdateUser by 3 seconds
    * @param {Object} user
    */
   function waitToUpdateUser(user) {
@@ -87,6 +91,10 @@
     waitingToUpdate = true;
   }
 
+  /**
+   * Celebrate when the user acheives their goal or goes beyond it
+   * @param {any} e A custom input event
+   */
   function celebrate(e) {
     if ($user.today.length >= parseInt($user.goal) && e.detail.oldSize <= $user.today.length) {
       playCelebrate = true;

@@ -20,12 +20,12 @@
   import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
-  import { GoogleAuthProvider, getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+  import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
   import { getFirestore, enableIndexedDbPersistence, disableNetwork, enableNetwork } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
-  import { addToHistory, initializeUser, loginWithGoogle, updateUser } from '$lib/user-utils';
+  import { addToHistory, initializeUser, loginWithGoogle, logout } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
   import LogInWithEmail from '$lib/LogInWithEmail.svelte';
 
@@ -83,6 +83,9 @@
     }, false);
   });
 
+  /**
+   * Animate the light/dark mode icon between its two states
+   */
   function animateIcon() {
     document.documentElement.toggleAttribute('dark');
     $darkMode = !$darkMode;
@@ -113,23 +116,6 @@
         },
         $darkMode ? 0 : 300
       );
-  }
-
-  function logout() {
-    // Sync before logout
-    updateUser($page.stuff.db, $user);
-
-    console.log('Logged out');
-    signOut($page.stuff.auth)
-      .then(() => {
-        $user = {};
-        $loggedIn = false;
-        location.reload(); // Maybe not the best solution, but it's the easiest way to get the chart to update
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    accountPopupOpen = false;
   }
 </script>
 
@@ -171,7 +157,12 @@
             accountPopupOpen = false;
           }}>Options</button
         >
-        <button on:click={logout}>Log out</button>
+        <button
+          on:click={() => {
+            accountPopupOpen = false;
+            logout(user, $page.stuff.auth, $page.stuff.db);
+          }}>Log out</button
+        >
       </div>
     </Popup>
   {:else}
