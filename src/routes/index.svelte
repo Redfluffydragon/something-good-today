@@ -44,7 +44,7 @@
     if (!document.hidden) {
       $shouldUpdate = false;
       // Pull when unhidden - mostly for mobile
-      $user = (await getDoc(doc($page.stuff.db, 'users', $user.uid))).data();
+      $user = (await getDoc(doc($page.stuff.db, 'users', $user.uid)))?.data();
 
       // Check if it's a new day
       addToHistory();
