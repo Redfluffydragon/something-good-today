@@ -37,8 +37,6 @@
 
     try {
       await updateUser($page.stuff.db, user);
-
-      console.log('Updated', $profile.displayName);
     } catch (err) {
       console.log('Failed to update:', err);
     } finally {

@@ -15,7 +15,6 @@
         location.reload();
       })
       .catch(error => {
-        console.log(error.code);
         if (error.code === 'auth/wrong-password') {
           wrongPassword = true;
         } else if (error.code === 'auth/user-not-found') {

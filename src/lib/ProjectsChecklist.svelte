@@ -47,7 +47,7 @@
     selected = [..._selected].sort(sortByActive);
 
     dispatch('input', {
-      oldSize
+      oldSize,
     });
   }
 </script>

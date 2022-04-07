@@ -15,6 +15,4 @@ export async function post({ request }) {
     },
     { merge: true }
   );
-
-  console.log('User:', user);
 }
