@@ -45,8 +45,7 @@
 
       // Check if it's a new day
       addToHistory();
-    }
-    else if (document.hidden && waitingToUpdate) {
+    } else if (document.hidden && waitingToUpdate) {
       // Sync on page hidden - also mostly for mobile
       clearTimeout(updateTimeout);
       safeUpdateUser($user);
@@ -100,7 +99,10 @@
   <meta property="og:title" content="Something Good Today" />
 
   <meta name="description" content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?" />
-  <meta property="og:description" content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?" />
+  <meta
+    property="og:description"
+    content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?"
+  />
 </svelte:head>
 
 <main class="flex flex-column">
@@ -121,7 +123,13 @@
           <div>
             <h2>Active Projects:</h2>
             {#if $user.activeProjects?.length}
-              <ProjectsChecklist name="main-projects" projects={$user.activeProjects} bind:selected={$user.today} isSelected={id => $user.today?.includes(id)} on:input={celebrate} />
+              <ProjectsChecklist
+                name="main-projects"
+                projects={$user.activeProjects}
+                bind:selected={$user.today}
+                isSelected={id => $user.today?.includes(id)}
+                on:input={celebrate}
+              />
             {:else}
               <p>You don't have any projects.</p>
             {/if}
