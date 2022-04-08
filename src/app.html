@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <meta name="theme-color" content="#00151a" />
     <script>
-      localStorage.getItem('darkMode') === 'true' && document.documentElement.toggleAttribute('dark', true);
+      document.documentElement.toggleAttribute('dark', localStorage.getItem('darkMode') === 'true');
     </script>
     %svelte.head%
   </head>

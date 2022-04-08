@@ -8,7 +8,7 @@
 
   // map to an object because the drag and drop needs an array of objects
   let items = projects.map(id => {
-    return { id: id };
+    return { id };
   });
 
   export let newColor;

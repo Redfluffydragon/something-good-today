@@ -5,8 +5,6 @@ export const titleSuffix = '- Something Good Today';
 
 export const reducedMotion = writable(false);
 
-export const darkMode = writable(browser && localStorage.getItem('darkMode') === 'true');
-
 export const user = writable({});
 export const profile = writable();
 export const loggedIn = writable(false);
