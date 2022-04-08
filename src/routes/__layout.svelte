@@ -220,8 +220,7 @@
       {#if !$loggedIn}
         <a href="/new-account">Create an account</a>
       {/if}
-      <a href="https://github.com/Redfluffydragon/something-good-today">Source code</a>
-      <a href="https://github.com/Redfluffydragon/something-good-today/issues/new">Report an issue</a>
+      <a href="https://github.com/Redfluffydragon/something-good-today/issues/new" target="_blank" rel="noopener">Report an issue</a>
     </div>
     <div class="flex links right">
       <a href="/privacy-policy">Privacy Policy</a>
