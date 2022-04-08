@@ -214,7 +214,7 @@
 
 <footer>
   <h2>Did you do something you feel good about today?</h2>
-  <div class="flex">
+  <nav class="flex">
     <div class="flex links">
       <a href="/">Home</a>
       {#if !$loggedIn}
@@ -225,7 +225,7 @@
     <div class="flex links right">
       <a href="/privacy-policy">Privacy Policy</a>
     </div>
-  </div>
+  </nav>
   <br />
   <p>&copy; 2022 Kai-Shen Deru</p>
 </footer>
