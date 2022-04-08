@@ -50,6 +50,7 @@
         <path d="M48 53C48 55.7614 45.7614 58 43 58C40.2386 58 38 55.7614 38 53C38 50.2386 40.2386 48 43 48C45.7614 48 48 50.2386 48 53Z" fill="black" />
       </svg>
       <button
+        aria-label="Edit your project {$user.projects[project.id]?.title}"
         class:clear-btn={selectedProject !== project.id}
         on:click={() => {
           selectedProject = project.id;

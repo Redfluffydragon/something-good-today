@@ -61,7 +61,7 @@
       <label for="color">Color:</label>
       <input type="color" name="color" id="color" value={randomColor()} />
 
-      <button>Add</button>
+      <button aria-label="Add the new project">Add</button>
     </form>
   </Modal>
 </div>
