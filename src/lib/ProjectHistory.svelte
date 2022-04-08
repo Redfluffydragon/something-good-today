@@ -66,7 +66,8 @@
   {/if}
 
   <button
-  title="Edit history" aria-label="Edit history" 
+    title="Edit history"
+    aria-label="Edit history"
     on:click={() => {
       editing = !editing;
     }}>{editing ? 'Done' : 'Edit'}</button
@@ -85,7 +86,8 @@
               open = true;
               dateToEdit = i;
             }}
-            class="edit-history clear-btn" aria-label="Edit history on {new Date(day.date).toLocaleDateString()}">Edit</button
+            class="edit-history clear-btn"
+            aria-label="Edit history on {new Date(day.date).toLocaleDateString()}">Edit</button
           >
         {/if}
       </li>
