@@ -29,6 +29,7 @@
   import Modal from '$lib/Modal.svelte';
   import LogInWithEmail from '$lib/LogInWithEmail.svelte';
   import { browser } from '$app/env';
+  import OptionsModal from '$lib/OptionsModal.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
   const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
@@ -125,7 +126,7 @@
   function updateMode(darkMode) {
     // Update the icon
     animateIcon(darkMode);
-    
+
     // Toggle dark for CSS
     document.documentElement.toggleAttribute('dark', darkMode);
 
@@ -210,23 +211,7 @@
   </div>
 </Modal>
 
-<Modal bind:open={optionsModalOpen} title="Options">
-  <div class="flex flex-column">
-    <label for="celebration">
-      Celebration type:
-      <select id="celebration" bind:value={$user.celebration}>
-        <option value="confetti">Confetti</option>
-        <option value="fireworks">Fireworks</option>
-        <option value="none">None</option>
-      </select>
-    </label>
-    <button
-      on:click={() => {
-        optionsModalOpen = false;
-      }}>Done</button
-    >
-  </div>
-</Modal>
+<OptionsModal bind:open={optionsModalOpen} />
 
 <div class="spacer" />
 

@@ -19,6 +19,29 @@
   function updateHistory() {
     $user.history[dateToEdit].projects = [...editingActive, ...editingFinished];
   }
+
+  $: streak = $user.history?.findIndex(day => day.projects.length < parseInt(day.goal)) || 0;
+
+  $: maxStreak = findMaxStreak($user.history);
+
+  function findMaxStreak(history) {
+    if (!history) {
+      return 0;
+    }
+    const streaks = [];
+    let currentStreak = 0;
+    for (const day of history) {
+      if (day.projects.length >= parseInt(day.goal)) {
+        currentStreak++;
+      } else if (currentStreak !== 0) {
+        streaks.push(currentStreak);
+        currentStreak = 0;
+      }
+    }
+    return Math.max(...streaks);
+  }
+
+  const pluralDays = count => `day${count === 1 ? '' : 's'}`;
 </script>
 
 <div class="header flex">
@@ -33,6 +56,14 @@
       <option value="Infinity">All</option>
     </select>
   </div>
+
+  {#if $user.showStreak}
+    <p>Current streak: {streak} {pluralDays(streak)}</p>
+  {/if}
+
+  {#if $user.showMaxStreak}
+    <p>Max streak: {maxStreak} {pluralDays(maxStreak)}</p>
+  {/if}
 
   <button
     on:click={() => {
