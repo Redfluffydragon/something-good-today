@@ -40,13 +40,14 @@
   <div class="shadow" transition:fade={{ duration: 300 }}>
     <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth}; min-width: min(100%, {minWidth});">
       <Card>
-        <div class="wrapper">
+        <div class="wrapper" role="dialog" aria-labelledby="modal-title-{title}" aria-modal="true">
           <div class="header">
             {#if title}
-              <h2>{title}</h2>
+              <h2 id="modal-title-{title}">{title}</h2>
             {/if}
             <button
               class="img-btn clear-btn"
+              title="Close {title} modal"
               on:click={() => {
                 open = false;
               }}
