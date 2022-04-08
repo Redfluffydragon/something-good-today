@@ -17,7 +17,7 @@
 </script>
 
 <script>
-  import { reducedMotion, firebaseConfig, darkMode, user, loggedIn, profile, demoUserData } from '$lib/stores';
+  import { reducedMotion, firebaseConfig, user, loggedIn, profile, demoUserData, shouldUpdate } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
   import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -28,6 +28,7 @@
   import { addToHistory, initializeUser, loginWithGoogle, logout } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
   import LogInWithEmail from '$lib/LogInWithEmail.svelte';
+  import { browser } from '$app/env';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
   const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
@@ -43,9 +44,12 @@
   let optionsModalOpen = false;
   let loginModalOpen = false;
 
+  $: browser && updateMode($user.darkMode);
+
   onMount(() => {
-    document.documentElement.toggleAttribute('dark', $darkMode);
-    if ($darkMode) {
+    $shouldUpdate = false;
+
+    if ($user.darkMode) {
       startPath = moonPath;
       startScale = 0;
     }
@@ -86,11 +90,7 @@
   /**
    * Animate the light/dark mode icon between its two states
    */
-  function animateIcon() {
-    document.documentElement.toggleAttribute('dark');
-    $darkMode = !$darkMode;
-    localStorage.setItem('darkMode', JSON.stringify($darkMode));
-
+  function animateIcon(darkMode) {
     if (isAnimationRunning) {
       timeline.reverse();
     }
@@ -105,23 +105,43 @@
     timeline
       .add({
         targets: '#darkModeIcon',
-        d: [{ value: $darkMode ? moonPath : sunPath }],
-        delay: $darkMode ? 700 : 0,
+        d: [{ value: darkMode ? moonPath : sunPath }],
+        delay: darkMode ? 700 : 0,
       })
       .add(
         {
           targets: '.sun-ray',
-          scale: $darkMode ? 0 : 1,
+          scale: darkMode ? 0 : 1,
           delay: anime.stagger(100),
         },
-        $darkMode ? 0 : 300
+        darkMode ? 0 : 300
       );
+  }
+
+  /**
+   * Update dark/light mode state
+   * @param {boolean} darkMode Dark mode or light mode
+   */
+  function updateMode(darkMode) {
+    // Update the icon
+    animateIcon(darkMode);
+    
+    // Toggle dark for CSS
+    document.documentElement.toggleAttribute('dark', darkMode);
+
+    // Save in localStorage for faster loading
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }
 </script>
 
-<button on:click={animateIcon} class="clear-btn">
+<button
+  on:click={() => {
+    $user.darkMode = !$user.darkMode;
+  }}
+  class="clear-btn"
+>
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
-    <title>Switch to {$darkMode ? 'light' : 'dark'} mode</title>
+    <title>Switch to {$user.darkMode ? 'light' : 'dark'} mode</title>
     <path class="sun-ray" style="transform: scale({startScale});" d="M29.2929 6.85715L31.7143 3.59516L34.1357 6.85715H29.2929Z" stroke-width="4.28572" />
     <path class="sun-ray" style="transform: scale({startScale});" d="M53.1003 16.0124L57.136 16.4784L55.5217 20.2063L53.1003 16.0124Z" stroke-width="4.28572" />
     <path class="sun-ray" style="transform: scale({startScale});" d="M56.5217 41.1552L58.1359 44.8832L54.1003 45.3492L56.5217 41.1552Z" stroke-width="4.28572" />
@@ -220,8 +240,7 @@
       {#if !$loggedIn}
         <a href="/new-account">Create an account</a>
       {/if}
-      <a href="https://github.com/Redfluffydragon/something-good-today">Source code</a>
-      <a href="https://github.com/Redfluffydragon/something-good-today/issues/new">Report an issue</a>
+      <a href="https://github.com/Redfluffydragon/something-good-today/issues/new" target="_blank" rel="noopener">Report an issue</a>
     </div>
     <div class="flex links right">
       <a href="/privacy-policy">Privacy Policy</a>
