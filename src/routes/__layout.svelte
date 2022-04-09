@@ -17,7 +17,7 @@
 </script>
 
 <script>
-  import { reducedMotion, firebaseConfig, user, loggedIn, profile, demoUserData } from '$lib/stores';
+  import { firebaseConfig, user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
   import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
