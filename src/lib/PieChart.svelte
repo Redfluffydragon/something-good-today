@@ -71,7 +71,7 @@
     oldLength = projects.length;
   }
 
-  onMount(async () => {
+  onMount(() => {
     Chart.register(PieController, ArcElement, Tooltip);
 
     pieChart = new Chart(canvas, {
