@@ -88,7 +88,7 @@
       style="max-width: 90%; min-width: min(90%, {minWidth});"
     >
       <Card>
-        <div class="wrapper" role="document">
+        <div class="wrapper">
           <div class="header">
             {#if title}
               <h2 id="{titleToId(title)}-modal">{title}</h2>
