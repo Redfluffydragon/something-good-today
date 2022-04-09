@@ -66,8 +66,8 @@
   {/if}
 
   <button
-    title="Edit history"
-    aria-label="Edit history"
+    title={editing ? 'Finish editing history' : 'Edit history'}
+    aria-label={editing ? 'Finish editing history' : 'Edit history'}
     on:click={() => {
       editing = !editing;
     }}>{editing ? 'Done' : 'Edit'}</button

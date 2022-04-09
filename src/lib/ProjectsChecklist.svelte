@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { sortByActive } from './project-utils';
+  import { sortByActive, titleToId } from './project-utils';
   import Project from './Project.svelte';
   import { user } from './stores';
 
@@ -23,13 +23,6 @@
   let oldSize = _selected.size;
 
   const dispatch = createEventDispatcher();
-
-  /**
-   * @param {string} title
-   */
-  function titleToId(title) {
-    return title.toLowerCase().replace(/\s/g, '-');
-  }
 
   function input(e) {
     oldSize = _selected.size;
