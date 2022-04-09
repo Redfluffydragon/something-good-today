@@ -8,7 +8,7 @@ const config = {
     csp: {
       mode: 'auto',
       directives: {
-        'script-src': ['self', 'sha256-o92fbhqsc3TjFajrat1E9BW6KGyt6RdOl/IFHamzrxY='],
+        'script-src': ['self', 'sha256-o92fbhqsc3TjFajrat1E9BW6KGyt6RdOl/IFHamzrxY=', 'unsafe-inline'],
         'object-src': ['none'],
         'base-uri': ['none'],
       },
