@@ -82,6 +82,7 @@
         <PieChart projects={day.projects} goal={day.goal} size="12ch" />
         {#if editing}
           <button
+            aria-expanded="false"
             on:click={() => {
               open = true;
               dateToEdit = i;

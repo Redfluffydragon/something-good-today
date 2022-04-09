@@ -191,6 +191,7 @@
     </Popup>
   {:else}
     <button
+      aria-expanded="false"
       on:click={() => {
         loginModalOpen = true;
       }}>Log in</button

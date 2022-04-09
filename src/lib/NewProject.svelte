@@ -41,6 +41,7 @@
 
 <div class="relative">
   <button
+    aria-expanded="false"
     on:click={async () => {
       open = !open;
 

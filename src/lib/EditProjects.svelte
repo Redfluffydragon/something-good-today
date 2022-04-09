@@ -45,6 +45,7 @@
 
 <div>
   <button
+    aria-expanded="false"
     disabled={!$user.activeProjects?.length}
     on:click={() => {
       open = true;
