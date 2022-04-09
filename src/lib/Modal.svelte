@@ -14,9 +14,6 @@
   export let title = '';
 
   /** @type {string} */
-  export let maxWidth = '';
-
-  /** @type {string} */
   export let minWidth = '40ch';
 
   /** @type {bool} */
@@ -88,7 +85,7 @@
       aria-modal="true"
       tabindex="-1"
       transition:safeScale={{ duration: 300 }}
-      style="max-width: {maxWidth}; min-width: min(100%, {minWidth});"
+      style="max-width: 90%; min-width: min(90%, {minWidth});"
     >
       <Card>
         <div class="wrapper" role="document">
