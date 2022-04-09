@@ -19,6 +19,9 @@
   /** @type {string} */
   export let minWidth = '40ch';
 
+  /** @type {bool} */
+  export let closeOnClickOutside = true;
+
   let modal;
 
   let hadFocus;
@@ -68,9 +71,17 @@
 </script>
 
 {#if open}
-  <div class="shadow" transition:fade={{ duration: 300 }}>
+  <div class="modal-position flex relative">
+    <div
+      class="shadow"
+      transition:fade={{ duration: 300 }}
+      on:click={() => {
+        closeOnClickOutside && (open = false);
+      }}
+    />
     <div
       bind:this={modal}
+      class="modal relative"
       open="true"
       role="dialog"
       aria-labelledby="{titleToId(title)}-modal"
@@ -97,7 +108,6 @@
               </svg>
             </button>
           </div>
-
           <slot />
         </div>
       </Card>
@@ -106,6 +116,17 @@
 {/if}
 
 <style>
+  .modal-position {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: start;
+    z-index: 1000;
+  }
+
   .shadow {
     position: fixed;
     top: 0;
@@ -113,13 +134,12 @@
     width: 100%;
     height: 100%;
     background: var(--shadow);
-    display: flex;
-    padding: 2em;
-    justify-content: center;
-    align-items: start;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
-    z-index: 1000;
+  }
+
+  .modal {
+    margin: auto;
   }
 
   .header {
