@@ -95,7 +95,7 @@
             {/if}
             <button
               class="img-btn clear-btn"
-              title="Close {title} modal"
+              title="Close {title} dialog"
               on:click={() => {
                 open = false;
               }}
