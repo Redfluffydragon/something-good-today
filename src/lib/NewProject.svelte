@@ -57,11 +57,11 @@
   <Modal title="New project" bind:open closeOnClickOutside={false}>
     <br />
     <form id="newProject" class="grid" on:submit={addNewProject}>
-      <label for="title" class="relative">Project title:</label>
-      <input type="text" name="title" id="title" bind:this={titleInput} required />
+      <label for="title" class="relative">Title:</label>
+      <input type="text" name="title" id="title" aria-label="Project title" bind:this={titleInput} required />
 
       <label for="color">Color:</label>
-      <input type="color" name="color" id="color" value={randomColor()} />
+      <input type="color" name="color" id="color" aria-label="Project color" value={randomColor()} />
 
       <button aria-label="Add the new project">Add</button>
     </form>
