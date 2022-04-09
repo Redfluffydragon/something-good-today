@@ -10,7 +10,7 @@
   export let id = 'none';
 
   // I want the pie charts to animate in on first load, they get updated 2 or 3
-  // times before actually displaying something. The main "Today" one gets 
+  // times before actually displaying something. The main "Today" one gets
   // updated 3 times, and all the history ones get updated twice. I don't know why,
   // so this is a really hacky fix for it.
   const dumbUpdateLimit = id === 'main' ? 3 : 2;
@@ -56,7 +56,7 @@
     if (!projects) {
       return;
     }
-    
+
     const bgColors = [];
     const getLabels = [];
 
@@ -86,7 +86,7 @@
     // Don't animate when changing colors, for example
     pieChart?.update(oldLength !== projects.length || oldGoal !== goal || numUpdates <= dumbUpdateLimit ? '' : 'none');
 
-    numUpdates <= dumbUpdateLimit && (numUpdates++);
+    numUpdates <= dumbUpdateLimit && numUpdates++;
 
     oldGoal = goal;
     oldLength = projects.length;
