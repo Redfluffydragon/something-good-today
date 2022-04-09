@@ -120,7 +120,7 @@
         <h1 id="today-header">Today</h1>
         <div class="relative">
           <Celebrate bind:play={playCelebrate} bind:type={$user.celebration} />
-          <PieChart goal={$user.goal} projects={$user.today} />
+          <PieChart goal={$user.goal} projects={$user.today} id="main" />
         </div>
       </Card>
     </section>

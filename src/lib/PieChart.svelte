@@ -7,19 +7,26 @@
   export let goal = 1;
   export let size = '40ch';
 
+  export let id = 'none';
+
+  // I want the pie charts to animate in on first load, they get updated 2 or 3
+  // times before actually displaying something. The main "Today" one gets 
+  // updated 3 times, and all the history ones get updated twice. I don't know why,
+  // so this is a really hacky fix for it.
+  const dumbUpdateLimit = id === 'main' ? 3 : 2;
+
   let canvas;
 
   let pieChart;
   let data;
-  let getLabels = [];
-  let bgColors = [];
-  let sizes = [];
   const HOVER_OFFSET = 15;
 
-  let oldLength = projects.length;
+  let oldLength = 0;
   let oldGoal = goal;
 
-  $: getData(projects, goal);
+  let numUpdates = 0;
+
+  $: updateData(projects, goal);
 
   onMount(() => {
     Chart.register(PieController, ArcElement, Tooltip);
@@ -45,7 +52,20 @@
   /**
    * @param {number} goal
    */
-  function updateData(goal) {
+  function updateData(projects, goal) {
+    if (!projects) {
+      return;
+    }
+    
+    const bgColors = [];
+    const getLabels = [];
+
+    for (const id of projects) {
+      getLabels.push($user.projects[id]?.title);
+      bgColors.push($user.projects[id]?.color);
+    }
+
+    const sizes = Array(getLabels.length).fill(1);
     data = {
       labels: getLabels,
       datasets: [
@@ -64,30 +84,12 @@
 
     // Don't animate unless adding or removing a project
     // Don't animate when changing colors, for example
-    pieChart?.update(oldLength !== projects.length || oldGoal !== goal ? '' : 'none');
+    pieChart?.update(oldLength !== projects.length || oldGoal !== goal || numUpdates <= dumbUpdateLimit ? '' : 'none');
+
+    numUpdates <= dumbUpdateLimit && (numUpdates++);
 
     oldGoal = goal;
     oldLength = projects.length;
-  }
-
-  /**
-   * @param {number[]} projects
-   * @param {number} goal
-   */
-  function getData(projects, goal) {
-    if (!projects) {
-      return;
-    }
-
-    bgColors.length = 0;
-    getLabels.length = 0;
-    for (const id of projects) {
-      getLabels.push($user.projects[id]?.title);
-      bgColors.push($user.projects[id]?.color);
-    }
-    sizes = Array(getLabels.length).fill(1);
-
-    updateData(goal);
   }
 
   function listProjects(projects) {
