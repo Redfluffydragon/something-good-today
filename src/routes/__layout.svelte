@@ -159,12 +159,13 @@
 <div class="account">
   {#if $loggedIn}
     <button
-      on:click={() => {
-        accountPopupOpen = !accountPopupOpen;
-      }}
+      aria-expanded={accountPopupOpen}
       title="Account options"
       class="img-btn"
       id="account-btn"
+      on:click={() => {
+        accountPopupOpen = !accountPopupOpen;
+      }}
     >
       {#if $profile.photoURL}
         <img src={$profile.photoURL} alt="" width="64" height="64" />
