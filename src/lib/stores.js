@@ -1,9 +1,18 @@
 import { browser } from '$app/env';
-import { writable } from 'svelte/store';
+import { readable, writable } from 'svelte/store';
 
 export const titleSuffix = '- Something Good Today';
 
-export const reducedMotion = writable(false);
+export const reducedMotion = readable(false, set => {
+  if (!browser) return;
+
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  set(mediaQuery.matches);
+
+  mediaQuery.addEventListener('change', () => {
+    set(mediaQuery.matches);
+  });
+});
 
 export const user = writable({});
 export const profile = writable();

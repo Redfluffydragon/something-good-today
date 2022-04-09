@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { signInWithPopup, signOut } from 'firebase/auth';
 import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { get } from 'svelte/store';
-import { loggedIn, profile, shouldUpdate, user } from './stores';
+import { loggedIn, profile, reducedMotion, shouldUpdate, user } from './stores';
 
 /**
  * Check to see if it's a new day, and if so, add user.today to history and reset user.today
@@ -59,7 +59,7 @@ export async function initializeUser(db, newUser) {
       history: [],
       lastUpdated: Date.now(),
       uid: newUser.uid,
-      celebration: 'fireworks',
+      celebration: get(reducedMotion) ? 'none' : 'fireworks',
     };
 
     await setDoc(doc(db, 'users', newUser.uid), defaultUserData);

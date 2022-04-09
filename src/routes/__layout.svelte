@@ -54,13 +54,6 @@
       startScale = 0;
     }
 
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    $reducedMotion = mediaQuery.matches;
-
-    mediaQuery.addEventListener('change', () => {
-      $reducedMotion = mediaQuery.matches;
-    });
-
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
         initializeUser($page.stuff.db, newUser);
