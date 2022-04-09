@@ -115,24 +115,25 @@
 
 <main class="flex flex-column">
   <div class="main-content flex">
-    <div class="chart">
+    <section aria-labelledby="today-header" class="chart">
       <Card style="height: 100%;">
-        <h1>Today</h1>
+        <h1 id="today-header">Today</h1>
         <div class="relative">
           <Celebrate bind:play={playCelebrate} bind:type={$user.celebration} />
           <PieChart goal={$user.goal} projects={$user.today} id="main" />
         </div>
       </Card>
-    </div>
+    </section>
 
     <div class="sidebar-wrapper">
       <Card style="height: 100%;">
         <div class="flex flex-column">
-          <div>
-            <h2>Active Projects</h2>
+          <section aria-labelledby="main-projects-header">
+            <h2 id="main-projects-header">Active Projects</h2>
             {#if $user.activeProjects?.length}
               <ProjectsChecklist
                 name="main-projects"
+                label="Active projects"
                 projects={$user.activeProjects}
                 bind:selected={$user.today}
                 isSelected={id => $user.today?.includes(id)}
@@ -141,7 +142,7 @@
             {:else}
               <p>You don't have any projects.</p>
             {/if}
-          </div>
+          </section>
           <NewProject />
           <EditProjects />
           <div>

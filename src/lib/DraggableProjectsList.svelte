@@ -38,9 +38,9 @@
   }
 </script>
 
-<ul use:dndzone={{ items, dropTargetStyle }} on:consider={considerDnd} on:finalize={finalizeDnd}>
+<ul use:dndzone={{ items, dropTargetStyle }} on:consider={considerDnd} on:finalize={finalizeDnd} aria-label="Reorder and edit your projects">
   {#each items as project (project.id)}
-    <li class="relative" class:selected={selectedProject === project.id} animate:flip={{ duration: 300 }}>
+    <li class="relative" class:selected={selectedProject === project.id} animate:flip={{ duration: 300 }} aria-label="Reorder project {$user.projects[project.id]?.title}">
       <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M25 11C25 13.7614 22.7614 16 20 16C17.2386 16 15 13.7614 15 11C15 8.23858 17.2386 6 20 6C22.7614 6 25 8.23858 25 11Z" fill="black" />
         <path d="M48 11C48 13.7614 45.7614 16 43 16C40.2386 16 38 13.7614 38 11C38 8.23858 40.2386 6 43 6C45.7614 6 48 8.23858 48 11Z" fill="black" />
@@ -50,6 +50,7 @@
         <path d="M48 53C48 55.7614 45.7614 58 43 58C40.2386 58 38 55.7614 38 53C38 50.2386 40.2386 48 43 48C45.7614 48 48 50.2386 48 53Z" fill="black" />
       </svg>
       <button
+        aria-label="Edit project {$user.projects[project.id]?.title}"
         class:clear-btn={selectedProject !== project.id}
         on:click={() => {
           selectedProject = project.id;

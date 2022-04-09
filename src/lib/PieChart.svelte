@@ -28,6 +28,27 @@
 
   $: updateData(projects, goal);
 
+  onMount(() => {
+    Chart.register(PieController, ArcElement, Tooltip);
+
+    pieChart = new Chart(canvas, {
+      type: 'pie',
+      data: data,
+      options: {
+        layout: {
+          padding: HOVER_OFFSET,
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: item => item.label,
+            },
+          },
+        },
+      },
+    });
+  });
+
   /**
    * @param {number} goal
    */
@@ -71,26 +92,9 @@
     oldLength = projects.length;
   }
 
-  onMount(async () => {
-    Chart.register(PieController, ArcElement, Tooltip);
-
-    pieChart = new Chart(canvas, {
-      type: 'pie',
-      data: data,
-      options: {
-        layout: {
-          padding: HOVER_OFFSET,
-        },
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: item => item.label,
-            },
-          },
-        },
-      },
-    });
-  });
+  function listProjects(projects) {
+    return projects?.map(id => $user.projects[id].title).join(', ') || 'none';
+  }
 </script>
 
 <div class="relative" style="max-width: {size};">
@@ -98,7 +102,7 @@
     <p>Nothing yet today.</p>
   {/if}
 
-  <canvas bind:this={canvas} />
+  <canvas bind:this={canvas} aria-label="Completed projects: {listProjects(projects)}" />
 </div>
 
 <style>

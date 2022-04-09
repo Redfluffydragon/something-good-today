@@ -5,6 +5,7 @@
   import { safeScale } from './transitions';
   import { fade } from 'svelte/transition';
   import { beforeNavigate } from '$app/navigation';
+  import { titleToId } from './project-utils';
 
   /** @type {bool} */
   export let open;
@@ -13,41 +14,88 @@
   export let title = '';
 
   /** @type {string} */
-  export let maxWidth = '';
-
-  /** @type {string} */
   export let minWidth = '40ch';
 
-  function escape(e) {
-    if (e.key === 'Escape') {
-      open = false;
-    }
-  }
+  /** @type {bool} */
+  export let closeOnClickOutside = true;
+
+  let modal;
+
+  let hadFocus;
+
+  $: focusable = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+  // Focus modal on creation
+  $: modal?.focus();
+
+  $: handleFocus(open);
 
   onMount(() => {
-    window.addEventListener('keydown', escape, false);
+    addEventListener('keydown', handleKeys, false);
   });
 
   onDestroy(() => {
-    browser && window.removeEventListener('keydown', escape, false);
+    browser && removeEventListener('keydown', handleKeys, false);
   });
 
   beforeNavigate(() => {
     open = false;
   });
+
+  function handleKeys(e) {
+    if (e.key === 'Escape') {
+      open = false;
+    }
+    // trap focus in the modal
+    if (focusable && open && e.key === 'Tab') {
+      if (e.shiftKey && (document.activeElement === focusable[0] || ![...focusable].includes(document.activeElement))) {
+        e.preventDefault();
+        focusable[focusable.length - 1].focus();
+      } else if (!e.shiftKey && document.activeElement === focusable[focusable.length - 1]) {
+        e.preventDefault();
+        focusable[0].focus();
+      }
+    }
+  }
+
+  function handleFocus(open) {
+    if (open) {
+      hadFocus = document.activeElement;
+    } else {
+      hadFocus?.focus();
+    }
+  }
 </script>
 
 {#if open}
-  <div class="shadow" transition:fade={{ duration: 300 }}>
-    <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth}; min-width: min(100%, {minWidth});">
+  <div class="modal-position flex relative">
+    <div
+      class="shadow"
+      transition:fade={{ duration: 300 }}
+      on:click={() => {
+        closeOnClickOutside && (open = false);
+      }}
+    />
+    <div
+      bind:this={modal}
+      class="modal relative"
+      open="true"
+      role="dialog"
+      aria-labelledby="{titleToId(title)}-modal"
+      aria-modal="true"
+      tabindex="-1"
+      transition:safeScale={{ duration: 300 }}
+      style="max-width: 90%; min-width: min(90%, {minWidth});"
+    >
       <Card>
         <div class="wrapper">
           <div class="header">
             {#if title}
-              <h2>{title}</h2>
+              <h2 id="{titleToId(title)}-modal">{title}</h2>
             {/if}
             <button
               class="img-btn clear-btn"
+              title="Close {title} dialog"
               on:click={() => {
                 open = false;
               }}
@@ -57,7 +105,6 @@
               </svg>
             </button>
           </div>
-
           <slot />
         </div>
       </Card>
@@ -66,6 +113,17 @@
 {/if}
 
 <style>
+  .modal-position {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: start;
+    z-index: 1000;
+  }
+
   .shadow {
     position: fixed;
     top: 0;
@@ -73,13 +131,12 @@
     width: 100%;
     height: 100%;
     background: var(--shadow);
-    display: flex;
-    padding: 2em;
-    justify-content: center;
-    align-items: start;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
-    z-index: 1000;
+  }
+
+  .modal {
+    margin: auto;
   }
 
   .header {

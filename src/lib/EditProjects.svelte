@@ -2,6 +2,7 @@
   import Modal from './Modal.svelte';
   import { shouldUpdate, user } from './stores';
   import DraggableProjectsList from './DraggableProjectsList.svelte';
+  import { tick } from 'svelte';
 
   let open = false;
 
@@ -9,6 +10,14 @@
 
   let newColor = '#000000';
   let newTitle = '';
+
+  let titleInput;
+  $: selectedProject !== null && focusOnInput();
+
+  async function focusOnInput() {
+    await tick();
+    titleInput.focus();
+  }
 
   function updateProject() {
     $user.projects[selectedProject].color = newColor;
@@ -36,6 +45,7 @@
 
 <div>
   <button
+    aria-expanded="false"
     disabled={!$user.activeProjects?.length}
     on:click={() => {
       open = true;
@@ -60,10 +70,10 @@
       >
         <fieldset disabled={selectedProject === null}>
           <div class="flex flex-column">
-            <input type="text" name="newTitle" id="newTitle" bind:value={newTitle} />
+            <input type="text" name="newTitle" id="newTitle" aria-label="Edit project name" bind:value={newTitle} bind:this={titleInput} />
             <div>
               <label for="newColor">Color:</label>
-              <input type="color" name="newColor" id="newColor" bind:value={newColor} />
+              <input type="color" name="newColor" id="newColor" aria-label="Edit project color" bind:value={newColor} />
             </div>
             <button on:click={finishProject}>Mark project as finished</button>
             <button class="danger-btn" on:click={deleteProject}>Delete project</button>

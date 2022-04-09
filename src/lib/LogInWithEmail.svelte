@@ -25,6 +25,7 @@
 </script>
 
 <button
+  aria-expanded="false"
   on:click={() => {
     emailLoginModalOpen = true;
   }}>Log in with email</button

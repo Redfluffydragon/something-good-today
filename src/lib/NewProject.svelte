@@ -1,4 +1,5 @@
 <script>
+  import { tick } from 'svelte';
   import Modal from './Modal.svelte';
   import { user } from './stores';
 
@@ -40,11 +41,12 @@
 
 <div class="relative">
   <button
-    on:click={() => {
+    aria-expanded="false"
+    on:click={async () => {
       open = !open;
-      setTimeout(() => {
-        titleInput.focus();
-      });
+
+      await tick();
+      titleInput.focus();
     }}
   >
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,16 +54,16 @@
     </svg>
     Add a new project
   </button>
-  <Modal title="New project" bind:open>
+  <Modal title="New project" bind:open closeOnClickOutside={false}>
     <br />
     <form id="newProject" class="grid" on:submit={addNewProject}>
-      <label for="title" class="relative">Project title:</label>
-      <input type="text" name="title" id="title" bind:this={titleInput} required />
+      <label for="title" class="relative">Title:</label>
+      <input type="text" name="title" id="title" aria-label="Project title" bind:this={titleInput} required />
 
       <label for="color">Color:</label>
-      <input type="color" name="color" id="color" value={randomColor()} />
+      <input type="color" name="color" id="color" aria-label="Project color" value={randomColor()} />
 
-      <button>Add</button>
+      <button aria-label="Add the new project">Add</button>
     </form>
   </Modal>
 </div>

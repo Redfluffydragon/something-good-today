@@ -159,12 +159,13 @@
 <div class="account">
   {#if $loggedIn}
     <button
-      on:click={() => {
-        accountPopupOpen = !accountPopupOpen;
-      }}
+      aria-expanded={accountPopupOpen}
       title="Account options"
       class="img-btn"
       id="account-btn"
+      on:click={() => {
+        accountPopupOpen = !accountPopupOpen;
+      }}
     >
       {#if $profile.photoURL}
         <img src={$profile.photoURL} alt="" width="64" height="64" />
@@ -174,23 +175,31 @@
     </button>
 
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
-      <div class="flex flex-column">
-        <button
-          on:click={() => {
-            optionsModalOpen = true;
-            accountPopupOpen = false;
-          }}>Options</button
-        >
-        <button
-          on:click={() => {
-            accountPopupOpen = false;
-            logout(user, $page.stuff.auth, $page.stuff.db);
-          }}>Log out</button
-        >
-      </div>
+        <!-- svelte-ignore a11y-no-redundant-roles -->
+        <menu role="menu" class="flex flex-column">
+          <li>
+            <button
+            role="menuitem"
+              on:click={() => {
+                optionsModalOpen = true;
+                accountPopupOpen = false;
+              }}>Options</button
+            >
+          </li>
+          <li>
+            <button
+            role="menuitem"
+              on:click={() => {
+                accountPopupOpen = false;
+                logout(user, $page.stuff.auth, $page.stuff.db);
+              }}>Log out</button
+            >
+          </li>
+        </menu>
     </Popup>
   {:else}
     <button
+      aria-expanded="false"
       on:click={() => {
         loginModalOpen = true;
       }}>Log in</button
@@ -222,7 +231,7 @@
 
 <footer>
   <h2>Did you do something you feel good about today?</h2>
-  <div class="flex">
+  <nav class="flex">
     <div class="flex links">
       <a href="/">Home</a>
       {#if !$loggedIn}
@@ -233,7 +242,7 @@
     <div class="flex links right">
       <a href="/privacy-policy">Privacy Policy</a>
     </div>
-  </div>
+  </nav>
   <br />
   <p>&copy; 2022 Kai-Shen Deru</p>
 </footer>

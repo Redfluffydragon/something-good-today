@@ -14,3 +14,11 @@ export const sortByActive = (project1, project2) => {
   // Not sure if this is the best solution
   return (index1 > -1 ? index1 : Infinity) - (index2 > -1 ? index2 : Infinity);
 };
+
+/**
+ * Converts the title to lowercase and replaces whitespace with hypens
+ * @param {string} title
+ */
+export function titleToId(title) {
+  return title.toLowerCase().replace(/\s/g, '-');
+}
