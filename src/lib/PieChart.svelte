@@ -1,7 +1,7 @@
 <script>
   import { Chart, PieController, ArcElement, Tooltip } from 'chart.js';
   import { onMount } from 'svelte';
-  import { user } from './stores';
+  import { reducedMotion, user } from './stores';
 
   export let projects = [];
   export let goal = 1;
@@ -84,7 +84,7 @@
 
     // Don't animate unless adding or removing a project
     // Don't animate when changing colors, for example
-    pieChart?.update(oldLength !== projects.length || oldGoal !== goal || numUpdates <= dumbUpdateLimit ? '' : 'none');
+    pieChart?.update(!$reducedMotion && (oldLength !== projects.length || oldGoal !== goal || numUpdates <= dumbUpdateLimit) ? '' : 'none');
 
     numUpdates <= dumbUpdateLimit && numUpdates++;
 
