@@ -16,7 +16,8 @@
   /** @type {string} */
   export let maxWidth = '';
 
-  export let minWidth = '';
+  /** @type {string} */
+  export let minWidth = '40ch';
 
   let modal;
 

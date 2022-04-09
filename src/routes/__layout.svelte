@@ -17,7 +17,7 @@
 </script>
 
 <script>
-  import { reducedMotion, firebaseConfig, user, loggedIn, profile, demoUserData, shouldUpdate } from '$lib/stores';
+  import { reducedMotion, firebaseConfig, user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
   import anime from 'animejs';
   import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -48,9 +48,8 @@
   $: browser && updateMode($user.darkMode);
 
   onMount(() => {
-    $shouldUpdate = false;
-
-    if ($user.darkMode) {
+    // set from inline script in app.html
+    if (document.documentElement.hasAttribute('dark')) {
       startPath = moonPath;
       startScale = 0;
     }
@@ -124,6 +123,10 @@
    * @param {boolean} darkMode Dark mode or light mode
    */
   function updateMode(darkMode) {
+    if (darkMode === undefined) {
+      return;
+    }
+
     // Update the icon
     animateIcon(darkMode);
 
