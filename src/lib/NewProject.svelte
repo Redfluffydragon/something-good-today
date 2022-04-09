@@ -53,7 +53,7 @@
     </svg>
     Add a new project
   </button>
-  <Modal title="New project" bind:open>
+  <Modal title="New project" bind:open closeOnClickOutside={false}>
     <br />
     <form id="newProject" class="grid" on:submit={addNewProject}>
       <label for="title" class="relative">Project title:</label>
