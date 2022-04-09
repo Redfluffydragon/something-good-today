@@ -1,4 +1,5 @@
 <script>
+  import { tick } from 'svelte';
   import Modal from './Modal.svelte';
   import { user } from './stores';
 
@@ -40,11 +41,11 @@
 
 <div class="relative">
   <button
-    on:click={() => {
+    on:click={async () => {
       open = !open;
-      setTimeout(() => {
-        titleInput.focus();
-      });
+
+      await tick();
+      titleInput.focus();
     }}
   >
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
