@@ -18,23 +18,36 @@
 
   export let minWidth = '';
 
-  function escape(e) {
-    if (e.key === 'Escape') {
-      open = false;
-    }
-  }
+  let modal;
+  $: focusable = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
 
   onMount(() => {
-    window.addEventListener('keydown', escape, false);
+    addEventListener('keydown', handleKeys, false);
   });
 
   onDestroy(() => {
-    browser && window.removeEventListener('keydown', escape, false);
+    browser && removeEventListener('keydown', handleKeys, false);
   });
 
   beforeNavigate(() => {
     open = false;
   });
+
+  function handleKeys(e) {
+    if (e.key === 'Escape') {
+      open = false;
+    }
+    // trap focus in the modal
+    if (focusable && open && e.key === 'Tab') {
+      if (e.shiftKey && (document.activeElement === focusable[0] || ![...focusable].includes(document.activeElement))) {
+        e.preventDefault();
+        focusable[focusable.length - 1].focus();
+      } else if (!e.shiftKey && document.activeElement === focusable[focusable.length - 1]) {
+        e.preventDefault();
+        focusable[0].focus();
+      }
+    }
+  }
 </script>
 
 {#if open}
