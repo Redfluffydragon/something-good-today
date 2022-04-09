@@ -187,7 +187,7 @@ button:not(:disabled, .img-btn, .clear-btn):hover {
   font-display: swap;
 }
 
-ul {
+ul, menu {
   list-style: none;
   padding-inline-start: 0;
 }
