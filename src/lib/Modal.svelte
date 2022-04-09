@@ -5,6 +5,7 @@
   import { safeScale } from './transitions';
   import { fade } from 'svelte/transition';
   import { beforeNavigate } from '$app/navigation';
+  import { titleToId } from './project-utils';
 
   /** @type {bool} */
   export let open;
@@ -38,12 +39,21 @@
 
 {#if open}
   <div class="shadow" transition:fade={{ duration: 300 }}>
-    <div class="modal" transition:safeScale={{ duration: 300 }} style="max-width: {maxWidth}; min-width: min(100%, {minWidth});">
+    <div
+      bind:this={modal}
+      open="true"
+      role="dialog"
+      aria-labelledby="{titleToId(title)}-modal"
+      aria-modal="true"
+      tabindex="-1"
+      transition:safeScale={{ duration: 300 }}
+      style="max-width: {maxWidth}; min-width: min(100%, {minWidth});"
+    >
       <Card>
-        <div class="wrapper" role="dialog" aria-labelledby="modal-title-{title}" aria-modal="true">
+        <div class="wrapper" role="document">
           <div class="header">
             {#if title}
-              <h2 id="modal-title-{title}">{title}</h2>
+              <h2 id="{titleToId(title)}-modal">{title}</h2>
             {/if}
             <button
               class="img-btn clear-btn"
