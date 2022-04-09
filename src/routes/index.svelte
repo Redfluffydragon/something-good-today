@@ -133,7 +133,6 @@
             {#if $user.activeProjects?.length}
               <ProjectsChecklist
                 name="main-projects"
-                label="Active projects"
                 projects={$user.activeProjects}
                 bind:selected={$user.today}
                 isSelected={id => $user.today?.includes(id)}

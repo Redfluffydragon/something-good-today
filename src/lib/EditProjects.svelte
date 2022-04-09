@@ -55,7 +55,7 @@
   >
 </div>
 
-<Modal title="Edit projects" bind:open maxWidth="80ch">
+<Modal title="Edit projects" bind:open>
   <div class="flex flex-column">
     <div class="flex">
       {#if $user.activeProjects?.length}
