@@ -175,20 +175,27 @@
     </button>
 
     <Popup bind:open={accountPopupOpen} button="#account-btn" position="right below">
-      <div class="flex flex-column">
-        <button
-          on:click={() => {
-            optionsModalOpen = true;
-            accountPopupOpen = false;
-          }}>Options</button
-        >
-        <button
-          on:click={() => {
-            accountPopupOpen = false;
-            logout(user, $page.stuff.auth, $page.stuff.db);
-          }}>Log out</button
-        >
-      </div>
+        <!-- svelte-ignore a11y-no-redundant-roles -->
+        <menu role="menu" class="flex flex-column">
+          <li>
+            <button
+            role="menuitem"
+              on:click={() => {
+                optionsModalOpen = true;
+                accountPopupOpen = false;
+              }}>Options</button
+            >
+          </li>
+          <li>
+            <button
+            role="menuitem"
+              on:click={() => {
+                accountPopupOpen = false;
+                logout(user, $page.stuff.auth, $page.stuff.db);
+              }}>Log out</button
+            >
+          </li>
+        </menu>
     </Popup>
   {:else}
     <button
