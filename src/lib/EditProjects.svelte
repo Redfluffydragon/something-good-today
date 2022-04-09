@@ -2,6 +2,7 @@
   import Modal from './Modal.svelte';
   import { shouldUpdate, user } from './stores';
   import DraggableProjectsList from './DraggableProjectsList.svelte';
+  import { tick } from 'svelte';
 
   let open = false;
 
@@ -9,6 +10,14 @@
 
   let newColor = '#000000';
   let newTitle = '';
+
+  let titleInput;
+  $: selectedProject !== null && focusOnInput();
+
+  async function focusOnInput() {
+    await tick();
+    titleInput.focus();
+  }
 
   function updateProject() {
     $user.projects[selectedProject].color = newColor;
