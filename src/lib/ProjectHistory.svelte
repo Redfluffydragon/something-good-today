@@ -114,13 +114,18 @@
       on:input={updateHistory}
     />
     <h3>Finished Projects</h3>
-    <ProjectsChecklist
-      name="editing-finished"
-      bind:selected={editingFinished}
-      projects={$user.finishedProjects}
-      isSelected={id => $user.history[dateToEdit].projects.includes(id)}
-      on:input={updateHistory}
-    />
+    {#if $user.finishedProjects?.length}
+      <ProjectsChecklist
+        name="editing-finished"
+        bind:selected={editingFinished}
+        projects={$user.finishedProjects}
+        isSelected={id => $user.history[dateToEdit].projects.includes(id)}
+        on:input={updateHistory}
+      />
+    {:else}
+      <p>No finished projects</p>
+    {/if}
+
     <button
       on:click={() => {
         open = false;
