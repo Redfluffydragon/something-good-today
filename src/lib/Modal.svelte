@@ -15,7 +15,8 @@
   /** @type {string} */
   export let maxWidth = '';
 
-  export let minWidth = '';
+  /** @type {string} */
+  export let minWidth = '40ch';
 
   function escape(e) {
     if (e.key === 'Escape') {
