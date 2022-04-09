@@ -19,7 +19,15 @@
   export let minWidth = '';
 
   let modal;
+
+  let hadFocus;
+
   $: focusable = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+  // Focus modal on creation
+  $: modal?.focus();
+
+  $: handleFocus(open);
 
   onMount(() => {
     addEventListener('keydown', handleKeys, false);
@@ -46,6 +54,14 @@
         e.preventDefault();
         focusable[0].focus();
       }
+    }
+  }
+
+  function handleFocus(open) {
+    if (open) {
+      hadFocus = document.activeElement;
+    } else {
+      hadFocus?.focus();
     }
   }
 </script>
