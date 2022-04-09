@@ -44,59 +44,61 @@
   const pluralDays = count => `day${count === 1 ? '' : 's'}`;
 </script>
 
-<div class="header flex">
-  <h2>History</h2>
+<section aria-labelledby="history-header">
+  <div class="header flex">
+    <h2 id="history-header">History</h2>
 
-  <div class="space-right">
-    <label for="historyAmount">Show: </label>
-    <select id="historyAmount" bind:value={$historyShown}>
-      <option value="7" selected>Past week</option>
-      <option value={dayjs().daysInMonth().toString()}>Past month</option>
-      <option value="365">Past year</option>
-      <option value="Infinity">All</option>
-    </select>
+    <div class="space-right">
+      <label for="historyAmount">Show: </label>
+      <select id="historyAmount" bind:value={$historyShown}>
+        <option value="7" selected>Past week</option>
+        <option value={dayjs().daysInMonth().toString()}>Past month</option>
+        <option value="365">Past year</option>
+        <option value="Infinity">All</option>
+      </select>
+    </div>
+
+    {#if $user.showStreak}
+      <p>Current streak: {streak} {pluralDays(streak)}</p>
+    {/if}
+
+    {#if $user.showMaxStreak}
+      <p>Max streak: {maxStreak} {pluralDays(maxStreak)}</p>
+    {/if}
+
+    <button
+      title={editing ? 'Finish editing history' : 'Edit history'}
+      aria-label={editing ? 'Finish editing history' : 'Edit history'}
+      on:click={() => {
+        editing = !editing;
+      }}>{editing ? 'Done' : 'Edit'}</button
+    >
   </div>
 
-  {#if $user.showStreak}
-    <p>Current streak: {streak} {pluralDays(streak)}</p>
+  {#if $user.history?.length}
+    <ul class="grid">
+      {#each $user.history.slice(0, $historyShown) as day, i (day.date)}
+        <li class="relative">
+          {new Date(day.date).toLocaleDateString()}
+          <PieChart projects={day.projects} goal={day.goal} size="12ch" />
+          {#if editing}
+            <button
+              aria-expanded="false"
+              on:click={() => {
+                open = true;
+                dateToEdit = i;
+              }}
+              class="edit-history clear-btn"
+              aria-label="Edit history on {new Date(day.date).toLocaleDateString()}">Edit</button
+            >
+          {/if}
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <p>No history.</p>
   {/if}
-
-  {#if $user.showMaxStreak}
-    <p>Max streak: {maxStreak} {pluralDays(maxStreak)}</p>
-  {/if}
-
-  <button
-    title={editing ? 'Finish editing history' : 'Edit history'}
-    aria-label={editing ? 'Finish editing history' : 'Edit history'}
-    on:click={() => {
-      editing = !editing;
-    }}>{editing ? 'Done' : 'Edit'}</button
-  >
-</div>
-
-{#if $user.history?.length}
-  <ul class="grid">
-    {#each $user.history.slice(0, $historyShown) as day, i (day.date)}
-      <li class="relative">
-        {new Date(day.date).toLocaleDateString()}
-        <PieChart projects={day.projects} goal={day.goal} size="12ch" />
-        {#if editing}
-          <button
-            aria-expanded="false"
-            on:click={() => {
-              open = true;
-              dateToEdit = i;
-            }}
-            class="edit-history clear-btn"
-            aria-label="Edit history on {new Date(day.date).toLocaleDateString()}">Edit</button
-          >
-        {/if}
-      </li>
-    {/each}
-  </ul>
-{:else}
-  <p>No history.</p>
-{/if}
+</section>
 
 <Modal title="Edit {new Date($user.history?.[dateToEdit]?.date)?.toLocaleDateString()}" bind:open>
   <div class="flex flex-column">
