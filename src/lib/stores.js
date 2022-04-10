@@ -85,7 +85,8 @@ export const demoUserData = {
   darkMode: false,
   options: {
     celebration: 'fireworks',
+    colorFilter: 0.8,
     showMaxStreak: true,
     showStreak: true,
-  }
+  },
 };
