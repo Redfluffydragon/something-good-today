@@ -48,7 +48,7 @@
   $: browser && updateMode($user.darkMode);
 
   onMount(() => {
-    // set from inline script in app.html
+    // dark attribute gets set from inline script in app.html
     if (document.documentElement.hasAttribute('dark')) {
       startPath = moonPath;
       startScale = 0;
