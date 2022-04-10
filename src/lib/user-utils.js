@@ -62,6 +62,7 @@ export async function initializeUser(db, newUser) {
       darkMode: false,
       options: {
         celebration: get(reducedMotion) ? 'none' : 'fireworks',
+        colorFilter: 1,
         showMaxStreak: true,
         showStreak: true,
       },
