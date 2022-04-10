@@ -224,6 +224,7 @@
 
 <footer>
   <h2>Did you do something you feel good about today?</h2>
+  <p>This is a project and daily habit tracker to help you feel like you're not wasting your time.</p>
   <nav class="flex">
     <div class="flex links">
       <a href="/">Home</a>
@@ -301,6 +302,10 @@
   footer a {
     color: var(--color);
     font-size: 1.25rem;
+  }
+
+  footer p {
+    font-size: 1em;
   }
 
   .spacer {
