@@ -104,9 +104,16 @@ function fireworkPoint(x, y) {
   context.ellipse(Math.round(x), Math.round(y), 4, 4, 0, 0, Math.PI * 2);
 }
 
-function randomVelocities(number, scale = 1.4, randomness = 0.3) {
-  return Array.from(new Array(number), () => {
-    return { x: scale - Math.random() * randomness, y: scale - Math.random() * randomness };
+/**
+ * Generate an array of random velocities
+ * @param {int} quantity The length of the array
+ * @param {number} max The maximum velocity
+ * @param {number} randomness The amount of randomness in the set
+ * @returns {Array}
+ */
+function randomVelocities(quantity, max = 1.4, randomness = 0.3) {
+  return Array.from(new Array(quantity), () => {
+    return { x: max - Math.random() * randomness, y: max - Math.random() * randomness };
   });
 }
 

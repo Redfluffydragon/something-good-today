@@ -7,12 +7,19 @@
 
   let titleInput;
 
+  /**
+   * Return a random hex color
+   */
   function randomColor() {
     return `#${Math.trunc(Math.random() * 0xffffff)
       .toString(16)
       .padEnd(6, '0')}`;
   }
 
+  /**
+   * Add a new project
+   * @param {Event} e A form submit event to get formdata from
+   */
   function addNewProject(e) {
     const data = Object.fromEntries(new FormData(document.forms.newProject).entries());
 
