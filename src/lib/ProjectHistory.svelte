@@ -58,12 +58,12 @@
       </select>
     </div>
 
-    {#if $user.showStreak}
-      <p>Current streak: {streak} {pluralDays(streak)}</p>
+    {#if $user.options.showStreak}
+      <p>{`Current streak: ${streak} ${pluralDays(streak)}`}</p>
     {/if}
 
-    {#if $user.showMaxStreak}
-      <p>Max streak: {maxStreak} {pluralDays(maxStreak)}</p>
+    {#if $user.options.showMaxStreak}
+      <p>{`Max streak: ${maxStreak} ${pluralDays(maxStreak)}`}</p>
     {/if}
 
     <button

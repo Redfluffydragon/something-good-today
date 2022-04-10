@@ -14,7 +14,7 @@ export const reducedMotion = readable(false, set => {
   });
 });
 
-export const user = writable({});
+export const user = writable({ options: {} });
 export const profile = writable();
 export const loggedIn = writable(false);
 
@@ -34,7 +34,6 @@ export const firebaseConfig = {
 export const demoUserData = {
   goal: '3',
   nextId: 6,
-  celebration: 'fireworks',
   projects: {
     0: {
       color: '#ff2962',
@@ -83,4 +82,10 @@ export const demoUserData = {
       projects: [3, 4, 5],
     },
   ],
+  darkMode: false,
+  options: {
+    celebration: 'fireworks',
+    showMaxStreak: true,
+    showStreak: true,
+  }
 };

@@ -59,7 +59,12 @@ export async function initializeUser(db, newUser) {
       history: [],
       lastUpdated: Date.now(),
       uid: newUser.uid,
-      celebration: get(reducedMotion) ? 'none' : 'fireworks',
+      darkMode: false,
+      options: {
+        celebration: get(reducedMotion) ? 'none' : 'fireworks',
+        showMaxStreak: true,
+        showStreak: true,
+      },
     };
 
     await setDoc(doc(db, 'users', newUser.uid), defaultUserData);

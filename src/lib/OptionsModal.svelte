@@ -9,7 +9,7 @@
   <div class="flex flex-column">
     <label for="celebration">
       Celebration type:
-      <select id="celebration" bind:value={$user.celebration}>
+      <select id="celebration" bind:value={$user.options.celebration}>
         <option value="confetti">Confetti</option>
         <option value="fireworks">Fireworks</option>
         <option value="none">None</option>
@@ -17,9 +17,9 @@
     </label>
 
     <section>
-      <label for="showStreak"><input type="checkbox" id="showStreak" bind:checked={$user.showStreak} /> Show streak</label>
+      <label for="showStreak"><input type="checkbox" id="showStreak" bind:checked={$user.options.showStreak} /> Show streak</label>
       <br />
-      <label for="showMaxStreak"><input type="checkbox" id="showMaxStreak" bind:checked={$user.showMaxStreak} /> Show max streak</label>
+      <label for="showMaxStreak"><input type="checkbox" id="showMaxStreak" bind:checked={$user.options.showMaxStreak} /> Show max streak</label>
     </section>
 
     <button
