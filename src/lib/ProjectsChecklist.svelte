@@ -5,7 +5,7 @@
   import { user } from './stores';
 
   /** @type {function(int):bool} A callback function that determines whether each project starts selected based on the project id */
-  export let isSelected;
+  export let isSelected = () => false;
 
   /** @type {array} The projects to list */
   export let projects;
