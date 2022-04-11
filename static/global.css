@@ -217,6 +217,10 @@ main {
   position: relative;
 }
 
+.full-height {
+  height: 100%;
+}
+
 ::-webkit-scrollbar {
   width: 16px;
 }

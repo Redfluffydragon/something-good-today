@@ -68,9 +68,9 @@
 </script>
 
 {#if open}
-  <div class="modal-position flex relative">
+  <div class="modal-position flex relative full">
     <div
-      class="shadow"
+      class="shadow full"
       transition:fade={{ duration: 300 }}
       on:click={() => {
         closeOnClickOutside && (open = false);
@@ -114,25 +114,21 @@
 
 <style>
   .modal-position {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: start;
     z-index: 1000;
   }
 
   .shadow {
+    background: var(--shadow);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  .full {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--shadow);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
   }
 
   .modal {

@@ -42,13 +42,12 @@
   }
 </script>
 
-<canvas bind:this={canvas} style="z-index: {play ? 100 : 'initial'};" />
+<canvas bind:this={canvas} style="z-index: {play ? 100 : 'initial'};" class="full-height" />
 
 <style>
   canvas {
     position: absolute;
     top: 0;
     width: 100%;
-    height: 100%;
   }
 </style>

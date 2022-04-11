@@ -88,7 +88,7 @@
                 open = true;
                 dateToEdit = i;
               }}
-              class="edit-history clear-btn"
+              class="edit-history clear-btn full-height"
               aria-label="Edit history on {new Date(day.date).toLocaleDateString()}">Edit</button
             >
           {/if}
@@ -168,7 +168,6 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
     background: var(--shadow);
     text-align: center;
   }
