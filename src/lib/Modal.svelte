@@ -52,8 +52,7 @@
     if (focusable && open && e.key === 'Tab') {
       if (
         e.shiftKey &&
-        (document.activeElement === focusable[0] ||
-          ![...focusable].includes(document.activeElement))
+        (document.activeElement === focusable[0] || document.activeElement === modal)
       ) {
         e.preventDefault();
         focusable[focusable.length - 1].focus();
