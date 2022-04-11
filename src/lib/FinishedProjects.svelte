@@ -18,7 +18,7 @@
               $user = $user; // So Svelte updates
             }}
           >
-            <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
+            <Project {id} />
           </button>
         </li>
       {/each}

@@ -64,7 +64,7 @@
             value={id}
             checked={isSelected(id)}
           />
-          <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
+          <Project {id} />
         </label>
       </li>
     {/each}
