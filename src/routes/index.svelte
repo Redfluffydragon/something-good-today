@@ -127,8 +127,8 @@
 
     <div class="sidebar-wrapper">
       <Card style="height: 100%;">
-        <div class="flex flex-column">
-          <section aria-labelledby="main-projects-header">
+        <div class="flex flex-column full-height">
+          <section class="projects-list" aria-labelledby="main-projects-header">
             <h2 id="main-projects-header">Active Projects</h2>
             {#if $user.activeProjects?.length}
               <ProjectsChecklist
@@ -176,7 +176,8 @@
     flex: 2;
   }
 
-  .sidebar-wrapper {
+  .sidebar-wrapper,
+  .projects-list {
     flex: 1;
   }
 </style>
