@@ -1,4 +1,5 @@
 <script>
+  import DeleteProjects from './DeleteProjects.svelte';
   import Modal from './Modal.svelte';
   import { user } from './stores';
 
@@ -44,6 +45,8 @@
       step="0.05"
       bind:value={$user.options.colorFilter}
     />
+
+    <DeleteProjects />
 
     <button
       on:click={() => {
