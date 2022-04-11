@@ -59,7 +59,9 @@
    */
   function hsvToHex(h, s, v, number) {
     const k = (number + h / 60) % 6;
-    return ('0' + Math.round((v - v * s * Math.max(0, Math.min(k, 4 - k, 1))) * 255).toString(16)).slice(-2);
+    return (
+      '0' + Math.round((v - v * s * Math.max(0, Math.min(k, 4 - k, 1))) * 255).toString(16)
+    ).slice(-2);
   }
 
   /**
@@ -77,7 +79,8 @@
     const c = max - Math.min(r, g, b);
 
     // hue
-    const hPrime = c === 0 ? 0 : max === r ? ((g - b) / c) % 6 : max === g ? (b - r) / c + 2 : (r - g) / c + 4;
+    const hPrime =
+      c === 0 ? 0 : max === r ? ((g - b) / c) % 6 : max === g ? (b - r) / c + 2 : (r - g) / c + 4;
 
     const h = (360 + Math.round(hPrime * 60)) % 360;
 
@@ -88,7 +91,7 @@
     const s = Math.min((v === 0 ? 0 : c / v / 255) * multiplier, 1);
 
     // back to hex
-    return `#${hsvToHex(h, s, v, 5)}${hsvToHex(h, s, v, 3)}${hsvToHex(h, s, v, 1)}`;
+    return '#' + hsvToHex(h, s, v, 5) + hsvToHex(h, s, v, 3) + hsvToHex(h, s, v, 1);
   }
 
   /**
@@ -104,7 +107,14 @@
 
     for (const id of projects) {
       getLabels.push($user.projects[id].title);
-      bgColors.push(intensifyColor($user.projects[id].color, $user.darkMode ? Math.min($user.options.colorFilter, 1) : Math.max($user.options.colorFilter, 1)));
+      bgColors.push(
+        intensifyColor(
+          $user.projects[id].color,
+          $user.darkMode
+            ? Math.min($user.options.colorFilter, 1)
+            : Math.max($user.options.colorFilter, 1)
+        )
+      );
     }
 
     const sizes = Array(getLabels.length).fill(1);
@@ -126,7 +136,12 @@
 
     // Don't animate unless adding or removing a project
     // Don't animate when changing colors, for example
-    pieChart?.update(!$reducedMotion && (oldLength !== projects.length || oldGoal !== goal || numUpdates <= dumbUpdateLimit) ? '' : 'none');
+    pieChart?.update(
+      !$reducedMotion &&
+        (oldLength !== projects.length || oldGoal !== goal || numUpdates <= dumbUpdateLimit)
+        ? ''
+        : 'none'
+    );
 
     numUpdates <= dumbUpdateLimit && numUpdates++;
 

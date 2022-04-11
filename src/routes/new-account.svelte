@@ -74,8 +74,12 @@
         <input type="password" name="confirm-password" id="confirm-password" required />
         <div class="warnings flex flex-column">
           <InlineWarning bind:show={passwordsDontMatch}>Passwords must match</InlineWarning>
-          <InlineWarning bind:show={passwordTooShort}>Password must be at least 6 characters</InlineWarning>
-          <InlineWarning bind:show={emailAlreadyUsed}>Email already in use. Try signing in.</InlineWarning>
+          <InlineWarning bind:show={passwordTooShort}
+            >Password must be at least 6 characters</InlineWarning
+          >
+          <InlineWarning bind:show={emailAlreadyUsed}
+            >Email already in use. Try signing in.</InlineWarning
+          >
         </div>
         <button>Create account</button>
       </form>

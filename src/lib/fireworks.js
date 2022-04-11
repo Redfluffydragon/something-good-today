@@ -62,12 +62,18 @@ async function fireworks(options = {}) {
       },
       {
         delay: 300,
-        offset: { x: (Math.random() * minDim) / 2 - minDim / 4, y: (Math.random() * minDim) / 2 - minDim / 4 },
+        offset: {
+          x: (Math.random() * minDim) / 2 - minDim / 4,
+          y: (Math.random() * minDim) / 2 - minDim / 4,
+        },
         velocities: randomVelocities(options.particleCount || 70),
       },
       {
         delay: 600,
-        offset: { x: (Math.random() * minDim) / 2 - minDim / 4, y: (Math.random() * minDim) / 2 - minDim / 4 },
+        offset: {
+          x: (Math.random() * minDim) / 2 - minDim / 4,
+          y: (Math.random() * minDim) / 2 - minDim / 4,
+        },
         velocities: randomVelocities(options.particleCount || 70),
       },
     ],
@@ -113,7 +119,10 @@ function fireworkPoint(x, y) {
  */
 function randomVelocities(quantity, max = 1.4, randomness = 0.3) {
   return Array.from(new Array(quantity), () => {
-    return { x: max - Math.random() * randomness, y: max - Math.random() * randomness };
+    return {
+      x: max - Math.random() * randomness,
+      y: max - Math.random() * randomness,
+    };
   });
 }
 
@@ -147,6 +156,7 @@ function drawFireworkParticles(options, resolve) {
         const time = (Date.now() - startTime - burst.delay) / maxLifespan;
 
         context.beginPath();
+        // prettier-ignore
         fireworkPoint(
           // start |     direction      | spread | air resistance | initial velocity | extra to make it keep moving   | gravity
           center.x + burst.offset.x + Math.cos(rotation) * spread * (expoOut(time) * burst.velocities[i].x + quadIn(time) * burst.velocities[i].x),

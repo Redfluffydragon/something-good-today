@@ -23,7 +23,9 @@
 
   let hadFocus;
 
-  $: focusable = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  $: focusable = modal?.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
 
   // Focus modal on creation
   $: modal?.focus();
@@ -48,7 +50,11 @@
     }
     // trap focus in the modal
     if (focusable && open && e.key === 'Tab') {
-      if (e.shiftKey && (document.activeElement === focusable[0] || ![...focusable].includes(document.activeElement))) {
+      if (
+        e.shiftKey &&
+        (document.activeElement === focusable[0] ||
+          ![...focusable].includes(document.activeElement))
+      ) {
         e.preventDefault();
         focusable[focusable.length - 1].focus();
       } else if (!e.shiftKey && document.activeElement === focusable[focusable.length - 1]) {

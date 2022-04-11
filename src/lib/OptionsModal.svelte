@@ -17,19 +17,33 @@
     </label>
 
     <section>
-      <label for="showStreak"><input type="checkbox" id="showStreak" bind:checked={$user.options.showStreak} /> Show streak</label>
+      <label for="showStreak"
+        ><input type="checkbox" id="showStreak" bind:checked={$user.options.showStreak} /> Show streak</label
+      >
       <br />
-      <label for="showMaxStreak"><input type="checkbox" id="showMaxStreak" bind:checked={$user.options.showMaxStreak} /> Show max streak</label>
+      <label for="showMaxStreak"
+        ><input type="checkbox" id="showMaxStreak" bind:checked={$user.options.showMaxStreak} /> Show
+        max streak</label
+      >
     </section>
 
     <label for="filterColor">
       {$user.options.colorFilter !== 1
         ? `Make colors ${Math.abs(Math.round(($user.options.colorFilter - 1) * 100))}% ${
-            $user.options.colorFilter > 1 ? 'more vibrant on light mode' : 'less vibrant on dark mode'
+            $user.options.colorFilter > 1
+              ? 'more vibrant on light mode'
+              : 'less vibrant on dark mode'
           }`
         : `Don't filter colors`}
     </label>
-    <input type="range" id="filterColor" min="0" max="2" step="0.05" bind:value={$user.options.colorFilter} />
+    <input
+      type="range"
+      id="filterColor"
+      min="0"
+      max="2"
+      step="0.05"
+      bind:value={$user.options.colorFilter}
+    />
 
     <button
       on:click={() => {

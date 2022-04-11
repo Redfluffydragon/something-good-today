@@ -23,7 +23,12 @@
   import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
   import { initializeApp } from 'firebase/app';
   import { page } from '$app/stores';
-  import { getFirestore, enableIndexedDbPersistence, disableNetwork, enableNetwork } from 'firebase/firestore';
+  import {
+    getFirestore,
+    enableIndexedDbPersistence,
+    disableNetwork,
+    enableNetwork,
+  } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
   import { addToHistory, initializeUser, loginWithGoogle, logout } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
@@ -32,9 +37,11 @@
   import OptionsModal from '$lib/OptionsModal.svelte';
 
   // Have to start with something that's a continuous path, like an ellipse, for the morphing to look good
-  const moonPath = 'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
+  const moonPath =
+    'M53.4518 31.5C53.4518 45.031 42.4828 56 28.9518 56C9.45187 55 31.9519 49.5 31.9519 31.5C31.9519 13.5 9.4519 7 28.9518 7C42.4828 7 53.4518 17.969 53.4518 31.5Z';
 
-  const sunPath = 'M49 32C49 41.3888 41.3888 49 32 49C22.6112 49 15 41.3888 15 32C15 22.6112 22.6112 15 32 15C41.3888 15 49 22.6112 49 32Z';
+  const sunPath =
+    'M49 32C49 41.3888 41.3888 49 32 49C22.6112 49 15 41.3888 15 32C15 22.6112 22.6112 15 32 15C41.3888 15 49 22.6112 49 32Z';
 
   let startPath = sunPath;
   let startScale = 1;
@@ -139,12 +146,42 @@
 >
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
     <title>Switch to {$user.darkMode ? 'light' : 'dark'} mode</title>
-    <path class="sun-ray" style="transform: scale({startScale});" d="M29.2929 6.85715L31.7143 3.59516L34.1357 6.85715H29.2929Z" stroke-width="4.28572" />
-    <path class="sun-ray" style="transform: scale({startScale});" d="M53.1003 16.0124L57.136 16.4784L55.5217 20.2063L53.1003 16.0124Z" stroke-width="4.28572" />
-    <path class="sun-ray" style="transform: scale({startScale});" d="M56.5217 41.1552L58.1359 44.8832L54.1003 45.3492L56.5217 41.1552Z" stroke-width="4.28572" />
-    <path class="sun-ray" style="transform: scale({startScale});" d="M29.2929 57.1428L31.7143 60.4048L34.1357 57.1428H29.2929Z" stroke-width="4.28572" />
-    <path class="sun-ray" style="transform: scale({startScale});" d="M7.58491 41.1552L5.97065 44.8832L10.0063 45.3492L7.58491 41.1552Z" stroke-width="4.28572" />
-    <path class="sun-ray" style="transform: scale({startScale});" d="M11.0064 16.0124L6.97071 16.4784L8.58498 20.2063L11.0064 16.0124Z" stroke-width="4.28572" />
+    <path
+      class="sun-ray"
+      style="transform: scale({startScale});"
+      d="M29.2929 6.85715L31.7143 3.59516L34.1357 6.85715H29.2929Z"
+      stroke-width="4.28572"
+    />
+    <path
+      class="sun-ray"
+      style="transform: scale({startScale});"
+      d="M53.1003 16.0124L57.136 16.4784L55.5217 20.2063L53.1003 16.0124Z"
+      stroke-width="4.28572"
+    />
+    <path
+      class="sun-ray"
+      style="transform: scale({startScale});"
+      d="M56.5217 41.1552L58.1359 44.8832L54.1003 45.3492L56.5217 41.1552Z"
+      stroke-width="4.28572"
+    />
+    <path
+      class="sun-ray"
+      style="transform: scale({startScale});"
+      d="M29.2929 57.1428L31.7143 60.4048L34.1357 57.1428H29.2929Z"
+      stroke-width="4.28572"
+    />
+    <path
+      class="sun-ray"
+      style="transform: scale({startScale});"
+      d="M7.58491 41.1552L5.97065 44.8832L10.0063 45.3492L7.58491 41.1552Z"
+      stroke-width="4.28572"
+    />
+    <path
+      class="sun-ray"
+      style="transform: scale({startScale});"
+      d="M11.0064 16.0124L6.97071 16.4784L8.58498 20.2063L11.0064 16.0124Z"
+      stroke-width="4.28572"
+    />
     <path id="darkModeIcon" d={startPath} stroke-width="5" fill="var(--bg)" />
   </svg>
 </button>
@@ -224,14 +261,20 @@
 
 <footer>
   <h2>Did you do something you feel good about today?</h2>
-  <p>This is a project and daily habit tracker to help you feel like you're not wasting your time.</p>
+  <p>
+    This is a project and daily habit tracker to help you feel like you're not wasting your time.
+  </p>
   <nav class="flex">
     <div class="flex links">
       <a href="/">Home</a>
       {#if !$loggedIn}
         <a href="/new-account">Create an account</a>
       {/if}
-      <a href="https://github.com/Redfluffydragon/something-good-today/issues/new" target="_blank" rel="noopener">Report an issue</a>
+      <a
+        href="https://github.com/Redfluffydragon/something-good-today/issues/new"
+        target="_blank"
+        rel="noopener">Report an issue</a
+      >
     </div>
     <div class="flex links right">
       <a href="/privacy-policy">Privacy Policy</a>

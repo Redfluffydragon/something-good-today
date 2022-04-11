@@ -24,7 +24,10 @@
 
   beforeNavigate(() => {
     if (waitingToUpdate) {
-      navigator.sendBeacon('/sync', new Blob([JSON.stringify($user)], { type: 'application/json' }));
+      navigator.sendBeacon(
+        '/sync',
+        new Blob([JSON.stringify($user)], { type: 'application/json' })
+      );
     }
   });
 
@@ -106,7 +109,10 @@
   <title>Something Good Today</title>
   <meta property="og:title" content="Something Good Today" />
 
-  <meta name="description" content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?" />
+  <meta
+    name="description"
+    content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?"
+  />
   <meta
     property="og:description"
     content="A tool to help motivate you and keep you on track for long-term projects or daily habits. Did you do something you feel good about today?"
@@ -120,7 +126,12 @@
         <h1 id="today-header">Today</h1>
         <div class="relative">
           <Celebrate bind:play={playCelebrate} bind:type={$user.options.celebration} />
-          <PieChart goal={$user.goal} projects={$user.today} noneMessage="Nothing yet today." dumbUpdateLimit=3 />
+          <PieChart
+            goal={$user.goal}
+            projects={$user.today}
+            noneMessage="Nothing yet today."
+            dumbUpdateLimit="3"
+          />
         </div>
       </Card>
     </section>

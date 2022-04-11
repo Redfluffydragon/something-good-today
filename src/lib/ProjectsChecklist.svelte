@@ -34,7 +34,9 @@
 
     // add or delete the project IDs based on whether the corresponding checkbox is checked
     // do it this way because it won't remove finished projects from the today array
-    checkboxes.forEach(checkbox => _selected[checkbox.checked ? 'add' : 'delete'](parseInt(checkbox.value)));
+    checkboxes.forEach(checkbox =>
+      _selected[checkbox.checked ? 'add' : 'delete'](parseInt(checkbox.value))
+    );
 
     // Transform back into an array for external, and sort according to the active projects (inactive projects are sorted to the end)
     selected = [..._selected].sort(sortByActive);
@@ -55,7 +57,13 @@
     {#each projects as id (id)}
       <li>
         <label for="{name}-{titleToId($user.projects[id].title)}">
-          <input type="checkbox" name={titleToId($user.projects[id].title)} id="{name}-{titleToId($user.projects[id].title)}" value={id} checked={isSelected(id)} />
+          <input
+            type="checkbox"
+            name={titleToId($user.projects[id].title)}
+            id="{name}-{titleToId($user.projects[id].title)}"
+            value={id}
+            checked={isSelected(id)}
+          />
           <Project color={$user.projects[id].color}>{$user.projects[id].title}</Project>
         </label>
       </li>

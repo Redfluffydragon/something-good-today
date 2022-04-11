@@ -59,7 +59,12 @@
   <div class="flex flex-column">
     <div class="flex">
       {#if $user.activeProjects?.length}
-        <DraggableProjectsList bind:projects={$user.activeProjects} bind:selectedProject bind:newColor bind:newTitle />
+        <DraggableProjectsList
+          bind:projects={$user.activeProjects}
+          bind:selectedProject
+          bind:newColor
+          bind:newTitle
+        />
       {/if}
       <form
         on:input={updateProject}
@@ -70,10 +75,23 @@
       >
         <fieldset disabled={selectedProject === null}>
           <div class="flex flex-column">
-            <input type="text" name="newTitle" id="newTitle" aria-label="Edit project name" bind:value={newTitle} bind:this={titleInput} />
+            <input
+              type="text"
+              name="newTitle"
+              id="newTitle"
+              aria-label="Edit project name"
+              bind:value={newTitle}
+              bind:this={titleInput}
+            />
             <div>
               <label for="newColor">Color:</label>
-              <input type="color" name="newColor" id="newColor" aria-label="Edit project color" bind:value={newColor} />
+              <input
+                type="color"
+                name="newColor"
+                id="newColor"
+                aria-label="Edit project color"
+                bind:value={newColor}
+              />
             </div>
             <button on:click={finishProject}>Mark project as finished</button>
             <button class="danger-btn" on:click={deleteProject}>Delete project</button>
