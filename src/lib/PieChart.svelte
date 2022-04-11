@@ -7,13 +7,13 @@
   export let goal = 1;
   export let size = '40ch';
 
-  export let id = 'none';
+  export let noneMessage = 'No projects.';
 
   // I want the pie charts to animate in on first load, they get updated 2 or 3
   // times before actually displaying something. The main "Today" one gets
   // updated 3 times, and all the history ones get updated twice. I don't know why,
   // so this is a really hacky fix for it.
-  const dumbUpdateLimit = id === 'main' ? 3 : 2;
+  export let dumbUpdateLimit = 2;
 
   let canvas;
 
@@ -141,7 +141,7 @@
 
 <div class="relative" style="max-width: {size};">
   {#if !projects || !Object.keys(projects).length}
-    <p>Nothing yet today.</p>
+    <p>{noneMessage}</p>
   {/if}
 
   <canvas bind:this={canvas} aria-label="Completed projects: {listProjects(projects)}" />
