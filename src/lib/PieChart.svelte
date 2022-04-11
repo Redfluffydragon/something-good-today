@@ -104,7 +104,7 @@
 
     for (const id of projects) {
       getLabels.push($user.projects[id].title);
-      bgColors.push(intensifyColor($user.projects[id].color, $user.darkMode ? Math.min($user.colorFilter, 1) : Math.max($user.colorFilter, 1)));
+      bgColors.push(intensifyColor($user.projects[id].color, $user.darkMode ? Math.min($user.options.colorFilter, 1) : Math.max($user.options.colorFilter, 1)));
     }
 
     const sizes = Array(getLabels.length).fill(1);
