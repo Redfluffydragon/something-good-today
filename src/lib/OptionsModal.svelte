@@ -4,6 +4,13 @@
   import { user } from './stores';
 
   export let open;
+
+  $: filterLabel =
+    $user.options.colorFilter !== 1
+      ? `Make colors ${Math.abs(Math.round(($user.options.colorFilter - 1) * 100))}% ${
+          $user.options.colorFilter > 1 ? 'more vibrant on light mode' : 'less vibrant on dark mode'
+        }`
+      : `Don't filter colors`;
 </script>
 
 <Modal bind:open title="Options">
@@ -28,21 +35,14 @@
       >
     </section>
 
-    <label for="filterColor">
-      {$user.options.colorFilter !== 1
-        ? `Make colors ${Math.abs(Math.round(($user.options.colorFilter - 1) * 100))}% ${
-            $user.options.colorFilter > 1
-              ? 'more vibrant on light mode'
-              : 'less vibrant on dark mode'
-          }`
-        : `Don't filter colors`}
-    </label>
+    <label for="filterColor">{filterLabel}</label>
     <input
       type="range"
       id="filterColor"
       min="0"
       max="2"
       step="0.05"
+      aria-valuetext={filterLabel}
       bind:value={$user.options.colorFilter}
     />
 
