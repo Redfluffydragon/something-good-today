@@ -40,7 +40,7 @@
         currentStreak = 0;
       }
     }
-    return Math.max(...streaks);
+    return Math.max(...streaks, streak);
   }
 
   const pluralDays = count => `day${count === 1 ? '' : 's'}`;
