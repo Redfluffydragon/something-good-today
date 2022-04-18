@@ -20,7 +20,9 @@
     $user.history[dateToEdit].projects = [...editingActive, ...editingFinished];
   }
 
-  $: streak = $user.history?.findIndex(day => day.projects.length < parseInt(day.goal)) || 0;
+  $: streak =
+    ($user.history?.findIndex(day => day.projects.length < parseInt(day.goal)) || 0) +
+    ($user.today?.length >= parseInt($user.goal) ? 1 : 0);
 
   $: maxStreak = findMaxStreak($user.history);
 
