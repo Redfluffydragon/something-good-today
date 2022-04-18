@@ -65,7 +65,7 @@
     {/if}
 
     {#if $user.options.showMaxStreak}
-      <p>{`Max streak: ${maxStreak} ${pluralDays(maxStreak)}`}</p>
+      <p>{`Best streak: ${maxStreak} ${pluralDays(maxStreak)}`}</p>
     {/if}
 
     <button
