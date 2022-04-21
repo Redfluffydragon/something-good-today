@@ -25,6 +25,7 @@
     }
 
     user.subscribe(user => {
+      if (!user) return;
       // only call updateMode if dark mode changed, not if something else on the user changed
       if (user.darkMode !== darkMode) {
         darkMode = user.darkMode;
@@ -91,7 +92,7 @@
   class="clear-btn"
 >
   <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
-    <title>Switch to {$user.darkMode ? 'light' : 'dark'} mode</title>
+    <title>Switch to {$user?.darkMode ? 'light' : 'dark'} mode</title>
     <path
       class="sun-ray"
       style="transform: scale({startScale});"
