@@ -11,23 +11,26 @@ export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {
     user.update(user => {
 
-      // possible empty days
-      const daysBetween = dayjs().diff(user.lastUpdated, 'day');
-      for (let i = daysBetween - 1; i > 0; i--) {
-        user.history.unshift({
-          // number of ms in a day
-          date: user.lastUpdated - (86400000 * i),
-          projects: [],
-          goal: user.goal,
-        });
-      }
-
       // Use unshift for reverse chronological order
+
+      // first, add the last updated day
       user.history.unshift({
         date: user.lastUpdated,
         projects: user.today,
         goal: user.goal,
       });
+
+      // then add possible empty days between last updated and now
+      const daysBetween = dayjs().diff(user.lastUpdated, 'day');
+      console.log(dayjs(), user.lastUpdated, daysBetween);
+      for (let i = 0; i < daysBetween - 1; i++) {
+        user.history.unshift({
+          // number of ms in a day
+          date: user.lastUpdated + (86400000 * (i + 1)),
+          projects: [],
+          goal: user.goal,
+        });
+      }
 
       user.today = [];
       user.lastUpdated = Date.now();
