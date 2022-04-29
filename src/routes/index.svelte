@@ -20,7 +20,11 @@
   let waitingToUpdate = false;
   let playCelebrate = false;
 
-  $: browser && waitToUpdateUser($user);
+  user.subscribe(user => {
+    if (!browser) return;
+
+    waitToUpdateUser(user);
+  });
 
   beforeNavigate(() => {
     if (waitingToUpdate) {
@@ -63,7 +67,7 @@
    * @param {Object} user
    */
   async function safeUpdateUser(user) {
-    if (!$page.stuff.db || !$loggedIn || !user.uid) {
+    if (!canUpdate(user)) {
       return;
     }
 
@@ -81,6 +85,11 @@
    * @param {Object} user
    */
   function waitToUpdateUser(user) {
+    // Check here too so it doesn't update on first page load
+    if (!canUpdate(user)) {
+      return;
+    }
+
     if (!$shouldUpdate) {
       $shouldUpdate = true;
       return;
@@ -92,6 +101,15 @@
     }, 3000);
 
     waitingToUpdate = true;
+  }
+
+  /**
+   * Check if it's possible to update the user (db exists, is logged in, and the user exists)
+   * @param {Object} user The user to check if it exists
+   * @returns {boolean} True if it's possible to update the user, and false otherwise
+   */
+  function canUpdate(user) {
+    return !(!$page.stuff.db || !$loggedIn || !user.uid);
   }
 
   /**
