@@ -10,12 +10,26 @@ import { loggedIn, profile, reducedMotion, shouldUpdate, user } from './stores';
 export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {
     user.update(user => {
+
       // Use unshift for reverse chronological order
+
+      // first, add the last updated day
       user.history.unshift({
         date: user.lastUpdated,
         projects: user.today,
         goal: user.goal,
       });
+
+      // then add possible empty days between last updated and now
+      const daysBetween = dayjs().diff(user.lastUpdated, 'day');
+      for (let i = 0; i < daysBetween - 1; i++) {
+        user.history.unshift({
+          // 86400000 is the number of ms in a day
+          date: user.lastUpdated + (86400000 * (i + 1)),
+          projects: [],
+          goal: user.goal,
+        });
+      }
 
       user.today = [];
       user.lastUpdated = Date.now();
