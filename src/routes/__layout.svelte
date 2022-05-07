@@ -64,6 +64,11 @@
     addEventListener('online', () => {
       enableNetwork($page.stuff.db);
     }, false);
+
+    if ($user.uid) {
+      // Check if it's a new day
+      addToHistory();
+    }
   });
 </script>
 
