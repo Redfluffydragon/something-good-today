@@ -22,7 +22,7 @@ export function addToHistory() {
 
       // then add possible empty days between last updated and now
       const daysBetween = dayjs().diff(user.lastUpdated, 'day');
-      for (let i = 0; i < daysBetween - 1; i++) {
+      for (let i = 0; i < daysBetween; i++) {
         user.history.unshift({
           // 86400000 is the number of ms in a day
           date: user.lastUpdated + (86400000 * (i + 1)),
