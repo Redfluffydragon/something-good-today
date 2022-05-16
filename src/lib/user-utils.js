@@ -23,12 +23,17 @@ export function addToHistory() {
       // then add possible empty days between last updated and now
       const daysBetween = dayjs().diff(user.lastUpdated, 'day');
       for (let i = 0; i < daysBetween; i++) {
-        user.history.unshift({
-          // 86400000 is the number of ms in a day
-          date: user.lastUpdated + (86400000 * (i + 1)),
-          projects: [],
-          goal: user.goal,
-        });
+        // 86400000 is the number of ms in a day
+        const pastDate = user.lastUpdated + (86400000 * (i + 1));
+
+        // only add the day if today is after the date (otherwise sometimes it'll add the current day)
+        if (dayjs().isAfter(pastDate, 'day')) {
+          user.history.unshift({
+            date: pastDate,
+            projects: [],
+            goal: user.goal,
+          });
+        }
       }
 
       user.today = [];
