@@ -84,6 +84,10 @@ export async function initializeUser(db, newUser) {
           location.reload();
         });
       }
+      // If it's not a new user, add past days to their history
+      else {
+        addToHistory();
+      }
 
       profile.set(newUser);
       loggedIn.set(true);

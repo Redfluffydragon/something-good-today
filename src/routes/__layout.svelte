@@ -42,8 +42,7 @@
   onMount(() => {
     onAuthStateChanged($page.stuff.auth, async newUser => {
       if (newUser) {
-        await initializeUser($page.stuff.db, newUser);
-        addToHistory();
+        initializeUser($page.stuff.db, newUser);
       } else {
         $user = demoUserData;
       }
