@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { signInWithPopup, signOut } from 'firebase/auth';
+import { signInWithRedirect, signOut } from 'firebase/auth';
 import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { get } from 'svelte/store';
 import { loggedIn, profile, reducedMotion, shouldUpdate, user } from './stores';
@@ -132,7 +132,7 @@ export async function pushUser(db, user) {
  * @param {any} db Firestore database to initialize user in
  */
 export async function loginWithGoogle(auth, provider, db) {
-  signInWithPopup(auth, provider)
+  signInWithRedirect(auth, provider)
     .then(result => {
       initializeUser(db, result.user);
     })
