@@ -1,33 +1,9 @@
-<script context="module">
-  export async function load() {
-    const app = initializeApp(firebaseConfig);
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-    const db = getFirestore(app);
-
-    return {
-      stuff: {
-        app: app,
-        provider: provider,
-        auth: auth,
-        db: db,
-      },
-    };
-  }
-</script>
-
 <script>
-  import { firebaseConfig, user, loggedIn, profile, demoUserData } from '$lib/stores';
+  import { user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
-  import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
-  import { initializeApp } from 'firebase/app';
+  import { onAuthStateChanged } from 'firebase/auth';
   import { page } from '$app/stores';
-  import {
-    getFirestore,
-    enableIndexedDbPersistence,
-    disableNetwork,
-    enableNetwork,
-  } from 'firebase/firestore';
+  import { enableIndexedDbPersistence, disableNetwork, enableNetwork } from 'firebase/firestore';
   import Popup from '$lib/Popup.svelte';
   import { addToHistory, initializeUser, loginWithGoogle, logout } from '$lib/user-utils';
   import Modal from '$lib/Modal.svelte';
@@ -40,15 +16,15 @@
   let loginModalOpen = false;
 
   onMount(() => {
-    onAuthStateChanged($page.stuff.auth, async newUser => {
+    onAuthStateChanged($page.data.auth, async newUser => {
       if (newUser) {
-        initializeUser($page.stuff.db, newUser);
+        initializeUser($page.data.db, newUser);
       } else {
         $user = demoUserData;
       }
     });
 
-    enableIndexedDbPersistence($page.stuff.db).catch(err => {
+    enableIndexedDbPersistence($page.data.db).catch(err => {
       if (err.code == 'failed-precondition') {
         console.log('Offline persistence can only be enabled in one tab at a a time.');
       }
@@ -56,12 +32,12 @@
 
     // prettier-ignore
     addEventListener('offline', () => {
-      disableNetwork($page.stuff.db);
+      disableNetwork($page.data.db);
     }, false);
 
     // prettier-ignore
     addEventListener('online', () => {
-      enableNetwork($page.stuff.db);
+      enableNetwork($page.data.db);
     }, false);
 
     if ($user.uid) {
@@ -108,7 +84,7 @@
             role="menuitem"
             on:click={() => {
               accountPopupOpen = false;
-              logout(user, $page.stuff.auth, $page.stuff.db);
+              logout(user, $page.data.auth, $page.data.db);
             }}>Log out</button
           >
         </li>
@@ -129,7 +105,7 @@
     <div class="flex flex-column">
       <button
         on:click={() => {
-          loginWithGoogle($page.stuff.auth, $page.stuff.provider, $page.stuff.db);
+          loginWithGoogle($page.data.auth, $page.data.provider, $page.data.db);
           loginModalOpen = false;
         }}>Log in with Google</button
       >

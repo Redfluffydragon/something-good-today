@@ -10,7 +10,6 @@ import { loggedIn, profile, reducedMotion, shouldUpdate, user } from './stores';
 export function addToHistory() {
   if (dayjs().isAfter(get(user).lastUpdated, 'day')) {
     user.update(user => {
-
       // Use unshift for reverse chronological order
 
       // first, add the last updated day
@@ -24,7 +23,7 @@ export function addToHistory() {
       const daysBetween = dayjs().diff(user.lastUpdated, 'day');
       for (let i = 0; i < daysBetween; i++) {
         // 86400000 is the number of ms in a day
-        const pastDate = user.lastUpdated + (86400000 * (i + 1));
+        const pastDate = user.lastUpdated + 86400000 * (i + 1);
 
         // only add the day if today is after the date (otherwise sometimes it'll add the current day)
         if (dayjs().isAfter(pastDate, 'day')) {
@@ -54,48 +53,50 @@ export async function initializeUser(db, newUser) {
   return new Promise((resolve, reject) => {
     shouldUpdate.set(false);
 
-    getDoc(doc(db, 'users', newUser.uid)).then(snapshot => {
-      user.set(snapshot?.data() || {});
+    getDoc(doc(db, 'users', newUser.uid))
+      .then(snapshot => {
+        user.set(snapshot?.data() || {});
 
-      // If user is undefined, it's a new user and we need to create a doc in Firestore
-      if (!get(user)) {
-        const defaultUserData = {
-          goal: '1',
-          nextId: 0,
-          projects: {},
-          activeProjects: [],
-          finishedProjects: [],
-          deletedProjects: [],
-          today: [],
-          history: [],
-          lastUpdated: Date.now(),
-          uid: newUser.uid,
-          darkMode: false,
-          options: {
-            celebration: get(reducedMotion) ? 'none' : 'fireworks',
-            colorFilter: 1,
-            showMaxStreak: true,
-            showStreak: true,
-          },
-        };
+        // If user is undefined, it's a new user and we need to create a doc in Firestore
+        if (!get(user)) {
+          const defaultUserData = {
+            goal: '1',
+            nextId: 0,
+            projects: {},
+            activeProjects: [],
+            finishedProjects: [],
+            deletedProjects: [],
+            today: [],
+            history: [],
+            lastUpdated: Date.now(),
+            uid: newUser.uid,
+            darkMode: false,
+            options: {
+              celebration: get(reducedMotion) ? 'none' : 'fireworks',
+              colorFilter: 1,
+              showMaxStreak: true,
+              showStreak: true,
+            },
+          };
 
-        setDoc(doc(db, 'users', newUser.uid), defaultUserData).then(() => {
-          // Not a perfect solution, but the easiest way to make sure user data is correct
-          location.reload();
-        });
-      }
-      // If it's not a new user, add past days to their history
-      else {
-        addToHistory();
-      }
+          setDoc(doc(db, 'users', newUser.uid), defaultUserData).then(() => {
+            // Not a perfect solution, but the easiest way to make sure user data is correct
+            location.reload();
+          });
+        }
+        // If it's not a new user, add past days to their history
+        else {
+          addToHistory();
+        }
 
-      profile.set(newUser);
-      loggedIn.set(true);
+        profile.set(newUser);
+        loggedIn.set(true);
 
-      resolve();
-    }).catch(() => {
-      reject();
-    });
+        resolve();
+      })
+      .catch(() => {
+        reject();
+      });
 
     // Set up onSnapshot callback for updating from server
     onSnapshot(doc(db, 'users', newUser.uid), doc => {

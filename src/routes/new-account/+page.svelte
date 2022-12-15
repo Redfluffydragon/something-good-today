@@ -28,9 +28,9 @@
       e.preventDefault();
 
       if (validatePasswords(formData)) {
-        createUserWithEmailAndPassword($page.stuff.auth, formData.email, formData.password)
+        createUserWithEmailAndPassword($page.data.auth, formData.email, formData.password)
           .then(async userCredential => {
-            initializeUser($page.stuff.db, userCredential.user);
+            initializeUser($page.data.db, userCredential.user);
 
             // redirect to homepage
             goto('/');
@@ -86,7 +86,7 @@
       <p>OR</p>
       <button
         on:click={() => {
-          loginWithGoogle($page.stuff.auth, $page.stuff.provider, $page.stuff.db);
+          loginWithGoogle($page.data.auth, $page.data.provider, $page.data.db);
         }}>Create an account with Google</button
       >
       <br />

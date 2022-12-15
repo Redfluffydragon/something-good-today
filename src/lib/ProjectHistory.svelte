@@ -1,5 +1,5 @@
 <script>
-  import { browser } from '$app/env';
+  import { browser } from '$app/environment';
   import PieChart from './PieChart.svelte';
   import { historyShown, user } from './stores';
   import dayjs from 'dayjs';

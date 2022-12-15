@@ -14,7 +14,7 @@
             class="clear-btn"
             on:click={() => {
               $user.activeProjects.push(id);
-              $user.finishedProjects.splice($user.finishedProjects.indexOf(id), 1);
+              $user.finishedProjects.splice($user.finishedProjects?.indexOf(id), 1);
               $user = $user; // So Svelte updates
             }}
           >

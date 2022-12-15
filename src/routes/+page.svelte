@@ -6,7 +6,7 @@
   import FinishedProjects from '$lib/FinishedProjects.svelte';
   import { loggedIn, shouldUpdate, user } from '$lib/stores';
   import { beforeNavigate } from '$app/navigation';
-  import { browser } from '$app/env';
+  import { browser } from '$app/environment';
   import { page } from '$app/stores';
   import { addToHistory, pushUser } from '$lib/user-utils';
   import ProjectHistory from '$lib/ProjectHistory.svelte';
@@ -51,7 +51,7 @@
     if (!document.hidden) {
       $shouldUpdate = false;
       // Pull when unhidden - mostly for mobile
-      $user = (await getDoc(doc($page.stuff.db, 'users', $user.uid)))?.data();
+      $user = (await getDoc(doc($page.data.db, 'users', $user.uid)))?.data();
 
       // Check if it's a new day
       addToHistory();
@@ -72,7 +72,7 @@
     }
 
     try {
-      await pushUser($page.stuff.db, user);
+      await pushUser($page.data.db, user);
     } catch (err) {
       console.log('Failed to update:', err);
     } finally {
@@ -109,7 +109,7 @@
    * @returns {boolean} True if it's possible to update the user, and false otherwise
    */
   function canUpdate(user) {
-    return !(!$page.stuff.db || !$loggedIn || !user.uid);
+    return !(!$page.data.db || !$loggedIn || !user.uid);
   }
 
   /**

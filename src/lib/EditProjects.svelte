@@ -26,13 +26,13 @@
 
   function deleteProject() {
     $user.deletedProjects.push(selectedProject);
-    $user.activeProjects.splice($user.activeProjects.indexOf(selectedProject), 1);
+    $user.activeProjects.splice($user.activeProjects?.indexOf(selectedProject), 1);
     $user = $user; // So Svelte updates
   }
 
   function finishProject() {
     $user.finishedProjects.push(selectedProject);
-    $user.activeProjects.splice($user.activeProjects.indexOf(selectedProject), 1);
+    $user.activeProjects.splice($user.activeProjects?.indexOf(selectedProject), 1);
     $user = $user; // So Svelte updates
   }
 
