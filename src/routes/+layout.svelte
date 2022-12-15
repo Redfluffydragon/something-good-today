@@ -168,6 +168,7 @@
 
   .img-btn img {
     border: 2.5px solid var(--accent-color);
+    width: 100%;
   }
 
   .login-wrapper {
