@@ -1,29 +1,18 @@
 <script context="module">
-  /** @type {import('@sveltejs/kit').ErrorLoad} */
-  export function load({ error, status }) {
-    return {
-      props: { error, status },
-    };
-  }
+  import { page } from '$app/stores';
 </script>
 
 <script>
   import { titleSuffix } from '$lib/stores';
-
-  /** @type {number} */
-  export let status;
-
-  /** @type {Error} */
-  export let error;
 </script>
 
 <svelte:head>
-  <title>{status} {titleSuffix}</title>
+  <title>{$page.status} {titleSuffix}</title>
 </svelte:head>
 
-<h1>{status}</h1>
+<h1>{$page.status}</h1>
 
-<h2>{error.message}</h2>
+<h2>{$page.error.message}</h2>
 
 <h3><a href="/">Back to homepage</a></h3>
 
