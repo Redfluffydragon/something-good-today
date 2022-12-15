@@ -9,7 +9,7 @@
   let wrongEmail = false;
 
   function loginWithEmail(email, password) {
-    signInWithEmailAndPassword($page.stuff.auth, email, password)
+    signInWithEmailAndPassword($page.data.auth, email, password)
       .then(() => {
         // I don't know why I have to reload so much
         location.reload();
