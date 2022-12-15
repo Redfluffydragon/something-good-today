@@ -1,29 +1,9 @@
-<script context="module">
-  export async function load() {
-    const app = initializeApp(firebaseConfig);
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-    const db = getFirestore(app);
-
-    return {
-      stuff: {
-        app: app,
-        provider: provider,
-        auth: auth,
-        db: db,
-      },
-    };
-  }
-</script>
-
 <script>
-  import { firebaseConfig, user, loggedIn, profile, demoUserData } from '$lib/stores';
+  import { user, loggedIn, profile, demoUserData } from '$lib/stores';
   import { onMount } from 'svelte';
-  import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
-  import { initializeApp } from 'firebase/app';
+  import { onAuthStateChanged } from 'firebase/auth';
   import { page } from '$app/stores';
   import {
-    getFirestore,
     enableIndexedDbPersistence,
     disableNetwork,
     enableNetwork,
