@@ -2,7 +2,7 @@ import { firebaseConfig } from '$lib/stores';
 import { initializeApp } from 'firebase/app';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
-export async function post({ request }) {
+export async function POST({ request }) {
   const user = JSON.parse(await request.text());
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -16,7 +16,5 @@ export async function post({ request }) {
     { merge: true }
   );
 
-  return {
-    status: 200,
-  };
+  return new Response('Sync successful', { status: 200 });
 }
